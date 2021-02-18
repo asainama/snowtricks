@@ -1,0 +1,29 @@
+{
+    "rules": {
+        "indentation": [2, {
+                "baseIndentLevel":1,
+            }
+        ],
+        "no-missing-end-of-source-newline": true,
+        "declaration-colon-newline-after": "always-multi-line",
+        "no-eol-whitespace": [true,{
+            "ignore": ["empty-lines"]
+        }],
+        "declaration-block-no-shorthand-property-overrides": true,
+        "selector-pseudo-element-colon-notation": "double",
+        "comment-empty-line-before": "always",
+        "block-closing-brace-newline-after": "always",
+        "at-rule-empty-line-before": ["always",{
+            "except": ["after-same-name", "first-nested"]
+        }],
+        "rule-empty-line-before": ["always",{
+            "except": ["first-nested"]
+        }],
+        "no-descending-specificity": true,
+        "declaration-block-no-duplicate-properties": [true, {
+            "ignore":"consecutive-duplicates-with-different-values",
+            }
+        ],
+        "no-duplicate-selectors": true,
+    }
+}
