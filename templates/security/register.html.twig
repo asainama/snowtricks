@@ -4,6 +4,8 @@
 
 {% block body %}
     {{form_start(form)}}
+        <img id="preview" width="200px" height="200px"><br>
+        {{form_widget(form.attachment)}} <br>
         {{form_label(form.name)}} <br>
         {{form_widget(form.name)}} <br>
         {{form_label(form.email)}} <br>

@@ -57,6 +57,11 @@ class User implements UserInterface
      */
     private $resetToken;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $attachment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -178,6 +183,18 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getAttachment(): ?string
+    {
+        return $this->attachment;
+    }
+
+    public function setAttachment(string $attachment): self
+    {
+        $this->attachment = $attachment;
 
         return $this;
     }

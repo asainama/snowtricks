@@ -10,3 +10,5 @@ import '../scss/style.scss';
 
 // start the Stimulus application
 import '../bootstrap';
+
+import './form.js'

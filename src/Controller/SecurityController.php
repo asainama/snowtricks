@@ -4,14 +4,15 @@ namespace App\Controller;
 
 use LogicException;
 use App\Entity\User;
-use App\Form\ResetPassType;
 use App\Form\UserType;
+use App\Form\LoginType;
+use App\Form\ResetPassType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\UserPassportInterface;
@@ -31,10 +32,13 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+            // dd($form->get('attachment')->getData()->guessExtension());
+            // $fichier = md5(uniqid()). '.' 
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassWord($passwordEncoder->encodePassword($user, $plainPassword));
             $user->setCreatedAt(new \DateTime('NOW'));
             $user->setRoles(['ROLE_USER']);
+            $user->setResetToken(null);
             $user->setActivationToken($token->generateToken());
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -67,9 +71,17 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login", methods={"GET","POST"})
      */
-    public function login(): Response
+    public function login(Request $request): Response
     {
-        return $this->render('security/login.html.twig');
+        $form = $this->createForm(LoginType::class);
+        $form->handleRequest($request);
+
+        return $this->render(
+            'security/login.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     /**

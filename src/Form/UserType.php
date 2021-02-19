@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -18,6 +19,16 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('attachment', FileType::class, 
+                [   'label' => false,
+                    'multiple' => false,
+                    'attr' => 
+                    [
+                        'accept',
+                        'image/x-png,image/gif,image/jpeg,image/jpg'
+                    ]
+                ]
+            )
             ->add('name')
             ->add('email')
             ->add('plainPassword', RepeatedType::class, [
