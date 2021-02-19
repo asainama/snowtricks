@@ -3,22 +3,30 @@
 namespace App\Controller;
 
 use LogicException;
+use App\Entity\User;
+use App\Form\ResetPassType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\UserPassportInterface;
 
 class SecurityController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register", methods={"GET","POST"})
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGeneratorInterface $token, \Swift_Mailer $mailer): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenGeneratorInterface $token,
+        \Swift_Mailer $mailer
+    ): Response {
         $form  = $this->createForm(UserType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,7 +53,7 @@ class SecurityController extends AbstractController
                 )
             );
             $mailer->send($message);
-            $this->addFlash('success', 'User succesfully created');
+            $this->addFlash('success', 'Votre compte a bien été crée, un email vous a été envoyé');
             return $this->redirectToRoute('app_home');
         }
         return $this->render(
@@ -77,7 +85,7 @@ class SecurityController extends AbstractController
      */
     public function activation($token, UserRepository $userRepository): Response
     {
-        $user= $userRepository->findOneBy(['activation_token' => $token]);
+        $user= $userRepository->findOneBy(['activationToken' => $token]);
         if (!$user) {
             throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
         }
@@ -88,6 +96,109 @@ class SecurityController extends AbstractController
 
         $this->addFlash('success', 'Vous avez bien activé votre compte');
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
+    }
+
+    /**
+     * @Route("/forgotten", name="app_forgotten_pass", methods={"GET","POST"})
+     */
+    public function forgottenPass(
+        Request $request,
+        UserRepository $userRepository,
+        \Swift_Mailer $mailer,
+        TokenGeneratorInterface $token
+    ): Response {
+        $form = $this->createForm(ForgotPassType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $user = $userRepository->findOneByEmail($data['email']);
+
+            if (!$user) {
+                $this->addFlash('warning', 'Cette adresse n\'existe pas');
+                return $this->redirectToRoute('app_login');
+            }
+            $token = $token->generateToken();
+
+            try {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                $this->addFlash("error", "Une error est survenue : $e->getMessage()");
+                return $this->redirectToRoute('app_login');
+            }
+
+            $url = $this->generateUrl(
+                'app_reset_password',
+                ['token' => $token],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+
+            $message = (new \Swift_Message('Mot de passe oublié'))
+            ->setFrom('no-reply@snowtricks.fr')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/reset_password.html.twig',
+                    [
+                        'url' => $url
+                    ],
+                    'text/html'
+                )
+            );
+            $mailer->send($message);
+
+            $this->addFlash('success', 'Un email de réinitialisation vous a été envoyé');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render(
+            'security/forgotten_password.html.twig',
+            [
+                    'form' => $form->createView()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/reset-pass/{token}", name="app_reset_password")
+     */
+    public function resetPassword(
+        $token,
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder
+    ): Response {
+        $form = $this->createForm(ResetPassType::class, null, ['token' => $token]);
+        $form->handleRequest($request);
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['resetToken' => $token]);
+
+        if (!$user) {
+            $this->addFlash('errror', 'Token inconnu');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $user->setResetToken(null);
+            $password = $passwordEncoder->encodePassword($user, $data['plainPassword']);
+            $user->setPassword($password);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Mot de passe modifié avec succès');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render(
+            'security/reset_password.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 }

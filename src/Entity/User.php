@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\UserRepository;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity("email")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("email", message="L'email est deja utilisé")
  */
-class User extends UserRepository
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -49,6 +51,11 @@ class User extends UserRepository
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $activationToken;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $resetToken;
 
     public function getId(): ?int
     {
@@ -127,6 +134,50 @@ class User extends UserRepository
     public function setActivationToken(?string $activationToken): self
     {
         $this->activationToken = $activationToken;
+
+        return $this;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }
