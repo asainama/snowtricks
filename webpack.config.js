@@ -32,7 +32,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('form', './assets/js/form.js')
-    .addEntry('style', './assets/scss/style.scss')
+    .addStyleEntry('style', './assets/scss/style.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -56,6 +56,7 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+    // .enableVersioning()
 
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');

@@ -20,7 +20,9 @@ class UserType extends AbstractType
     {
         $builder
             ->add('attachment', FileType::class, 
-                [   'label' => false,
+                [   
+                    'mapped' => false,
+                    'label' => false,
                     'multiple' => false,
                     'attr' => 
                     [

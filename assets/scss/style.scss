@@ -1,19 +1,15 @@
 // Alert Message
 
-body {
-  background: red;
-}
-
 .alert {
   color: white;
   padding: 10px;
   text-align: center;
 
-  & .alert-error {
+  &-error {
     background: red;
   }
 
-  & .alert-success {
+  &-success {
     background: green;
   }
 }

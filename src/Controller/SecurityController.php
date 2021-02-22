@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use LogicException;
 use App\Entity\User;
+use App\Entity\Image;
 use App\Form\UserType;
 use App\Form\LoginType;
 use App\Form\ResetPassType;
@@ -32,8 +33,14 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            // dd($form->get('attachment')->getData()->guessExtension());
-            // $fichier = md5(uniqid()). '.' 
+            $image = $form->get('attachment')->getData();
+            $fichier = md5(uniqid()) . "." . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory_users'),
+                $fichier
+            );
+            $user->setAttachment($fichier);
+
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassWord($passwordEncoder->encodePassword($user, $plainPassword));
             $user->setCreatedAt(new \DateTime('NOW'));
