@@ -1,0 +1,7 @@
+{% block header %}
+    <header class="{{(class is defined) ? class : 'header'}}">
+        {{include('partials/_navbar.html.twig')}}
+        <div class="header__background"></div>
+        <div class="header__arrow"></div>
+    </header>
+{% endblock %}

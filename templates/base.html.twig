@@ -9,11 +9,18 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('style') }}
         {% endblock %}
-        {{include('partials/_navbar.html.twig')}}
     </head>
     <body>
-        {{include('partials/_flash_message.html.twig')}}
-        {% block body %}{% endblock %}
+        {% block header %}{% endblock %}
+        <div class="container">
+            <div class="row">
+                {{include('partials/_flash_message.html.twig')}}
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        <footer>
+            Copyright @snowtricks
+        </footer>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
