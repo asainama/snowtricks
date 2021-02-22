@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+    {{form_start(form)}}
+        <div>
+            {{form_label(form.email)}} <br>
+            {{form_widget(form.email, {'attr': {'value': app.session.get('app_login_form_last_email') }})}}
+		    {# <input type="email" name="email" id="email" value="{{app.session.get('app_login_form_last_email')}}" required autofocus> #}
+            <div class="form-error">
+                {{ form_errors(form.email) }}
+            </div>
+		</div>
+        <div>
+            {{form_label(form.password)}} <br>
+            {{form_widget(form.password)}}
+            <div class="form-error">
+                {{ form_errors(form.password) }}
+            </div>
+		</div>
+        <div>
+            {{form_widget(form._remember_me)}}
+            {{form_label(form._remember_me)}}
+            <div class="form-error">
+                {{ form_errors(form._remember_me) }}
+            </div>
+		</div>
+        {{form_rest(form)}}
+    {{form_end(form)}}
+    <a href="{{path('app_forgotten_pass')}}">Mot de passe oublié ?</a>
+{% endblock %}

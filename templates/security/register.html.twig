@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {{form_start(form)}}
+        <img id="preview" width="200px" height="200px"><br>
+        {{form_widget(form.attachment)}} <br>
+        {{form_label(form.name)}} <br>
+        {{form_widget(form.name)}} <br>
+        {{form_label(form.email)}} <br>
+        {{form_widget(form.email)}} <br>
+        {{form_label(form.plainPassword.first)}} <br>
+        {{form_widget(form.plainPassword.first)}} <br>
+        {{form_label(form.plainPassword.second)}} <br>
+        {{form_widget(form.plainPassword.second)}} <br>
+        {{form_rest(form)}}
+    {{form_end(form)}}
+{% endblock %}

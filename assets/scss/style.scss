@@ -1,0 +1,15 @@
+// Alert Message
+
+.alert {
+  color: white;
+  padding: 10px;
+  text-align: center;
+
+  &-error {
+    background: red;
+  }
+
+  &-success {
+    background: green;
+  }
+}
