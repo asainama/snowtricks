@@ -8,6 +8,7 @@ use App\Entity\Image;
 use App\Form\UserType;
 use App\Form\LoginType;
 use App\Form\ResetPassType;
+use App\Form\ForgotPassType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,7 +66,7 @@ class SecurityController extends AbstractController
             );
             $mailer->send($message);
             $this->addFlash('success', 'Votre compte a bien été crée, un email vous a été envoyé');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render(
             'security/register.html.twig',
@@ -96,6 +97,7 @@ class SecurityController extends AbstractController
      */
     public function logout(): void
     {
+        $this->addFlash('success', 'Vous êtes maintenant déconnecter');
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
@@ -139,7 +141,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('app_login');
             }
             $token = $token->generateToken();
-
+            $user->setResetToken($token);
             try {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
@@ -192,18 +194,17 @@ class SecurityController extends AbstractController
     ): Response {
         $form = $this->createForm(ResetPassType::class, null, ['token' => $token]);
         $form->handleRequest($request);
-
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['resetToken' => $token]);
 
         if (!$user) {
-            $this->addFlash('errror', 'Token inconnu');
+            $this->addFlash('error', 'Token inconnu');
             return $this->redirectToRoute('app_login');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $data = $request->request->get('reset_pass');
             $user->setResetToken(null);
-            $password = $passwordEncoder->encodePassword($user, $data['plainPassword']);
+            $password = $passwordEncoder->encodePassword($user, $data['plainPassword']['first']);
             $user->setPassword($password);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

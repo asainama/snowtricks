@@ -1,7 +1,10 @@
 {% block header %}
     <header class="{{(class is defined) ? class : 'header'}}">
         {{include('partials/_navbar.html.twig')}}
-        <div class="header__background"></div>
-        <div class="header__arrow"></div>
+        {{include('partials/_flash_message.html.twig')}}
+        <div class="header__title">
+            <p><span>Snowtricks,</span> le meilleur site communautaire de figures de Snowboard</p>
+        </div>
+        <a class="header__arrow" href="#home"></a>
     </header>
 {% endblock %}

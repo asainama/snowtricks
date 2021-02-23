@@ -62,16 +62,21 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         // $request->query $_GET
         // $request->attributes sont les attributs de requete
         // $user = $this->userRepository->findOneBy(['email' => $request->get('email')]);
-        $user = $this->userRepository->findOneByEmail($request->request->get('email'));
+
+        $login = $request->request->get('login');
+        /** @param User $user  */
+        $user = $this->userRepository->findOneByEmail($login['email']);
         $request->getSession()->set(
             'app_login_form_last_email',
-            $request->request->get('email')
+            $login['email']
         );
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Invalid credentials');
+        } elseif ($user->getActivationToken()) {
+            throw new CustomUserMessageAuthenticationException('Vous devez d\'abord activer votre compte');
         }
-        return new Passport($user, new PasswordCredentials($request->request->get('password')), [
-            new CsrfTokenBadge('login_form', $request->request->get('csrf_token')),
+        return new Passport($user, new PasswordCredentials($login['password']), [
+            new CsrfTokenBadge('login_form', $login['crsf_token']),
             new RememberMeBadge()
             // new PasswordUpgradeBadge($request->request->get('password'), $this->userRepository)
         ]);
@@ -103,7 +108,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $request->getSession()->getFlashBag()->add('error', 'Invalid Credentials');
+        $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
         return new RedirectResponse($this->url->generate('app_login'));
     }
 }

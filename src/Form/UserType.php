@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,12 +18,14 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('attachment', FileType::class, 
-                [   
+            ->add(
+                'attachment',
+                FileType::class,
+                [
                     'mapped' => false,
-                    'label' => false,
+                    'label' => 'Choisir une image',
                     'multiple' => false,
-                    'attr' => 
+                    'attr' =>
                     [
                         'accept',
                         'image/x-png,image/gif,image/jpeg,image/jpg'
@@ -42,14 +43,21 @@ class UserType extends AbstractType
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank(
+                        null,
+                        'Le mot de passe ne doit pas être vide'
+                    ),
                     new Length([
                         'min' => 6,
-                        'max' => 4096
+                        'minMessage' => 'Le mot de passe trop court. Il devrait avoir 6 ou plus',
+                        'max' => 4096,
+                        'minMessage' => 'Le mot de passe trop long.',
                     ])
                 ]
             ])
-            ->add('Valider', SubmitType::class)
+            ->add('Valider', SubmitType::class, [
+                'attr' => ['class' => 'btn btn__primary'],
+            ])
         ;
     }
 

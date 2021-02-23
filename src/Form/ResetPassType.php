@@ -26,10 +26,15 @@ class ResetPassType extends AbstractType
             'first_options'  => ['label' => 'Password'],
             'second_options' => ['label' => 'Repeat Password'],
             'constraints' => [
-                new NotBlank(),
+                new NotBlank(
+                    null,
+                    'Le mot de passe ne doit pas être vide'
+                ),
                 new Length([
                     'min' => 6,
-                    'max' => 4096
+                    'minMessage' => 'Le mot de passe trop court. Il devrait avoir 6 ou plus',
+                    'max' => 4096,
+                    'minMessage' => 'Le mot de passe trop long.',
                 ])
             ]
         ])
@@ -40,14 +45,16 @@ class ResetPassType extends AbstractType
             'data' => $options['token']
             ]
         )
-        ->add('Valider', SubmitType::class)
+        ->add('Valider', SubmitType::class, [
+            'attr' => ['class' => 'btn btn__primary'],
+        ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'token' => null
         ]);
     }
 }

@@ -5,3 +5,15 @@ if(file !== null){
         preview.src = URL.createObjectURL(e.target.files[0])
     })
 }
+
+var alertClose = document.querySelector('.alert__close')
+if (alertClose !== null) {
+    alertClose.addEventListener('click',function(e){
+        console.log(alertClose)
+        var alertMessage = document.querySelector('.alert')
+        if (alertMessage.classList.contains('show')) {
+            alertMessage.classList.remove('show')
+            alertMessage.classList.add('hide')
+        }
+    })
+}

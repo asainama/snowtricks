@@ -18,7 +18,8 @@ class LoginType extends AbstractType
         ->add('email', EmailType::class)
         ->add('password', PasswordType::class)
         ->add('_remember_me', CheckboxType::class, [
-            'label' => 'Garder la session active'
+            'label' => 'Garder la session active',
+            'required' => false,
         ])
         ->add('Valider', SubmitType::class, [
             'attr' => ['class' => 'btn btn__primary'],
@@ -29,7 +30,9 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'csrf_protection' => true,
+            'csrf_field_name' => 'crsf_token',
+            'csrf_token_id'   => 'login_form',
         ]);
     }
 }

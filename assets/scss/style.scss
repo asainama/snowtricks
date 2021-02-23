@@ -9,8 +9,10 @@ $warning: #ffdb9b;
 $warning-border: #ffa502;
 $green:#41cf7c;
 $red: #f25353;
+$blue: royalblue;
+$background-blue: rgba(65, 105, 225, 0.5);
 
-* {
+*  {
   margin: 0;
   padding: 0;
 }
@@ -21,6 +23,7 @@ html {
   font-size: calc(1em * 0.625);
   font-size: 62.5%;
   line-height: 1.4;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -37,7 +40,6 @@ body {
   color: #000;
   background: $background;
   position: relative;
-  scroll-behavior: smooth;
 }
 
 .container {
@@ -51,6 +53,8 @@ body {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .row {
@@ -96,6 +100,32 @@ a {
     position: relative;
   }
 
+  &__title{
+    display: none;
+  }
+
+  &__img &__title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__title p span{
+    display: block;
+    font-size: 5rem;
+  }
+
+  &__title p{
+    line-height: 1.4;
+    color: $white;
+    font-size: 3rem;
+    font-family: 'nunitosemibold',sans-serif;
+    display: block;
+    margin: auto;
+    width: 70%;
+  }
+
   &__arrow {
     display: none;
   }
@@ -111,6 +141,7 @@ a {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    cursor: pointer;
   }
 
 
@@ -129,34 +160,84 @@ a {
 
 .navbar__header {
   display: flex;
-  width: 100%;
+  width: calc(100% - 60px);
+  max-width: 1200px;
+  align-items: center;
 
   li {
     margin: 0 .5em;
   }
 
+  &__li a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
   li a{
     color: inherit;
   }
   
+  &__subnavbar li a{
+    text-align: left;
+    padding: .5em 0;
+    display: inline-block;
+  }
+
   li:nth-child(1) {
     margin-right: auto;
   }
+  
 
   li:not(li:nth-child(1)) {
     font-family: "nunitosemibold", sans-serif;
     font-size: 1.6rem;
   }
 
+  &__children {
+    position: relative;
+  }
+
+  &__subnavbar {
+    display: none;
+    flex-flow: column wrap;
+    min-width: 100px;
+    position: absolute;
+    background: $white;
+  }
+
+
+  &__children:hover  > &__subnavbar{
+    display: flex;
+  }
+
+  &__img{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    vertical-align: middle;
+    margin-left: .5em;
+  }
 
   &__logo {
     font-family: "nunitosemibold", sans-serif;
     font-size: 2rem;
   }
 }
+
+// Section
+
+section{
+  height: 100vh;
+}
 // Login
 
-.form__login {
+.form {
   display: flex;
   border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -166,17 +247,25 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 60%;
+  width: calc(100% - 60px);
+  max-width: 500px;
   margin: 4em auto;
   border: 1px solid #ccc;
   padding: 0 1em 1em 1em;
   box-shadow :0 2px 4px $shadow;
 
-  &__group{
+  &__group {
     margin: 1em auto;
     width: 100%;
   }
-  
+
+  &__title {
+    margin: 1em auto;
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+  }
+
   &__group label {
     font-family: "nunitosemibold", sans-serif;
     font-size: 1.6rem;
@@ -184,10 +273,69 @@ a {
     display: inline-block;
   }
 
+  &__group__attachment {
+    text-align: center;
+  }
+
+  &__group__attachment img{
+    display: block;
+    margin: 1em auto;
+    border: 1px solid #ccc;
+    border-radius:  50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    background: url('../../public/images/user.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  &__group input[type=file]{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &__group input[type=file] + label{
+    font-weight: 700;
+    color: $blue;
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .5em;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    transition: all 500ms;
+    -webkit-transition: all 500ms;
+    -moz-transition: all 500ms;
+    -ms-transition: all 500ms;
+    -o-transition: all 500ms;
+  }
+
+  &__group input[type=file]:focus + label,
+  &__group input[type=file] + label:hover {
+    background-color: $blue;
+    color: $white;
+    border: 1px solid $blue;
+    -webkit-border-radius: 2;
+    -moz-border-radius: 2;
+    -ms-border-radius: 2;
+    -o-border-radius: 2;
+  }
+
   &__group input[type=text],
   &__group input[type=hidden],
   &__group input[type=password],
   &__group input[type=email] {
+    all:unset;
     border: none;
     padding: 1em 0 1em .5em;
     border-radius: 5px;
@@ -195,11 +343,18 @@ a {
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
-    border-color: 1px solid #242729;
-    width: 100%;
+    border-color: 1px solid $blue;
     box-shadow :0 2px 4px $shadow;
+    width: 100%;
   }
 
+  &__group input[type=text]:focus,
+  &__group input[type=hidden]:focus,
+  &__group input[type=password]:focus,
+  &__group input[type=email]:focus{
+    background-color: royalblue;
+    color: $white;
+  }
   // &__group input[type=checkbox] {
   //   border-radius: 2px;
   //   -webkit-border-radius: 2px;
@@ -222,20 +377,40 @@ a {
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
+  transition: all 500ms;
+  -webkit-transition: all 500ms;
+  -moz-transition: all 500ms;
+  -ms-transition: all 500ms;
+  -o-transition: all 500ms;
 
-  &__success {
+  &__success{
     color: $white;
     background: green;
+    border: 1px solid green;
+  }
+
+  &__success:hover{
+    color: green;
+    background: $green;
+    border-color: green;
   }
 
   &__primary {
     color: $white;
     background: royalblue;
+    border: 1px solid royalblue;
+  }
+
+  &__primary:hover{
+    color: royalblue;
+    background: transparent;
+    border-color:royalblue;
   }
 
   &__error {
     color: $white;
     background: red;
+    border: 1px solid red;
   }
 }
 
@@ -257,6 +432,7 @@ a {
   color: $white;
   opacity: 0;
   pointer-events: none;
+  z-index: 1;
 
   &.show{
     animation: slide 1s ease forwards;
@@ -394,7 +570,7 @@ a {
       background-repeat: no-repeat;
     }
 
-    .alert__close{
+    & .alert__close{
       background: #ffd080;
     }
   }
@@ -410,8 +586,8 @@ a {
       background-repeat: no-repeat;
     }
 
-    .alert__close{
-      background: $red;
+    & .alert__close{
+      background: red;
     }
   }
   
@@ -426,7 +602,7 @@ a {
       background-repeat: no-repeat;
     }
 
-    .alert__close{
+    & .alert__close{
       background: rgba(0, 128, 0, .3);
     }
   }

@@ -4,9 +4,6 @@
   "build/style.css": "/build/style.css",
   "build/runtime.js": "/build/runtime.js",
   "build/vendors-node_modules_core-js_modules_es_object_to-string_js-node_modules_core-js_modules_web_-80f718.js": "/build/vendors-node_modules_core-js_modules_es_object_to-string_js-node_modules_core-js_modules_web_-80f718.js",
-  "build/app.css": "/build/app.css",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-28f194.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-28f194.js",
-  "build/images/down-arrow.png": "/build/images/down-arrow.f576eee4.png",
   "build/images/snowboard-113784_1920.jpg": "/build/images/snowboard-113784_1920.1bde5fdf.jpg",
   "build/images/nunito-black-webfont.svg": "/build/images/nunito-black-webfont.e83b5e6a.svg",
   "build/images/nunito-italic-webfont.svg": "/build/images/nunito-italic-webfont.cf6ba008.svg",
@@ -29,11 +26,13 @@
   "build/fonts/nunito-bold-webfont.woff": "/build/fonts/nunito-bold-webfont.fe6ccd5c.woff",
   "build/fonts/nunito-regular-webfont.woff": "/build/fonts/nunito-regular-webfont.08af5f0e.woff",
   "build/fonts/nunito-italic-webfont.woff2": "/build/fonts/nunito-italic-webfont.c6f21014.woff2",
+  "build/images/checked.png": "/build/images/checked.2b8b0754.png",
   "build/fonts/nunito-black-webfont.woff2": "/build/fonts/nunito-black-webfont.ce30bac2.woff2",
   "build/fonts/nunito-semibold-webfont.woff2": "/build/fonts/nunito-semibold-webfont.5743bafd.woff2",
   "build/fonts/nunito-bold-webfont.woff2": "/build/fonts/nunito-bold-webfont.1cc25a08.woff2",
   "build/fonts/nunito-regular-webfont.woff2": "/build/fonts/nunito-regular-webfont.41f3e594.woff2",
   "build/images/alert.png": "/build/images/alert.4a39fecc.png",
-  "build/images/checked.png": "/build/images/checked.2b8b0754.png",
-  "build/images/error.png": "/build/images/error.50b1bef2.png"
+  "build/images/error.png": "/build/images/error.50b1bef2.png",
+  "build/images/down-arrow.png": "/build/images/down-arrow.702a6330.png",
+  "build/images/user.png": "/build/images/user.a6143582.png"
 }
