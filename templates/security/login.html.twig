@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Log in!
+{% block title %}Snowtricks - Se connecter{% endblock %}
+{% block header %}
+    {{include('partials/_header.html.twig')}}
 {% endblock %}
-
 {% block body %}
-    {{form_start(form)}}
-        <div>
-            {{form_label(form.email)}} <br>
-            {{form_widget(form.email, {'attr': {'value': app.session.get('app_login_form_last_email') }})}}
-		    {# <input type="email" name="email" id="email" value="{{app.session.get('app_login_form_last_email')}}" required autofocus> #}
-            <div class="form-error">
-                {{ form_errors(form.email) }}
+    <div class="row">
+        <h1 class="form__title">Se connecter</h1>
+        {{form_start(form,{'attr':{'class':'form'}})}}
+            <div class="form__group">
+                {{form_label(form.email)}} <br>
+                {{form_widget(form.email, {'attr': {'value': app.session.get('app_login_form_last_email') }})}}
+                <div class="form__group__error">
+                    {{ form_errors(form.email) }}
+                </div>
             </div>
-		</div>
-        <div>
-            {{form_label(form.password)}} <br>
-            {{form_widget(form.password)}}
-            <div class="form-error">
-                {{ form_errors(form.password) }}
+            <div class="form__group">
+                {{form_label(form.password)}} <br>
+                {{form_widget(form.password)}}
+                <div class="form__group__error">
+                    {{ form_errors(form.password) }}
+                </div>
             </div>
-		</div>
-        <div>
-            {{form_widget(form._remember_me)}}
-            {{form_label(form._remember_me)}}
-            <div class="form-error">
-                {{ form_errors(form._remember_me) }}
+            <div class="form__group">
+                {{form_widget(form._remember_me)}}
+                {{form_label(form._remember_me)}}
+                <div class="form__group__error">
+                    {{ form_errors(form._remember_me) }}
+                </div>
             </div>
-		</div>
-        {{form_rest(form)}}
-    {{form_end(form)}}
-    <a href="{{path('app_forgotten_pass')}}">Mot de passe oublié ?</a>
+            {{form_rest(form)}}
+            <a href="{{path('app_forgotten_pass')}}">Mot de passe oublié ?</a>
+        {{form_end(form)}}
+    </div>
 {% endblock %}

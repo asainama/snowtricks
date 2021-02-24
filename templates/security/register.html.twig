@@ -1,19 +1,43 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
+{% block header %}
+    {{include('partials/_header.html.twig')}}
+{% endblock %}
+{% block title %}Snowtricks - S'enregistrer{% endblock %}
 
 {% block body %}
-    {{form_start(form)}}
-        <img id="preview" width="200px" height="200px"><br>
-        {{form_widget(form.attachment)}} <br>
-        {{form_label(form.name)}} <br>
-        {{form_widget(form.name)}} <br>
-        {{form_label(form.email)}} <br>
-        {{form_widget(form.email)}} <br>
-        {{form_label(form.plainPassword.first)}} <br>
-        {{form_widget(form.plainPassword.first)}} <br>
-        {{form_label(form.plainPassword.second)}} <br>
-        {{form_widget(form.plainPassword.second)}} <br>
+    <h1 class="form__title">S'enregistrer</h1>
+    {{form_start(form,{'attr':{'class':'form'}})}}
+        <div class="form__group form__group__attachment">
+            <img id="preview" width="200px" height="200px">
+            {{form_widget(form.attachment)}}
+            {{form_label(form.attachment)}}
+        </div>
+        <div class="form__group">
+            {{form_label(form.name)}}
+            {{form_widget(form.name)}}
+            <div class="form__group__error">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+        <div class="form__group">
+            {{form_label(form.email)}}
+            {{form_widget(form.email)}}
+            <div class="form__group__error">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+        <div class="form__group">
+            {{form_label(form.plainPassword.first)}}
+            {{form_widget(form.plainPassword.first)}}
+            <div class="form__group__error">
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+            {{form_label(form.plainPassword.second)}}
+            {{form_widget(form.plainPassword.second)}}
+            <div class="form__group__error">
+                {{ form_errors(form.plainPassword.second) }}
+            </div>
+        </div>
         {{form_rest(form)}}
     {{form_end(form)}}
 {% endblock %}

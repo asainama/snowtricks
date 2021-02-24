@@ -14,7 +14,9 @@ class ForgotPassType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('Envoyer', SubmitType::class)
+            ->add('Envoyer', SubmitType::class, [
+                'attr' => ['class' => 'btn btn__primary'],
+            ])
         ;
     }
 

@@ -17,6 +17,7 @@ security:
             lazy: true
             logout:
                 path: app_logout
+                invalidate_session: false
             custom_authenticators:
                 - App\Security\LoginFormAuthenticator
             provider: database_users

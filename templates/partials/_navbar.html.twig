@@ -1,12 +1,19 @@
-<nav>
-    <ul>
-        <li><a href="{{path('app_home')}}">Home</a></li>
+<nav id="navbar">
+    <ul class="navbar__header">
+        <li><a href="{{path('app_home')}}" class="navbar__header__logo">Snowtricks</a></li>
+        <li><a href="{{path('app_home')}}">Accueil</a></li>
+        <li><a href="#">Tricks</a></li>
         {% if app.user %}
-            <li><a href="{{path('app_secret')}}">Secret</a></li>
-            <li><a href="{{path('app_logout')}}">Logout</a></li>
+            <li class="navbar__header__li navbar__header__children">
+            <a href="#">{{app.user.name}}<img class="navbar__header__img" src="{{asset('snowtricks/users/' ~ app.user.attachment)}}" alt="user__profile"></a>
+                <ul class="navbar__header__subnavbar">
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="{{path('app_logout')}}">Deconnexion</a></li>
+                </ul>
+            </li>
         {% else %}
-            <li><a href="{{path('app_login')}}">Login</a></li>
-            <li><a href="{{path('app_register')}}">Register</a></li>
+            <li><a href="{{path('app_login')}}">Se connecter</a></li>
+            <li><a href="{{path('app_register')}}">S'inscrire</a></li>
         {% endif %}
     </ul>
 </nav>

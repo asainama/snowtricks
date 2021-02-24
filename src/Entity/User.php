@@ -14,6 +14,7 @@ use App\Repository\UserRepository;
  * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("email", message="L'email est deja utilisé")
+ * @UniqueEntity("name", message="Ce nom est déjà utilisé")
  */
 class User implements UserInterface
 {
@@ -26,11 +27,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom ne doit pas être vide")
+     * @Assert\Length(min=3,max=50,minMessage="Le nom doit contenir plus de 3 charactères",maxMessage="Le nom est trop long")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Le champs doit être un email valide")
      */
     private $email;
 
