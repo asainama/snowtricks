@@ -7,7 +7,7 @@
             <li class="navbar__header__li navbar__header__children">
             <a href="#">{{app.user.name}}<img class="navbar__header__img" src="{{asset('snowtricks/users/' ~ app.user.attachment)}}" alt="user__profile"></a>
                 <ul class="navbar__header__subnavbar">
-                    <li><a href="#">Item 1</a></li>
+                    <li><a href="{{path('app_admin')}}">Administration</a></li>
                     <li><a href="{{path('app_logout')}}">Deconnexion</a></li>
                 </ul>
             </li>

@@ -204,7 +204,9 @@ a {
     flex-flow: column wrap;
     min-width: 100px;
     position: absolute;
-    background: $white;
+    background: $background;
+    box-shadow :0 2px 4px $shadow;
+    padding: 1em;
   }
 
 
@@ -335,7 +337,8 @@ section{
   &__group input[type=text],
   &__group input[type=hidden],
   &__group input[type=password],
-  &__group input[type=email] {
+  &__group input[type=email],
+  &__group textarea {
     all:unset;
     border: none;
     padding: 1em 0 1em .5em;
@@ -355,6 +358,24 @@ section{
   &__group input[type=email]:focus{
     background-color: royalblue;
     color: $white;
+  }
+
+  &__group__video__item div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &__group__video__item &__group__action input{
+    width: 50%;
+  }
+
+  &__group__video__item &__group__action a{
+    display: block;
+    padding: 0 1em;
+    font-size: 2rem;
+    color: red;
+    font-weight: 600;
   }
   // &__group input[type=checkbox] {
   //   border-radius: 2px;
