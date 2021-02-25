@@ -207,6 +207,7 @@ a {
     background: $background;
     box-shadow :0 2px 4px $shadow;
     padding: 1em;
+    z-index: 1;
   }
 
 
@@ -251,7 +252,7 @@ section{
   justify-content: center;
   align-items: center;
   width: calc(100% - 60px);
-  max-width: 500px;
+  max-width: 800px;
   margin: 4em auto;
   border: 1px solid #ccc;
   padding: 0 1em 1em 1em;
@@ -274,6 +275,7 @@ section{
     font-size: 1.6rem;
     margin: 1em 0;
     display: inline-block;
+    width: 100%;
   }
 
   &__group__attachment {
@@ -295,7 +297,7 @@ section{
     background-repeat: no-repeat;
   }
 
-  &__group input[type=file]{
+  &__group input[type=file]:not(.form__group__action input[type=file]){
     width: 0.1px;
     height: 0.1px;
     opacity: 0;
@@ -366,24 +368,39 @@ section{
     align-items: center;
   }
 
-  &__group__video__item &__group__action input{
-    width: 50%;
+  // &__group__video__item &__group__action input[type=file]{
+  //   // width: 50%;
+  // }
+
+  &__group__action{
+    display: flex;
+    align-items: center;
   }
 
-  &__group__video__item &__group__action a{
+  &__group__action input[type=file]{
+    padding: 1em 0 .5em 0;
+  }
+
+  &__group__video__item &__group__action a,
+  &__group__image__item &__group__action a{
     display: block;
     padding: 0 1em;
     font-size: 2rem;
     color: red;
     font-weight: 600;
   }
-  // &__group input[type=checkbox] {
-  //   border-radius: 2px;
-  //   -webkit-border-radius: 2px;
-  //   -moz-border-radius: 2px;
-  //   -ms-border-radius: 2px;
-  //   -o-border-radius: 2px;
-  // }
+
+  &__group__files{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  &__group__files > .form__group{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 // Buttons
@@ -404,6 +421,13 @@ section{
   -moz-transition: all 500ms;
   -ms-transition: all 500ms;
   -o-transition: all 500ms;
+
+  &__hide{
+    cursor: none;
+    pointer-events: none;
+    background: #ccc!important;
+    border-color:#ccc!important;
+  }
 
   &__success{
     color: $white;
