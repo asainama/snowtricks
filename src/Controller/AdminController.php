@@ -31,16 +31,20 @@ class AdminController extends AbstractController
     public function create(Request $request): Response
     {
         /** @param TrickRepository $repository */
-        $repository = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $repository->findAll();
         $trick = new Trick();
         $video = new Video();
+        $category = new Category();
+        $category->setName('test');
+        $category2 = new Category();
+        $category2->setName('add');
         $video->setUrl('');
         $image = new Image();
         $image->setPath('');
         $trick->addVideo($video);
         $trick->addImage($image);
-        $form = $this->createForm(TricksType::class, $trick, ['categories' => $categories]);
+        $trick->addCategory($category);
+        $trick->addCategory($category2);
+        $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
         return $this->render('admin/create.html.twig', [
             'form' => $form->createView(),

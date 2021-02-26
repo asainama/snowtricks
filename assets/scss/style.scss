@@ -253,7 +253,7 @@ section{
   align-items: center;
   width: calc(100% - 60px);
   max-width: 800px;
-  margin: 4em auto;
+  margin: 1em auto;
   border: 1px solid #ccc;
   padding: 0 1em 1em 1em;
   box-shadow :0 2px 4px $shadow;
@@ -295,6 +295,10 @@ section{
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+  }
+
+  &__group__action input[type=file]{
+    padding: 1em 0 .5em 0;
   }
 
   &__group input[type=file]:not(.form__group__action input[type=file]){
@@ -368,17 +372,9 @@ section{
     align-items: center;
   }
 
-  // &__group__video__item &__group__action input[type=file]{
-  //   // width: 50%;
-  // }
-
   &__group__action{
     display: flex;
     align-items: center;
-  }
-
-  &__group__action input[type=file]{
-    padding: 1em 0 .5em 0;
   }
 
   &__group__video__item &__group__action a,

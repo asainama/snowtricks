@@ -26,14 +26,14 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      * @Assert\NotBlank(message="Le nom ne doit pas être vide")
      * @Assert\Length(min=3,max=50,minMessage="Le nom doit contenir plus de 3 charactères",maxMessage="Le nom est trop long")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,unique=true)
      * @Assert\Email(message="Le champs doit être un email valide")
      */
     private $email;
