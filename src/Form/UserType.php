@@ -27,6 +27,7 @@ class UserType extends AbstractType
                     'multiple' => false,
                     'attr' =>
                     [
+                        'class' => 'attachment',
                         'accept',
                         'image/x-png,image/gif,image/jpeg,image/jpg'
                     ]

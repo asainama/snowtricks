@@ -12,3 +12,4 @@
 // import '../bootstrap';
 
 import './form.js'
+import './category.js'

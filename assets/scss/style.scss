@@ -1,5 +1,6 @@
 @import '../styles/reset.css';
 @import '../styles/font.css';
+@import '../styles/tagify.css';
 
 $background: #f7fafb;
 $footer-background: #242729;
@@ -278,6 +279,7 @@ section{
     width: 100%;
   }
 
+  &__group__attachment__header,
   &__group__attachment {
     text-align: center;
   }
@@ -297,6 +299,20 @@ section{
     background-repeat: no-repeat;
   }
 
+  &__group__attachment__header img {
+    display: block;
+    margin: 1em auto;
+    border: 1px solid #ccc;
+    border-radius:  none;
+    -webkit-border-radius:  none;
+    -moz-border-radius:  none;
+    -ms-border-radius:  none;
+    -o-border-radius:  none;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
   &__group__action input[type=file]{
     padding: 1em 0 .5em 0;
   }
@@ -311,7 +327,7 @@ section{
   }
 
   &__group input[type=file] + label{
-    font-weight: 700;
+    width: max-content;
     color: $blue;
     display: inline-block;
     background-color: transparent;
@@ -365,12 +381,19 @@ section{
     background-color: royalblue;
     color: $white;
   }
+  
+  &__group__error__format {
+    display: block;
+    padding: 1em 0;
+    color: red;
+  }
 
   &__group__video__item div{
     display: flex;
     justify-content: flex-start;
     align-items: center;
   }
+
 
   &__group__action{
     display: flex;
@@ -433,7 +456,7 @@ section{
 
   &__success:hover{
     color: green;
-    background: $green;
+    background: transparent;
     border-color: green;
   }
 

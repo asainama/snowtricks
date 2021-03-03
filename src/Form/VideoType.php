@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Video;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -14,7 +16,11 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('url', UrlType::class, [
-                    'label' => "Url de la video",
+                    'required' => true,
+                    'label' => "Iframe de la video",
+                    'attr' => [
+                        'class' => 'form__group__iframe'
+                    ]
                 ])
         ;
     }

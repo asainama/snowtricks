@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -22,6 +23,7 @@ class Category
     private $id;
 
     /**
+     * @Groups({"public"})
      * @ORM\Column(type="string", length=255,unique=true)
      */
     private $name;
@@ -41,6 +43,10 @@ class Category
         return $this->id;
     }
 
+    /**
+     * Get name
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;

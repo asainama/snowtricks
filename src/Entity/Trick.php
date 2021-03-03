@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,15 +23,20 @@ class Trick
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="Le nom ne peut pas être vide")
+     * @Assert\Length(min=3, minMessage="Le nom doit contenir plus de 3 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="La description ne peut pas être vide")
+     * @Assert\Length(min=10, minMessage="Le description doit contenir plus de 10 caractères")
      */
     private $description;
 
     /**
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -64,6 +71,11 @@ class Trick
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks",cascade={"persist"})
      */
     private $categories;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainImage;
 
     public function __construct()
     {
@@ -248,6 +260,18 @@ class Trick
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getMainImage(): ?string
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(string $mainImage): self
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }

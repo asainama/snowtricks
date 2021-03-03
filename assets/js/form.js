@@ -1,4 +1,6 @@
-var file = document.querySelector('#user_attachment')
+const checkIframes = require('./iframe')
+
+var file = document.querySelector('.attachment')
 if(file !== null){
     file.addEventListener('change',function(e){
         e.preventDefault()
@@ -28,6 +30,14 @@ var addImage = document.querySelectorAll('.form__group__image__add')
 var deleteImage = document.querySelectorAll('.form__group__image__delete')
 var parentDivVideo = document.querySelector('#video__list')
 var parentDivImage = document.querySelector('#image__list')
+
+if(parentDivImage !== null){
+    addForm(parentDivImage,'image')
+}
+
+if(parentDivImage !== null){
+    addForm(parentDivVideo,'video')
+}
 
 if (addVideo !== null) {
     addVideo.forEach(video => {
@@ -81,10 +91,13 @@ function addForm(parentDiv,type) {
     label = label.replace(/__name__/g,index)
     var input = parentDiv.getAttribute('data-input')
     input = input.replace(/__name__/g,index)
+    var divError = document.createElement('div')
+    divError.className = "form__group__error__format"
     var div = document.createElement('div');
     div.className = 'form__group__'+type+'__item'
     div.setAttribute('data-delete', id)
     div.innerHTML = label
+    div.id = id
     var divBody = document.createElement('div')
     divBody.className = "form__group__action"
     divBody.innerHTML = input
@@ -97,17 +110,17 @@ function addForm(parentDiv,type) {
     }
     divBody.appendChild(a)
     div.appendChild(divBody)
+    div.appendChild(divError)
     var btnAdd = document.querySelector('.form__group__'+type+'__add')
     var divBefore = btnAdd.parentNode
     parentDiv.insertBefore(div,divBefore)
+    checkIframes.checkIframes()
 }
-
 function checkLength(type) {
     var add = document.querySelector('.form__group__'+type+'__add')
     var countDiv = document.querySelectorAll('.form__group__'+type+'__item').length
     if (countDiv === 3) {
         if (!add.classList.contains('btn__hide')){
-            console.log(countDiv === 3)
             add.classList.add('btn__hide')
         } else {
             add.classList.remove('btn__hide')

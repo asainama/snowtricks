@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ImageType extends AbstractType
 {
@@ -17,7 +18,19 @@ class ImageType extends AbstractType
                 'path',
                 FileType::class,
                 [
-                    'mapped' => false,
+                    'constraints' => [
+                        new Assert\File([
+                        'mimeTypesMessage' => 'Le fichier choisi ne correspond pas à un fichier valide',
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                                'image/jpeg',
+                                'image/gif',
+                                'image/png',
+                            ],
+                        ]),
+                    ],
+                    'required' => true,
+                    'data_class' => null,
                     'label' => 'Choisir une image',
                     'multiple' => false,
                     'attr' =>
@@ -33,7 +46,7 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
+            'data_class' => null,
         ]);
     }
 }

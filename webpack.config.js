@@ -83,7 +83,7 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-    .addPlugin(new StylelintPlugin(options))
+    // .addPlugin(new StylelintPlugin(options))
 ;
 
 module.exports = Encore.getWebpackConfig();

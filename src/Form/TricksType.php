@@ -5,13 +5,12 @@ namespace App\Form;
 use App\Entity\Trick;
 use App\Form\ImageType;
 use App\Form\VideoType;
-use App\Entity\Category;
-use Doctrine\ORM\EntityRepository;
+use App\Form\CategoryType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,28 +21,68 @@ class TricksType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'mainImage',
+                FileType::class,
+                [
+                    'constraints' => [
+                        new Assert\File([
+                        'mimeTypesMessage' => 'Le fichier choisi ne correspond pas à un fichier valide',
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                                'image/jpeg',
+                                'image/gif',
+                                'image/png',
+                            ],
+                        ]),
+                    ],
+                    'required' => true,
+                    'mapped' => false,
+                    'label' => 'Choisir une image',
+                    'multiple' => false,
+                    'attr' =>
+                    [
+                        'class' => 'attachment',
+                        'accept',
+                        'image/x-png,image/gif,image/jpeg,image/jpg'
+                    ]
+                ]
+            )
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            // ->add('categories', EntityType::class, [
-            //     'class' => Category::class,
-            //     'multiple' => true,
-            //     'expanded' => true,
-            //     'choice_label' => 'name',
-            //     'choice_value' => 'id',
-            //     'query_builder' => function(EntityRepository $er){
-            //         return $er->createQueryBuilder('c')
-            //                 ->orderBy('c.name', 'ASC');
-            //     },
-            //     'by_reference' => false
-            // ])
-            ->add('categories',TagsType::class)
+            ->add('categories', CategoryType::class, [
+                'constraints' => [
+                    new Assert\Count([
+                    'min' => 1,
+                    'minMessage' => 'Must have at least one value',
+                      // also has max and maxMessage just like the Length constraint
+                    ]),
+                ],
+            ])
             ->add('images', CollectionType::class, [
+                'constraints' => [
+                    new Assert\Count([
+                    'min' => 1,
+                    'minMessage' => 'Must have at least one value',
+                      // also has max and maxMessage just like the Length constraint
+                    ]),
+                ],
+                'label' => false,
+                'mapped' => false,
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false
+                'by_reference' => false,
                 ])
                 ->add('videos', CollectionType::class, [
+                    'constraints' => [
+                        new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'Must have at least one value',
+                          // also has max and maxMessage just like the Length constraint
+                        ]),
+                    ],
+                    'label' => false,
                     'entry_type' => VideoType::class,
                     'allow_add' => true,
                     'allow_delete' => true,

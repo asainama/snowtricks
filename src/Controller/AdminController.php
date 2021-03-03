@@ -32,22 +32,55 @@ class AdminController extends AbstractController
     {
         /** @param TrickRepository $repository */
         $trick = new Trick();
-        $video = new Video();
-        $category = new Category();
-        $category->setName('test');
-        $category2 = new Category();
-        $category2->setName('add');
-        $video->setUrl('');
-        $image = new Image();
-        $image->setPath('');
-        $trick->addVideo($video);
-        $trick->addImage($image);
-        $trick->addCategory($category);
-        $trick->addCategory($category2);
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trick = $form->getData();
+            $trick->setCreatedAt(new \DateTime('NOW'));
+            $trick->setUser($this->getUser());
+            $image = $form->get('mainImage')->getData();
+            $file = md5(uniqid()) . "." . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory'),
+                $file
+            );
+            $trick->setMainImage($file);
+            $images = array_column($form->get('images')->getData(), 'path');
+            foreach ($images as $image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                $img = new Image();
+                $img->setPath($fichier);
+                $trick->addImage($img);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
+            $em->flush();
+            $this->addFlash('success', 'L\'article a bien été crée');
+        }
         return $this->render('admin/create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/categories.json", name="app_categories_json")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function categoriesJson(Request $request)
+    {
+        /** @param CategoryRepository $categoryRepository */
+        $categoryRepository = $this->getDoctrine()->getRepository(Category::class);
+        $categories = $categoryRepository->findAll();
+        if ($query = $request->get('value')) {
+            $categories = $categoryRepository->search($query);
+        }
+        // $categories = $categoryRepository->getCategoryJSON();
+        return $this->json($categories, 200, [], ['groups' => ['public']]);
     }
 }
