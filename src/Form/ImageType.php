@@ -22,6 +22,7 @@ class ImageType extends AbstractType
                         new Assert\File([
                         'mimeTypesMessage' => 'Le fichier choisi ne correspond pas à un fichier valide',
                         'maxSize' => '1024k',
+                        'maxSizeMessage'=> 'Le fichier est trop volumineux ({{ size }} {{ suffix }}). La taille maximale autorisée est {{ limit }} {{ suffix }}',
                         'mimeTypes' => [
                                 'image/jpeg',
                                 'image/gif',

@@ -32,11 +32,13 @@ var parentDivVideo = document.querySelector('#video__list')
 var parentDivImage = document.querySelector('#image__list')
 
 if(parentDivImage !== null){
-    addForm(parentDivImage,'image')
+    if (document.querySelectorAll('.form__group__image__item').length === 0)
+        addForm(parentDivImage,'image')
 }
 
 if(parentDivImage !== null){
-    addForm(parentDivVideo,'video')
+    if (document.querySelectorAll('.form__group__video__item').length === 0)
+        addForm(parentDivVideo,'video')
 }
 
 if (addVideo !== null) {

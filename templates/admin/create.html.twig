@@ -8,8 +8,9 @@
     {{form_start(form,{'attr':{'class':'form','method':'POST'}})}}
         <div class="form__group form__group__attachment__header">
             <img id="preview" width="800px" height="300px">
-            {{form_widget(form.mainImage)}}
+            {{form_widget(form.mainImage,{'value':form.mainImage})}}
             {{form_label(form.mainImage)}}
+            <div class="form__group__error__format">{{form_errors(form.mainImage)}}</div>
         </div>
         <div class="form__group">
             {{form_label(form.name,'Nom')}}
@@ -40,7 +41,7 @@
                 data-input="{{form_widget(form.images.vars.prototype.path)|e('html_attr')}}"
                 data-id="{{form.images.vars.prototype.path.vars.id}}"
             >
-                {# {% for image in form.images %}
+                {% for image in form.images %}
                     <div class="form__group__image__item" data-delete="{{image.path.vars.id}}">
                         {{form_label(image.path)}}
                         <div class="form__group__action">
@@ -48,10 +49,8 @@
                             <a class="form__group__image__delete" data-id="{{image.path.vars.id}}">X</a>
                         </div>
                     </div>
-                {% endfor %} #}
-                <div class="form__group__error">
-                    {{ form_errors(form.images) }}
-                </div>
+                <div class="form__group__error__format">{{form_errors(image.path)}}</div>
+                {% endfor %}
                 <div class="form__group">
                     <a class="btn btn__success form__group__image__add">Ajouter</a>
                 </div>
@@ -63,15 +62,16 @@
                 data-input="{{form_widget(form.videos.vars.prototype.url)|e('html_attr')}}"
                 data-id="{{form.videos.vars.prototype.url.vars.id}}"
             >
-                {# {% for video in form.videos %}
+                {% for video in form.videos %}
                     <div class="form__group__video__item" data-delete="{{video.url.vars.id}}">
                         {{form_label(video.url)}}
                         <div class="form__group__action">
                             {{form_widget(video.url)}}
                             <a class="form__group__video__delete" data-id="{{video.url.vars.id}}">X</a>
                         </div>
+                        <div class="form__group__error__format">{{form_errors(video.url)}}</div>
                     </div>
-                {% endfor %} #}
+                {% endfor %}
                 <div class="form__group">
                     <a class="btn btn__success form__group__video__add">Ajouter</a>
                 </div>

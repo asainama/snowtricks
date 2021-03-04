@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -25,6 +26,10 @@ class Category
     /**
      * @Groups({"public"})
      * @ORM\Column(type="string", length=255,unique=true)
+     * @Assert\Length(
+     *  min=3,
+     *  minMessage="La catégorie doit avoir minimun 3 caractères"
+     * )
      */
     private $name;
 

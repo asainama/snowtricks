@@ -420,6 +420,14 @@ section{
     display: flex;
     flex-direction: column;
   }
+
+  &__group__remember{
+    display: flex;
+  }
+
+  &__group__remember input{
+    margin-right: 1em;
+  }
 }
 
 // Buttons
@@ -554,6 +562,7 @@ section{
       -moz-transform: translateX(-10px);
       -ms-transform: translateX(-10px);
       -o-transform: translateX(-10px);
+      opacity: 1;
     }
 
     40% {
@@ -562,6 +571,7 @@ section{
       -moz-transform: translateX(0%);
       -ms-transform: translateX(0%);
       -o-transform: translateX(0%);
+      opacity: .5;
     }
 
     80%{
@@ -570,6 +580,7 @@ section{
       -moz-transform: translateX(-10%);
       -ms-transform: translateX(-10%);
       -o-transform: translateX(-10%);
+      opacity: .3;
     }
 
     100%{
@@ -578,6 +589,7 @@ section{
       -moz-transform: translateX(100%);
       -ms-transform: translateX(100%);
       -o-transform: translateX(100%);
+      opacity: 0;
     }
   }
 

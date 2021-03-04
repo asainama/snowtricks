@@ -22,6 +22,8 @@ function checkIsIframe(item)
         }
         error.innerText = "Le iframe de la video est incorrect"
     } else {
+        var btnSubmit = document.querySelector('#tricks_Valider')
+        btnSubmit.disabled = false
         var regex = 'src\s*=\s*"(.+?)"'
         var url = item.value.match(regex)[1]
         item.value = url
