@@ -13,6 +13,10 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig');
+        $tricks = $this->getDoctrine()->getRepository(\App\Entity\Trick::class)->findAll();
+        // dd($tricks[0]->getImages());
+        return $this->render('home/index.html.twig', [
+            'tricks' => $tricks
+        ]);
     }
 }

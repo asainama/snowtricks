@@ -60,6 +60,7 @@ class AdminController extends AbstractController
             $em->persist($trick);
             $em->flush();
             $this->addFlash('success', 'L\'article a bien été crée');
+            $this->redirectToRoute('app_home');
         }
         return $this->render('admin/create.html.twig', [
             'form' => $form->createView(),
