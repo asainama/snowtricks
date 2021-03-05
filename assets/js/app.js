@@ -13,6 +13,7 @@
 
 import './form.js'
 import './category.js'
+import './index.js'
 
 var alerts =  document.querySelectorAll('.alert.show')
 
