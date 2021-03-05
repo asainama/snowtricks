@@ -7,22 +7,7 @@
     <section id="home">
         <div class="row">
             <div class="cards">
-                {% for trick in tricks %}
-                <div class="card">
-                    <div class="card__header">
-                        <img src="{{asset('snowtricks/tricks/' ~ trick.mainImage)}}" alt="{{trick.name}}"> <br>
-                    </div>
-                    <div class="card__body">
-                        <p class="card__body__title">{{trick.name}}</p>
-                        <div class="card__body__subtitle">
-                            <p class="card__body__date">{{trick.createdAt|date("d/m/Y")}}</p>
-                            <p class="card__body__author">{{trick.user.name}}</p>
-                        </div>
-                        <p class="card__body__description">{{trick.description}}</p>
-                        <a href="#" class="btn btn__primary">Voir plus</a>
-                    </div>
-                </div>
-                {% endfor %}
+                <trick-list asset={{absolute_url(asset('snowtricks'))}}></trick-list>
             </div>
         </div>
     </section>

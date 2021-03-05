@@ -13,7 +13,8 @@
 
 import './form.js'
 import './category.js'
-import './index.js'
+import './components/Trick.js'
+import './components/TrickList.js'
 
 var alerts =  document.querySelectorAll('.alert.show')
 

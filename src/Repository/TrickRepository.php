@@ -47,4 +47,21 @@ class TrickRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getCountTricks()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select(
+            $qb->expr()->count('t.id')
+        );
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getTricks(?int $offset = 0, int $limit = 10)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+        return $qb->getQuery()->getArrayResult();
+    }
 }

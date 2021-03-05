@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Entity\Category;
 use App\Form\TricksType;
 use Doctrine\ORM\EntityManager;
+use App\Repository\TrickRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController

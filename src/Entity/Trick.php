@@ -25,6 +25,7 @@ class Trick
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull(message="Le nom ne peut pas être vide")
      * @Assert\Length(min=3, minMessage="Le nom doit contenir plus de 3 caractères")
+     * @Assert\Unique(message="Ce nom est déjà utilisé")
      */
     private $name;
 
