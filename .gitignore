@@ -9,7 +9,7 @@
 /vendor/
 /node_modules/
 public/build/
-public/build/manifest.json
+/public/build/manifest.json
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
