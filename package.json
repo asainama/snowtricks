@@ -19,6 +19,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@yaireo/tagify": "^3.23.0",
+        "gitmoji-cli": "^3.3.0",
         "stylelint": "^13.10.0"
     }
 }

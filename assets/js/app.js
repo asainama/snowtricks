@@ -12,3 +12,17 @@
 // import '../bootstrap';
 
 import './form.js'
+import './category.js'
+import './components/Trick.js'
+import './components/TrickList.js'
+
+var alerts =  document.querySelectorAll('.alert.show')
+
+if (alerts !== null){
+    alerts.forEach(function(item){
+        setTimeout(function(){
+            item.classList.remove('show')
+            item.classList.add('hide')
+        },3500)
+    })
+}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Snowtricks - Administration{% endblock %}
+{% block header %}
+    {{include('partials/_header.html.twig')}}
+{% endblock %}
+{% block body %}
+    Welcome
+    <a href="{{path('app_admin_create')}}">Ajouter un trick</a>
+{% endblock %}
