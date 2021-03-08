@@ -6,6 +6,7 @@
 parameters:
     images_directory_users: '%kernel.project_dir%/public/snowtricks/users'
     images_directory: '%kernel.project_dir%/public/snowtricks/tricks'
+    images_fixtures: '%kernel.project_dir%/public/images/fixtures'
 services:
     # default configuration for services in *this* file
     _defaults:
