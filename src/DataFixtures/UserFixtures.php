@@ -11,11 +11,11 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
-
     /** @var UserPasswordEncoderInterface */
     private $encoder;
 
@@ -23,7 +23,7 @@ class UserFixtures extends Fixture
     private $imageDirectory;
     private $imageDirectoryUsers;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, $imageFixtures,  $imageDirectory, $imageDirectoryUsers)
+    public function __construct(UserPasswordEncoderInterface $encoder, $imageFixtures, $imageDirectory, $imageDirectoryUsers)
     {
         $this->imageFixtures = $imageFixtures;
         $this->imageDirectory = $imageDirectory;
@@ -38,13 +38,21 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $fileSystem = new Filesystem();
+        try {
+            $fileSystem->copy(
+                $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser.jpg',
+                $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser_copy.jpg',
+                true
+            );
+        } catch (IOExceptionInterface $exception) {
+            echo $exception->getMessage();
+        }
         $folders = [
             $this->imageDirectoryUsers,
             $this->imageDirectory,
         ];
         try {
             if ($fileSystem->exists($this->imageDirectoryUsers)) {
-                $fileSystem->copy($this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser.jpg', $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser_copy.jpg', true);
                 $fileSystem->remove($folders);
                 $old = umask(0);
                 $fileSystem->mkdir($folders, 0775);
@@ -57,11 +65,11 @@ class UserFixtures extends Fixture
         }
         $faker = Faker\Factory::create('fr_FR');
         $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser_copy.jpg');
-                $file = md5(uniqid()) . "." . $image->guessExtension();
-                $image->move(
-                    $this->imageDirectoryUsers,
-                    $file
-                );
+        $file = md5(uniqid()) . "." . $image->guessExtension();
+        $image->move(
+            $this->imageDirectoryUsers,
+            $file
+        );
         $user
             ->setAttachment($file)
             ->setName($faker->name())

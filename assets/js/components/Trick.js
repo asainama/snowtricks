@@ -8,7 +8,6 @@ export default class Trick extends HTMLElement
         this.createdAt = this.getAttribute('createdAt')
         this.userName = this.getAttribute('userName')
         this.description = this.getAttribute('description')
-        // this.shadow = this.attachShadow({mode:'open'})
         this.innerHTML = `
         <div class="card">
             <div class="card__header">

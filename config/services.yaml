@@ -37,14 +37,14 @@ services:
     
     App\DataFixtures\UserFixtures:
         arguments:
-            $imageFixtures: '%kernel.project_dir%\public\images\fixtures'
-            $imageDirectory: '%kernel.project_dir%\public\snowtricks\tricks'
-            $imageDirectoryUsers: '%kernel.project_dir%\public\snowtricks\users'
+            $imageFixtures: '%kernel.project_dir%/public/images/fixtures'
+            $imageDirectory: '%kernel.project_dir%/public/snowtricks/tricks'
+            $imageDirectoryUsers: '%kernel.project_dir%/public/snowtricks/users'
 
     App\DataFixtures\TrickFixtures:
         arguments:
-            $imageFixtures: '%kernel.project_dir%\public\images\fixtures'
-            $imageDirectory: '%kernel.project_dir%\public\snowtricks\tricks'
-            $imageDirectoryUsers: '%kernel.project_dir%\public\snowtricks\users'
+            $imageFixtures: '%kernel.project_dir%/public/images/fixtures'
+            $imageDirectory: '%kernel.project_dir%/public/snowtricks/tricks'
+            $imageDirectoryUsers: '%kernel.project_dir%/public/snowtricks/users'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

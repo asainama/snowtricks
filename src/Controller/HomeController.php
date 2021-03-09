@@ -23,7 +23,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    
+
 
     /**
      * @Route("/api/gettricks/{offset?}", methods={"GET"})
@@ -32,7 +32,7 @@ class HomeController extends AbstractController
      */
     public function getTricks(TrickRepository $trickRepository, ?int $offset = 0)
     {
-        $tricks = $this->getDoctrine()->getRepository(\App\Entity\Trick::class)->findBy([], null, 10, $offset);
+        $tricks = $this->getDoctrine()->getRepository(\App\Entity\Trick::class)->findBy([], null, 4, $offset);
 
         return $this->json([
             'tricks' => $tricks,

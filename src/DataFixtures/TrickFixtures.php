@@ -19,7 +19,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
     private $imageDirectory;
     private $imageDirectoryUsers;
 
-    public function __construct($imageFixtures,  $imageDirectory, $imageDirectoryUsers)
+    public function __construct($imageFixtures, $imageDirectory, $imageDirectoryUsers)
     {
         $this->imageFixtures = $imageFixtures;
         $this->imageDirectory = $imageDirectory;
@@ -41,9 +41,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'images' => [
                     'mute.jpg'
                 ],
-                'mainImage' => [
-                    'mute.jpg'
-                ]
+                'mainImage' => 'mute.jpg'
             ],
             1 => [
                 'name' => 'stalefish',
@@ -56,9 +54,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'images' => [
                     'stalefish.jpg'
                 ],
-                'mainImage' => [
-                    'stalefish.jpg'
-                ]
+                'mainImage' => 'stalefish.jpg'
             ],
             3 => [
                 'name' => 'nose slide',
@@ -70,9 +66,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'images' => [
                     'nose_slide.webp'
                 ],
-                'mainImage' => [
-                    'nose_slide.webp'
-                ]
+                'mainImage' => 'nose_slide.webp'
             ],
             4 => [
                 'name' => 'rotation 360',
@@ -84,66 +78,56 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'images' => [
                     'rotation_360.jpg'
                 ],
-                'mainImage' => [
-                    'rotation_360.jpg'
-                ]
+                'mainImage' => 'rotation_360.jpg'
             ],
-            // 4 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
-            // 6 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
-            // 7 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
-            // 8 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
+            5 => [
+                'name' => 'Ollie',
+                'description' => "Ollies are one of the most essential skills to learn when it comes to Snowboarding. Whether you're hitting park jumps, side hits, urban jib features or freeriding, the ollie is the most efficient way of getting air. Get this skill on lock down and take your riding to new heights!",
+                'categorie' => 1,
+                'videos' => [
+                    'https://www.youtube.com/watch?v=f1WUSC3HyWU'
+                ],
+                'images' => [
+                    'ollie.jpg'
+                ],
+                'mainImage' => 'ollie.jpg'
+            ],
+            6 => [
+                'name' => 'Indy Grabs',
+                'description' => "Start directly behind the kicker at a point that will enable you to safely land on the table top or just over the knuckle. Re-create a funnel shape with your turns with a focus towards riding straight up the centre of the kicker.",
+                'categorie' => 1,
+                'videos' => [
+                    'https://www.youtube.com/watch?v=6yA3XqjTh_w'
+                ],
+                'images' => [
+                    'indy_grab.jpg'
+                ],
+                'mainImage' => 'indy_grab.jpg'
+            ],
+            7 => [
+                'name' => 'Frontside Boardslide',
+                'description' => "A counter rotated position is a very awkward feeling when you're first learning it. The best way to learn the movements for a front board, is to do it while sliding down a run. The counter rotation allows you to slide backwards, but look forwards while sliding.",
+                'categorie' => 5,
+                'videos' => [
+                    'https://www.youtube.com/watch?v=WRjNFodnOHk'
+                ],
+                'images' => [
+                    'frontside_boardslide.jpg'
+                ],
+                'mainImage' => 'frontside_boardslide.jpg'
+            ],
+            8 => [
+                'name' => 'Alley-oop',
+                'description' => "In halfpipe competition, when a rider rotates 180 degrees or more in the uphill direction. This increases the difficulty of a trick because the rider is spinning against their direction of travel.",
+                'categorie' => 1,
+                'videos' => [
+                    'https://www.youtube.com/watch?v=sl65sMSWrpY'
+                ],
+                'images' => [
+                    'alley-oop.jpg'
+                ],
+                'mainImage' => 'alley-oop.jpg'
+            ],
             // 9 => [
             //     'name' => 'mute',
             //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
@@ -175,21 +159,29 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         ];
         foreach ($tricks as $key => $value) {
             $trick = new Trick();
-            if ($key === 'name') {
-                $trick->setName($value[$key]);
+            $trick->setName($value['name']);
+            $trick->setDescription($value['description']);
+            /** @var Category $categorie */
+            $categorie = $this->getReference('categorie_' . $value['categorie']);
+            $trick->addCategory($categorie);
+            $fileSystem->copy($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR . $value['mainImage'], $this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $value['mainImage'], true);
+            $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $value['mainImage']);
+            $file = md5(uniqid()) . "." . $image->guessExtension();
+            $image->move(
+                $this->imageDirectory,
+                $file
+            );
+            $img = new Image();
+            $img->setPath($file);
+            $trick->setMainImage($file);
+            foreach ($value['videos'] as $url) {
+                $video = new Video();
+                $video->setUrl($url);
+                $trick->addVideo($video);
             }
-            if ($key === 'description') {
-                $trick->setDescription($value[$key]);
-            }
-            if ($key === 'categorie') {
-                /** @var Category $categorie */
-                $categorie = $this->getReference('categorie_' . $value[$key]);
-                $trick->addCategory($categorie);
-            }
-            if ($key === 'mainImage') {
-                print_r($value[$key]);
-                $fileSystem->copy($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR . $value[$key], $this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $value[$key], true);
-                $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $value[$key]);
+            foreach ($value['images'] as $k => $path) {
+                $fileSystem->copy($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR . $path, $this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $path, true);
+                $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $path);
                 $file = md5(uniqid()) . "." . $image->guessExtension();
                 $image->move(
                     $this->imageDirectory,
@@ -197,32 +189,10 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 );
                 $img = new Image();
                 $img->setPath($file);
-                $trick->setMainImage($file);
-            }
-            if ($key === 'videos') {
-                foreach ($value[$key] as $url) {
-                    $video = new Video();
-                    $video->setUrl($url);
-                    $trick->addVideo($video);
-                }
-            }
-            if ($key === 'images') {
-                foreach ($value[$key] as $k => $path) {
-                    $fileSystem->copy($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR . $path[$k], $this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $path[$k], true);
-                    $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'tricks'. DIRECTORY_SEPARATOR .'_'. $path[$k]);
-                    $file = md5(uniqid()) . "." . $image->guessExtension();
-                    $image->move(
-                        $this->imageDirectory,
-                        $file
-                    );
-                    $img = new Image();
-                    $img->setPath($file);
-                    $trick->addImage($img);
-                }
+                $trick->addImage($img);
             }
             /** @var User $user */
             $user = $this->getReference('user_1');
-            print_r($user);
             $trick->setUser($user);
             $trick->setCreatedAt(new \DateTime('NOW'));
             $manager->persist($trick);

@@ -238,7 +238,8 @@ a {
 // Section
 
 section{
-  height: 100vh;
+  height: auto;
+  padding: 1em 0;
 }
 // Login
 
@@ -690,6 +691,8 @@ section{
 
 .cards {
   margin-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -698,6 +701,7 @@ section{
   justify-content: space-between;
   width: 250px;
   height: auto;
+  margin: 1em .5em;
   box-shadow :0 2px 4px $shadow;
   border: 1px solid #ccc;
   border-radius: 5px;

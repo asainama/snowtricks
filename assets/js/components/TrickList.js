@@ -6,6 +6,7 @@ class TrickList extends HTMLElement
     constructor(){
         super();
         this.loading = false
+        this.className = "cards"
         this.innerHTML = 'Chargement des tricks'
         this.tricks =  [];
         this.asset = this.getAttribute('asset')
@@ -22,7 +23,7 @@ class TrickList extends HTMLElement
             if ((window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && _this.offset < _this.total){
                 console.log('Bottom page ' + _this.offset)
                 _this.loading = true
-                _this.innerHTML = 'Chargement en cours'
+                // _this.innerHTML = 'Chargement en cours'
                 const raw = await fetch("/api/gettricks/"+ _this.offset,
                 {
                     method: 'GET',
@@ -32,6 +33,7 @@ class TrickList extends HTMLElement
                     }
                 })
                 const content = await raw.json()
+                console.log(content)
                 _this.tricks = [..._this.tricks,...content.tricks]
                 _this.offset += content.tricks.length
                 _this.loading = false
@@ -51,11 +53,6 @@ class TrickList extends HTMLElement
         this.loading = true;
     }
 
-    attributeChangedCallback(name, oldValue, newValue)
-    {
-
-    }
-
     async getTricks()
     {
         const raw = await fetch("/api/gettricks",{
@@ -64,9 +61,9 @@ class TrickList extends HTMLElement
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            // body: JSON.stringify({})
         })
         const content = await raw.json()
+        console.log(content.tricks.length)
         this.tricks = content.tricks
         this.total = content.total
         this.offset = content.tricks.length
