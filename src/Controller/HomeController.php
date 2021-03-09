@@ -23,6 +23,16 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/ajax", name="app_ajax")
+     */
+    public function ajax(): Response
+    {
+        return $this->render('home/ajax.html.twig', [
+            // 'tricks' => $tricks
+        ]);
+    }
+
 
 
     /**

@@ -38,6 +38,8 @@
                 {{ form_errors(form.plainPassword.second) }}
             </div>
         </div>
+        {# <input type="hidden" name="_token" value="{{ csrf_token('user-token') }}"/> #}
+        {# {{form_widget(form._token)}} #}
         {{form_rest(form)}}
     {{form_end(form)}}
 {% endblock %}

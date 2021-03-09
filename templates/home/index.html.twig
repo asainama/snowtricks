@@ -6,7 +6,7 @@
 {% block body %}
     <section id="home">
         <div class="row">
-            <trick-list asset={{absolute_url(asset('snowtricks'))}}></trick-list>
+            <trick-list asset={{absolute_url(asset('snowtricks'))}} connect="{{(app.user)? 1 : 0}}"></trick-list>
         </div>
     </section>
 {% endblock %}
