@@ -47,8 +47,8 @@ const openModal = async function(e) {
     modal.removeAttribute('aria-hidden')
     modal.setAttribute('aria-modal', 'true')
     modal.addEventListener('click', closeModal)
-    modal.querySelector('.js-modal-close').addEventListener('click',closeModal)
-    modal.querySelector('.js-modal-stop').addEventListener('click',stopPropagation)
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
 }
 
 const closeModal = function(e) {
@@ -60,11 +60,12 @@ const closeModal = function(e) {
     modal.removeEventListener('click', closeModal)
     modal.querySelector('.js-modal-close').removeEventListener('click',closeModal)
     modal.querySelector('.js-modal-stop').removeEventListener('click',stopPropagation)
-    const hideModal = function(){
-        modal.style.display = "none";
-        modal = null
-    }
     modal.addEventListener('animationend', hideModal)
+}
+
+const hideModal = function(){
+    modal.style.display = "none";
+    modal = null
 }
 
 const stopPropagation = function (e) {
@@ -73,9 +74,10 @@ const stopPropagation = function (e) {
 
 const loadModal = async function(url){
     // Afficher un loader
-    const existingModal = document.querySelector('#modal1')
-    if (existingModal !== null) return existingModal
+    // const existingModal = document.querySelector('#modal1')
+    // if (existingModal !== null) return existingModal
     const html = await fetch(url).then(response => response.text())
+    console.log(html)
     const element = document.createRange().createContextualFragment(html).querySelector('#modal1')
     if (element === null) throw `L'élément #modal1 n'a pas été trouvé dans la page ${url}`
     document.body.append(element)

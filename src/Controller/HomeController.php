@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
+use App\Form\TricksType;
 use App\Repository\TrickRepository;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -26,13 +29,15 @@ class HomeController extends AbstractController
     /**
      * @Route("/ajax", name="app_ajax")
      */
-    public function ajax(): Response
+    public function ajax(Request $request): Response
     {
+        $trick = new Trick();
+        $form = $this->createForm(TricksType::class, $trick);
+        $form->handleRequest($request);
         return $this->render('home/ajax.html.twig', [
-            // 'tricks' => $tricks
+            'form' => $form->createView()
         ]);
     }
-
 
 
     /**
