@@ -459,12 +459,21 @@ section{
   &__wrapper{
     overflow: auto;
     background: $white;
-    width: 600px;
+    width: 800px;
     max-height: calc(100vh - 20px);
     max-width: calc(100vw - 20px);
-    padding: 2em;
     animation: slideFromTop .3s both;
     -webkit-animation: slideFromTop .3s both;
+
+    &__img img{
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    &__body {
+      padding: 2em;
+    }
   }
 
   &[aria-hidden="true"]{

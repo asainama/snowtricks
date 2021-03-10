@@ -1,5 +1,5 @@
 import Trick from './Trick';
-
+const openModal = require('../modal.js')
 class TrickList extends HTMLElement
 {
     
@@ -13,10 +13,11 @@ class TrickList extends HTMLElement
         this.total = 0;
         this.offset = 0;
         this.loading = true;
+        this.currentOffset = 0
         // this.parentNode.appendChild = this.loader()
         this.innerHTML = "Chargement des tricks"
     }
-
+    
     loader()
     {
         const div = document.createElement('div')
@@ -31,12 +32,13 @@ class TrickList extends HTMLElement
         this.getTricks()
         var _this = this;
         window.addEventListener('scroll',async function(evt){
-            if ((window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && (_this.offset < _this.total)){
+            if ((window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && (_this.offset < _this.total) ){
+                
                 var x=window.scrollX;
                 var y=window.scrollY;
                 window.onscroll=function(){window.scrollTo(x, y);};
                 _this.loading = true
-                _this.appendChild(_this.loader())
+                    _this.appendChild(_this.loader())
                 // var loader = document.querySelector('.loader')
                 // if (loader.classList.contains('hide'))
                 //     loader.classList.remove('hide')
@@ -56,8 +58,10 @@ class TrickList extends HTMLElement
                 _this.offset += content.tricks.length
                 _this.loading = false
                 _this.innerHTML = _this.showTrick()
+                _this.currentOffset = _this.offset
+                openModal.all()
                 window.onscroll=function(){};
-            } else if ((window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && (_this.offset >=  _this.total) && _this.total > 0) {
+            } else if ((window.innerHeight + window.pageYOffset >= document.body.offsetHeight) && (_this.offset >=  _this.total) && _this.total > 0 ) {
                 if (document.querySelector('.card__end') === null) {
                     const div = document.createElement('div')
                     div.innerHTML = "Fin des tricks"
@@ -95,6 +99,8 @@ class TrickList extends HTMLElement
         this.offset = content.tricks.length
         this.loading = false
         this.innerHTML = this.showTrick()
+        this.currentOffset = this.offset
+        openModal.all()
         if (document.querySelector('.card__end') === null && content.tricks.length === 0) {
             const div = document.createElement('div')
             div.innerHTML = "Aucun tricks"
@@ -107,7 +113,7 @@ class TrickList extends HTMLElement
     {
         var cards = Object.entries(this.tricks).map((trick)=>{
             var date = new Date(trick[1].createdAt)
-            return `<trick-card connected="${this.connect}" createdAt="${date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()}" userName="${trick[1].user.name}" name="${trick[1].name}" description="${trick[1].description}" mainImage="${this.asset + '/tricks/' + trick[1].mainImage}"></trick-card>`
+            return `<trick-card connected="${this.connect}" id="${trick[1].id}" createdAt="${date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()}" userName="${trick[1].user.name}" name="${trick[1].name}" description="${trick[1].description}" mainImage="${this.asset + '/tricks/' + trick[1].mainImage}"></trick-card>`
         })
         return cards.join('');
     }

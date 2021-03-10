@@ -27,18 +27,20 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/ajax", name="app_ajax")
+     * @Route("/ajax/{id}", name="app_ajax")
      */
-    public function ajax(Request $request): Response
+    public function ajax(Request $request, $id): Response
     {
-        $trick = new Trick();
-        $form = $this->createForm(TricksType::class, $trick);
-        $form->handleRequest($request);
+        $trick = $this->getDoctrine()->getRepository(Trick::class)->find($id);
+        // $categories = $this->getDoctrine()->getRepository(Category::class)->findBy($id);
+        // $form = $this->createForm(TricksType::class, $trick);
+        // $form->handleRequest($request);
         return $this->render('home/ajax.html.twig', [
-            'form' => $form->createView()
+            // 'form' => $form->createView(),
+            'trick' => $trick,
+            // 'categories' => $categories
         ]);
     }
-
 
     /**
      * @Route("/api/gettricks/{offset?}", methods={"GET"})

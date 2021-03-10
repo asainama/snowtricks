@@ -18,7 +18,7 @@ export default class Trick extends HTMLElement
                 <div class="card__body__infos">
                     <p class="card__body__title">${this.name}</p>
                     <div class="card__body__infos__actions ${this.connect}">
-                        <a href="#">M</a>
+                        <a href="/ajax/${this.getAttribute('id')}" class="js-modal">M</a>
                         <a href="#">D</a>
                     </div>
                 </div>
