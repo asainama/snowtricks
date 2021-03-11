@@ -36,17 +36,7 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $user = new User();
         $fileSystem = new Filesystem();
-        try {
-            $fileSystem->copy(
-                $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser.jpg',
-                $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser_copy.jpg',
-                true
-            );
-        } catch (IOExceptionInterface $exception) {
-            echo $exception->getMessage();
-        }
         $folders = [
             $this->imageDirectoryUsers,
             $this->imageDirectory,
@@ -63,24 +53,37 @@ class UserFixtures extends Fixture
         } catch (IOExceptionInterface $exception) {
             echo "Error deleting directory at ". $exception->getPath();
         }
-        $faker = Faker\Factory::create('fr_FR');
-        $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . 'snowuser_copy.jpg');
-        $file = md5(uniqid()) . "." . $image->guessExtension();
-        $image->move(
-            $this->imageDirectoryUsers,
-            $file
-        );
-        $user
-            ->setAttachment($file)
-            ->setName($faker->name())
-            ->setEmail('admin@admin.fr')
-            ->setCreatedAt($faker->dateTime())
-            ->setRoles(['ROLE_ADMIN'])
-            ->setActivationToken(null)
-            ->setResetToken(null)
-            ->setPassword($this->encoder->encodePassword($user, 'password'));
-        $manager->persist($user);
-        $this->addReference('user_1', $user);
+        for ($i=1; $i <= 5; $i++) {
+            try {
+                $fileSystem->copy(
+                    $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . "snowuser$i.jpg",
+                    $this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . "snowuser$i"."_copy.jpg",
+                    true
+                );
+            } catch (IOExceptionInterface $exception) {
+                echo $exception->getMessage();
+            }
+
+            $faker = Faker\Factory::create('fr_FR');
+            $image = new File($this->imageFixtures . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . "snowuser$i"."_copy.jpg");
+            $file = md5(uniqid()) . "." . $image->guessExtension();
+            $image->move(
+                $this->imageDirectoryUsers,
+                $file
+            );
+            $user = new User();
+            $user
+                ->setAttachment($file)
+                ->setName($faker->name())
+                ->setEmail(($i === 1) ? 'admin@admin.fr' : $faker->email())
+                ->setCreatedAt($faker->dateTime())
+                ->setRoles(['ROLE_ADMIN'])
+                ->setActivationToken(null)
+                ->setResetToken(null)
+                ->setPassword($this->encoder->encodePassword($user, 'password'));
+            $manager->persist($user);
+            $this->addReference("user_$i", $user);
+        }
         $manager->flush();
     }
 }

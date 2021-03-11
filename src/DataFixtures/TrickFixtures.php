@@ -36,7 +36,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
                 'categorie' => 1,
                 'videos' => [
-                    'https://youtu.be/Opg5g4zsiGY'
+                    'https://www.youtube.com/embed/Opg5g4zsiGY'
                 ],
                 'images' => [
                     'mute.jpg'
@@ -48,8 +48,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => 'saisie de la carre backside de la planche entre les deux pieds avec la main arrière',
                 'categorie' => 1,
                 'videos' => [
-                    'https://youtu.be/f0PyFsOcnIw',
-                    'https://youtu.be/f9FjhCt_w2U'
+                    'https://www.youtube.com/embed/f0PyFsOcnIw',
+                    'https://www.youtube.com/embed/f9FjhCt_w2U'
                 ],
                 'images' => [
                     'stalefish.jpg'
@@ -61,7 +61,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "Le Nose & Tail Slide est un truc super rad, relativement simple car il ne s'agit que d'une variante des Boardslides. Dans ce didacticiel, nous allons décomposer les astuces et vous montrer comment le composer à la maison afin que vous puissiez l'emmener en toute confiance sur la colline.",
                 'categorie' => 5,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=oAK9mK7wWvw'
+                    'https://www.youtube.com/embed/oAK9mK7wWvw'
                 ],
                 'images' => [
                     'nose_slide.webp'
@@ -73,7 +73,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "une rotation frontside correspond à une rotation orientée vers la carre backside. Cela peut paraître incohérent mais l'origine étant que dans un halfpipe ou une rampe de skateboard, une rotation frontside se déclenche naturellement depuis une position frontside (i.e. l'appui se fait sur la carre frontside), et vice-versa. Ainsi pour un rider qui a une position regular (pied gauche devant), une rotation frontside se fait dans le sens inverse des aiguilles d'une montre",
                 'categorie' => 1,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=RgS3fpYmd6U'
+                    'https://www.youtube.com/embed/RgS3fpYmd6U'
                 ],
                 'images' => [
                     'rotation_360.jpg'
@@ -85,7 +85,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "Ollies are one of the most essential skills to learn when it comes to Snowboarding. Whether you're hitting park jumps, side hits, urban jib features or freeriding, the ollie is the most efficient way of getting air. Get this skill on lock down and take your riding to new heights!",
                 'categorie' => 1,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=f1WUSC3HyWU'
+                    'https://www.youtube.com/embed/f1WUSC3HyWU'
                 ],
                 'images' => [
                     'ollie.jpg'
@@ -97,7 +97,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "Start directly behind the kicker at a point that will enable you to safely land on the table top or just over the knuckle. Re-create a funnel shape with your turns with a focus towards riding straight up the centre of the kicker.",
                 'categorie' => 1,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=6yA3XqjTh_w'
+                    'https://www.youtube.com/embed/6yA3XqjTh_w'
                 ],
                 'images' => [
                     'indy_grab.jpg'
@@ -109,7 +109,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "A counter rotated position is a very awkward feeling when you're first learning it. The best way to learn the movements for a front board, is to do it while sliding down a run. The counter rotation allows you to slide backwards, but look forwards while sliding.",
                 'categorie' => 5,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=WRjNFodnOHk'
+                    'https://www.youtube.com/embed/WRjNFodnOHk'
                 ],
                 'images' => [
                     'frontside_boardslide.jpg'
@@ -121,7 +121,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 'description' => "In halfpipe competition, when a rider rotates 180 degrees or more in the uphill direction. This increases the difficulty of a trick because the rider is spinning against their direction of travel.",
                 'categorie' => 1,
                 'videos' => [
-                    'https://www.youtube.com/watch?v=sl65sMSWrpY'
+                    'https://www.youtube.com/embed/sl65sMSWrpY'
                 ],
                 'images' => [
                     'alley-oop.jpg'
@@ -192,7 +192,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 $trick->addImage($img);
             }
             /** @var User $user */
-            $user = $this->getReference('user_1');
+            $user = $this->getReference('user_'. random_int(1, 5));
             $trick->setUser($user);
             $trick->setCreatedAt(new \DateTime('NOW'));
             $manager->persist($trick);
