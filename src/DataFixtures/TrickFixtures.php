@@ -56,7 +56,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'stalefish.jpg'
             ],
-            3 => [
+            2 => [
                 'name' => 'nose slide',
                 'description' => "Le Nose & Tail Slide est un truc super rad, relativement simple car il ne s'agit que d'une variante des Boardslides. Dans ce didacticiel, nous allons décomposer les astuces et vous montrer comment le composer à la maison afin que vous puissiez l'emmener en toute confiance sur la colline.",
                 'categorie' => 5,
@@ -68,7 +68,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'nose_slide.webp'
             ],
-            4 => [
+            3 => [
                 'name' => 'rotation 360',
                 'description' => "une rotation frontside correspond à une rotation orientée vers la carre backside. Cela peut paraître incohérent mais l'origine étant que dans un halfpipe ou une rampe de skateboard, une rotation frontside se déclenche naturellement depuis une position frontside (i.e. l'appui se fait sur la carre frontside), et vice-versa. Ainsi pour un rider qui a une position regular (pied gauche devant), une rotation frontside se fait dans le sens inverse des aiguilles d'une montre",
                 'categorie' => 1,
@@ -80,7 +80,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'rotation_360.jpg'
             ],
-            5 => [
+            4 => [
                 'name' => 'Ollie',
                 'description' => "Ollies are one of the most essential skills to learn when it comes to Snowboarding. Whether you're hitting park jumps, side hits, urban jib features or freeriding, the ollie is the most efficient way of getting air. Get this skill on lock down and take your riding to new heights!",
                 'categorie' => 1,
@@ -92,7 +92,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'ollie.jpg'
             ],
-            6 => [
+            5 => [
                 'name' => 'Indy Grabs',
                 'description' => "Start directly behind the kicker at a point that will enable you to safely land on the table top or just over the knuckle. Re-create a funnel shape with your turns with a focus towards riding straight up the centre of the kicker.",
                 'categorie' => 1,
@@ -104,7 +104,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'indy_grab.jpg'
             ],
-            7 => [
+            6 => [
                 'name' => 'Frontside Boardslide',
                 'description' => "A counter rotated position is a very awkward feeling when you're first learning it. The best way to learn the movements for a front board, is to do it while sliding down a run. The counter rotation allows you to slide backwards, but look forwards while sliding.",
                 'categorie' => 5,
@@ -116,7 +116,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'frontside_boardslide.jpg'
             ],
-            8 => [
+            7 => [
                 'name' => 'Alley-oop',
                 'description' => "In halfpipe competition, when a rider rotates 180 degrees or more in the uphill direction. This increases the difficulty of a trick because the rider is spinning against their direction of travel.",
                 'categorie' => 1,
@@ -196,6 +196,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
             $trick->setUser($user);
             $trick->setCreatedAt(new \DateTime('NOW'));
             $manager->persist($trick);
+            $this->addReference("trick_$key", $trick);
         }
         $manager->flush();
     }

@@ -19,7 +19,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(): Response
+    public function index(TrickRepository $trickRepository): Response
     {
         return $this->render('home/index.html.twig', [
             // 'tricks' => $tricks
@@ -50,12 +50,17 @@ class HomeController extends AbstractController
     public function getTricks(TrickRepository $trickRepository, ?int $offset = 0)
     {
         $tricks = $this->getDoctrine()->getRepository(\App\Entity\Trick::class)->findBy([], null, 4, $offset);
-
-        return $this->json([
+        // dd($tricks);
+        return $this->json(
+            [
             'tricks' => $tricks,
             'total' => $trickRepository->getCountTricks()
-        ], 200, [], [ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-            return $object->getName();
-        }]);
+        ],
+            200,
+            [],
+            [ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }, ObjectNormalizer::IGNORED_ATTRIBUTES => ['comments']]
+        );
     }
 }

@@ -94,6 +94,7 @@ class TrickList extends HTMLElement
             },
         })
         const content = await raw.json()
+        console.log(content)
         this.tricks = content.tricks
         this.total = content.total
         this.offset = content.tricks.length
