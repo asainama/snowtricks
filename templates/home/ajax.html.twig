@@ -7,7 +7,6 @@
                 <p>{{trick.name}}</p>
             </div>
         </div>
-        {{dump(trick)}}
         <div class="modal__wrapper__body">
             <h1 class="modal__wrapper__title">{{trick.name}}</h1>
             <div class="modal__wrapper__body__medias">
@@ -18,7 +17,9 @@
                 </div>
                 <div class="modal__wrapper__body__medias__videos">
                     {% for video in trick.videos %}
-                        <iframe allowfullscreen frameborder="0" height="200" src="{{video.url}}" width="200" allow="autoplay; encrypted-media"></iframe>
+                        <div>
+                            <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
@@ -41,7 +42,15 @@
                     <p>Aucun commentaire pour le moment</p>
                 {% else %}
                     {% for comment in trick.comments %}
-                        {{dump(comment)}}
+                        <div class="modal__wrapper__body__comments__item">
+                            <div class="modal__wrapper__body__comments__item__img">
+                                <img src="{{asset('snowtricks/users/' ~ comment.user.attachment)}}" alt="{{comment.user.name}}">
+                            </div>
+                            <div class="modal__wrapper__body__comments__item__body">
+                                <span>{{comment.createdAt|date("d/m/Y")}}</span>
+                                <p>{{comment.content}}</p>
+                            </div>
+                        </div>
                     {% endfor %}
                 {% endif %}
             </div>
