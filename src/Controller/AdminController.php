@@ -64,10 +64,52 @@ class AdminController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
-            $this->addFlash('success', 'L\'article a bien été crée');
+            $this->addFlash('success', 'Le trick a bien été crée');
             $this->redirectToRoute('app_home');
         }
         return $this->render('admin/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/edit/{id}", name="app_admin_edit")
+     */
+    public function edit(Request $request, ?int $id = 0): Response
+    {
+        /** @param TrickRepository $repository */
+        $trick =  $this->getDoctrine()->getRepository(Trick::class)->find($id);
+        $form = $this->createForm(TricksType::class, $trick);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trick = $form->getData();
+            $trick->setCreatedAt(new \DateTime('NOW'));
+            $trick->setUser($this->getUser());
+            $image = $form->get('mainImage')->getData();
+            $file = md5(uniqid()) . "." . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory'),
+                $file
+            );
+            $trick->setMainImage($file);
+            $images = array_column($form->get('images')->getData(), 'path');
+            foreach ($images as $image) {
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                $img = new Image();
+                $img->setPath($fichier);
+                $trick->addImage($img);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
+            $em->flush();
+            $this->addFlash('success', 'Le trick a bien été modifié');
+            $this->redirectToRoute('app_home');
+        }
+        return $this->render('admin/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

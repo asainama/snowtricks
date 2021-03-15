@@ -2,6 +2,9 @@
     <div class="modal__wrapper js-modal-stop">
         <div class="modal__wrapper__img">
             <button class="modal__wrapper__img__close js-modal-close">X</button>
+            {% if app.user %}
+                <a href="{{path('app_admin_edit') ~ '/' ~ trick.id}}" class="modal__wrapper__img__edit">M</a>
+            {% endif %}
             <img src="{{asset('snowtricks/tricks/' ~ trick.mainImage)}}" alt="modal__header">
             <div class="modal__wrapper__img__title">
                 <p>{{trick.name}}</p>
@@ -12,7 +15,9 @@
             <div class="modal__wrapper__body__medias">
                 <div class="modal__wrapper__body__medias__images">
                     {% for image in trick.images %}
-                        <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
+                        <div>
+                            <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="modal__wrapper__body__medias__videos">
@@ -38,6 +43,12 @@
                 <p>{{trick.description|capitalize }}</p>
             </div>
             <div class="modal__wrapper__body__comments">
+                <h2>Commentaires</h2>
+                {% if app.user %}
+                    <p>Ajouter un commentaire</p>
+                {% else %}
+                    <p>Pour ajouter un commentaire. Veuillez-vous connecter.</p>
+                {% endif %}
                 {% if trick.comments is empty %}
                     <p>Aucun commentaire pour le moment</p>
                 {% else %}

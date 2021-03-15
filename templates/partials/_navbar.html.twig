@@ -2,8 +2,6 @@
     <ul class="navbar__header">
         <li><a href="{{path('app_home')}}" class="navbar__header__logo">Snowtricks</a></li>
         <li><a href="{{path('app_home')}}">Accueil</a></li>
-        <li><a href="#modal1" class="js-modal">Ouvrir la boite modal</a></li>
-        {# <li><a href="{{path('app_ajax')}}" class="js-modal">Ouvrir en ajax</a></li> #}
         {% if app.user %}
             <li><a href="{{path('app_admin_create')}}">Créer un trick</a></li>
                 <li class="navbar__header__li navbar__header__children">

@@ -16,10 +16,12 @@ export default class Trick extends HTMLElement
             </div>
             <div class="card__body">
                 <div class="card__body__infos">
-                    <p class="card__body__title">${this.name}</p>
+                    <a class="card__body__title js-modal" href="/ajax/${this.getAttribute('id')}">${this.name}</a>
                     <div class="card__body__infos__actions ${this.connect}">
-                        <a href="/ajax/${this.getAttribute('id')}" class="js-modal">M</a>
-                        <a href="#">D</a>
+                        <a href="/admin/edit/${this.getAttribute('id')}">M</a>
+                        <form action="" method="POST" onsubmit="return confirm('Voulez vous vraiment effectuer cette action ?')">
+                            <button class="btn" type="submit">D</button>
+                        </form>
                     </div>
                 </div>
             </div>

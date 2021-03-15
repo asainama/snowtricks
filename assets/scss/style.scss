@@ -492,6 +492,10 @@ section{
     &__body__tags{
       margin: 1em auto;
       width: 80%;
+
+      & p{
+        margin-top: 2em;
+      }
     }
 
     &__body__tags p span{
@@ -511,6 +515,10 @@ section{
       width: 100%;
       text-align: center;
       flex-direction: column;
+
+      & h2{
+        margin-bottom: 1em;
+      }
     }
 
     &__body__comments__item{
@@ -551,25 +559,38 @@ section{
       margin: 0 auto;
     }
 
-    &__body__medias div {
+    &__body__medias > div {
       display: flex;
       width: calc(50% - 40px);
-      justify-content: center;
+      justify-content: flex-start;
       height: 200px;
       flex-wrap: nowrap;
       overflow-x: auto;
+      overflow-y: hidden;
     }
 
-    &__body__medias__videos div{
+    &__body__medias__videos >div{
       width: 500px;
+      margin-right: 1em;
     }
 
-    &__body__medias__videos div iframe{
+    &__body__medias__videos > div iframe{
+      width: 300px;
+      height: 200px;
+    }
+
+    &__img img{
+      display: block;
       width: 100%;
+      height: auto;
+    }
+
+    &__body__medias__images > div img{
       height: 100%;
     }
+    
 
-    &__body__medias div:nth-child(1){
+    &__body__medias > div:nth-child(1){
       margin-right: 1em;
     }
 
@@ -577,12 +598,13 @@ section{
       position: relative;
     }
 
+    &__img__edit,
     &__img__close{
       all:unset;
       position: absolute;
       top: 10px;
       right: 10px;
-      display: block;
+      display: flex;
       width: 30px;
       height: 30px;
       border: 1px solid $white;
@@ -591,6 +613,8 @@ section{
       color: $white;
       border-radius: 5px;
       z-index: 2;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
@@ -598,10 +622,8 @@ section{
       -o-border-radius: 5px;
     }
 
-    &__img img{
-      display: block;
-      width: 100%;
-      height: auto;
+    &__img__edit{
+      right: 50px;
     }
 
     &__img__title{
@@ -972,10 +994,6 @@ section{
     padding: 0 .5em;
   }
 
-  &__body p {
-    margin: 1em 0;
-  }
-
   &__body__infos{
     display: flex;
     justify-content: space-between;
@@ -986,7 +1004,13 @@ section{
     display: none;
 
     &__connected {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      > form .btn{
+        padding: 1em;
+      }
     }
   }
 
@@ -994,6 +1018,7 @@ section{
     font-size: 1.2rem;
     font-weight: 600;
     text-transform: uppercase;
+    margin: 1em 0;
   }
 
   &__body__subtitle {
@@ -1016,6 +1041,7 @@ section{
     line-height: 1.4;
   }
 }
+
 // Loader
 
 .loader {

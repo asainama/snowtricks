@@ -35,7 +35,7 @@ class HomeController extends AbstractController
         // $categories = $this->getDoctrine()->getRepository(Category::class)->findBy($id);
         // $form = $this->createForm(TricksType::class, $trick);
         // $form->handleRequest($request);
-        return $this->render('home/ajax.html.twig', [
+        return $this->render('home/modal.html.twig', [
             // 'form' => $form->createView(),
             'trick' => $trick,
             // 'categories' => $categories
