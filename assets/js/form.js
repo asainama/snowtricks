@@ -2,9 +2,13 @@ const checkIframes = require('./iframe')
 
 var file = document.querySelector('.attachment')
 if(file !== null){
+    const preview = document.querySelector('#preview')
+    if (preview.getAttribute('data-src') !== null && preview.getAttribute('data-src') !== undefined )
+    {
+        preview.src = preview.getAttribute('data-src')
+    }
     file.addEventListener('change',function(e){
         e.preventDefault()
-        const preview = document.querySelector('#preview')
         preview.src = URL.createObjectURL(e.target.files[0])
     })
 }
@@ -128,4 +132,32 @@ function checkLength(type) {
             add.classList.remove('btn__hide')
         }
     }
+}
+
+var deletes = document.querySelectorAll('.form__group__image__delete_img')
+
+if (deletes !== null){
+    deletes.forEach(function(item){
+        item.addEventListener('click',function(event){
+            event.preventDefault();
+            if(confirm("Voulez-vous supprimer cette image ?")) {
+                fetch(this.getAttribute('href'), {
+                    method : "DELETE",
+                    headers: {
+                        'X-Request-With' : 'XMLHttpRequest',
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({"_token": this.dataset.token})
+                }).then(
+                    response => response.json()
+                ).then(data => {
+                    if (data.success) {
+                        this.parentElement.remove()
+                    } else {
+                        console.log(data.error)
+                    }
+                }).catch(e=> console.log(e))
+            }
+        })
+    })
 }

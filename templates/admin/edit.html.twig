@@ -7,7 +7,8 @@
     <h1 class="form__title">Éditer un trick</h1>
     {{form_start(form,{'attr':{'class':'form','method':'POST'}})}}
         <div class="form__group form__group__attachment__header">
-            <img id="preview" width="800px" height="300px">
+        {# {{dump(form.vars.data.mainImage)}} #}
+            <img id="preview" width="800px" height="300px" {{(form.vars.data.mainImage != null) ? 'data-src=' ~ absolute_url(asset('snowtricks/tricks/' ~ form.vars.data.mainImage)) ~ '' : ''}}>
             {{form_widget(form.mainImage)}}
             {{form_label(form.mainImage)}}
             <div class="form__group__error__format">{{form_errors(form.mainImage)}}</div>
@@ -40,8 +41,10 @@
                 data-label="{{form_label(form.images.vars.prototype.path)|e('html_attr')}}"
                 data-input="{{form_widget(form.images.vars.prototype.path)|e('html_attr')}}"
                 data-id="{{form.images.vars.prototype.path.vars.id}}"
+                data-image="{{form.vars.data.images|json_encode()|e('html_attr')}}"
             >
                 {% for image in form.images %}
+                <img src="{{asset('snowtricks/tricks/' ~ image.path.vars.data)}}" alt="">
                     <div class="form__group__image__item" data-delete="{{image.path.vars.id}}">
                         {{form_label(image.path)}}
                         <div class="form__group__action">
@@ -76,6 +79,17 @@
                     <a class="btn btn__success form__group__video__add">Ajouter</a>
                 </div>
             </div>
+        </div>
+        <div class="form__group">
+            {% for im in form.vars.data.images %}
+                <div class="form__group__image">
+                    <img src="{{asset('snowtricks/tricks/' ~ im.path)}}" alt="Image">
+                    <a  href="{{path('app_delete_images',{'id' : im.id})}}" 
+                        class="form__group__image__delete_img" 
+                        data-token="{{csrf_token('delete' ~ im.id)}}"
+                    >X</a>
+                </div>
+            {% endfor %}
         </div>
     {{form_end(form)}}
 {% endblock %}

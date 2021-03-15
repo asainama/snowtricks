@@ -53,8 +53,8 @@ const loadModal = async function(url){
     // Afficher un loader
     // const existingModal = document.querySelector('#modal2')
     // if (existingModal !== null) return existingModal
-    console.log(url)
     const html = await fetch(url).then(response => response.text())
+    console.log(html)
     const element = document.createRange().createContextualFragment(html).querySelector('#modal2')
     if (element === null) throw `L'élément #modal2 n'a pas été trouvé dans la page ${url}`
     document.body.append(element)
