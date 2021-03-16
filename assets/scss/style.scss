@@ -500,18 +500,23 @@ section{
         padding: .2em;
         border: none;
         border-radius: 25px;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 500;
         letter-spacing: 1px;
         cursor: pointer;
         text-transform: uppercase;
         outline: none;
       }
+      
+      &__btn.valid{
+        background: #41cf7c;
+        color: $white;
+      }
 
       &__content{
         height: 150px;
         width: 200px;
-        border: 2px dashed #c2CDDA;
+        border: 2px dashed #c2cdda;
         border-radius: 10px;
         background: #fff;
         display: flex;
@@ -520,20 +525,38 @@ section{
         flex-direction: column;
         position: relative;
 
+        &.active{
+          border: none;
+        }
+
         &__text{
           font-size: 1.6rem;
           color: $blue;
           font-weight: 500;
+          position: absolute;
         }
-        
+
+        &.active &__text{
+          display: none;
+        }
+
         &__cancel{
           position: absolute;
           right: 15px;
           top: 15px;
           font-size: 1.5rem;
+          font-weight: 900;
           cursor: pointer;
           color: $blue;
           display: none;
+        }
+
+        &.active:hover &__cancel{
+          display: block;
+        }
+
+        &.active &__cancel:hover{
+          color: #e74c3c;
         }
 
         &__file{
@@ -544,9 +567,14 @@ section{
           color: #fff;
           padding: 8px 0;
           font-size: 1.5rem;
+          display: none;
           border-bottom-left-radius: 10px;
           border-bottom-right-radius: 10px;
           background: linear-gradient(135deg,#3a8ffe 0%, #9658fe 100%);
+        }
+
+        &.active:hover &__file{
+          display: block;
         }
 
       }

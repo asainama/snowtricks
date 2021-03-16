@@ -31,6 +31,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('formModal', './assets/js/formModal.js')
     .addEntry('form', './assets/js/form.js')
     .addStyleEntry('style', './assets/scss/style.scss')
 

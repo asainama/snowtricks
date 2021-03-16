@@ -21,34 +21,14 @@
                             <div class="modal__wrapper__body__medias__choose__content__cancel">X</div>
                             <div class="modal__wrapper__body__medias__choose__content__file">File name here</div>
                         </div>
-                        <input id="medias-btn" type="file" hidden>
-                        <button onclick="btnClick()" class="modal__wrapper__body__medias__choose__btn">Choose a file</button>
-                        <script>
-                        var mediaBtn = document.querySelector('#medias-btn')
-                        var customBtn = document.querySelector('.modal__wrapper__body__medias__choose__btn')
-                        const img = document.querySelector('.modal__wrapper__body__medias__choose__content__img')
-
-                        const fileName = document.querySelector('.modal__wrapper__body__medias__choose__content__file')
-                        let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-                        function btnClick(){
-                            mediaBtn.click()
-                        }
-                        mediaBtn.addEventListener('change',function(e){
-                            const file = this.files[0]
-                            if (file){
-                                const reader = new FileReader()
-                                reader.onload = function(){
-                                    const result = reader.result
-                                    img.src = result
-                                }
-                                reader.readAsDataURL(file)
-                            }
-                            if (this.value){
-                                let valueStore = this.value.match(regExp)
-                                fileName.textContent = valueStore
-                            }
-                        })
-                        </script>
+                        <form id="form__img">
+                            <input name="file" id="medias-btn" type="file" hidden data-id="{{trick.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
+                            <button type="submit" class="form__img__submit"></button>
+                        </form>
+                        <button class="modal__wrapper__body__medias__choose__btn">Choisir une image</button>
+                        {% block javascripts %}
+                            {{ encore_entry_script_tags('formModal') }}
+                        {% endblock %}
                     </div>
                     {% for image in trick.images %}
                         <div>
@@ -85,29 +65,6 @@
             </div>
             <div class="modal__wrapper__body__description">
                 <p>{{trick.description|capitalize }}</p>
-            </div>
-            <div class="modal__wrapper__body__comments">
-                <h2>Commentaires</h2>
-                {% if app.user %}
-                    <p>Ajouter un commentaire</p>
-                {% else %}
-                    <p>Pour ajouter un commentaire. Veuillez-vous connecter.</p>
-                {% endif %}
-                {% if trick.comments is empty %}
-                    <p>Aucun commentaire pour le moment</p>
-                {% else %}
-                    {% for comment in trick.comments %}
-                        <div class="modal__wrapper__body__comments__item">
-                            <div class="modal__wrapper__body__comments__item__img">
-                                <img src="{{asset('snowtricks/users/' ~ comment.user.attachment)}}" alt="{{comment.user.name}}">
-                            </div>
-                            <div class="modal__wrapper__body__comments__item__body">
-                                <span>{{comment.createdAt|date("d/m/Y")}}</span>
-                                <p>{{comment.content}}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
             </div>
         </div>
     </div>

@@ -89,44 +89,26 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // public function edit(Request $request, ?int $id = 0): Response
-    // {
-    //     /** @param TrickRepository $repository */
-    //     $trick =  $this->getDoctrine()->getRepository(Trick::class)->find($id);
-    //     $form = $this->createForm(TricksType::class, $trick);
-    //     $form->handleRequest($request);
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $trick = $form->getData();
-    //         $trick->setCreatedAt(new \DateTime('NOW'));
-    //         $trick->setUser($this->getUser());
-    //         $image = $form->get('mainImage')->getData();
-    //         $file = md5(uniqid()) . "." . $image->guessExtension();
-    //         $image->move(
-    //             $this->getParameter('images_directory'),
-    //             $file
-    //         );
-    //         $trick->setMainImage($file);
-    //         $images = array_column($form->get('images')->getData(), 'path');
-    //         foreach ($images as $image) {
-    //             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-    //             $image->move(
-    //                 $this->getParameter('images_directory'),
-    //                 $fichier
-    //             );
-    //             $img = new Image();
-    //             $img->setPath($fichier);
-    //             $trick->addImage($img);
-    //         }
-    //         $em = $this->getDoctrine()->getManager();
-    //         $em->persist($trick);
-    //         $em->flush();
-    //         $this->addFlash('success', 'Le trick a bien été modifié');
-    //         $this->redirectToRoute('app_home');
-    //     }
-    //     return $this->render('admin/edit.html.twig', [
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
+    /**
+     * @Route("/admin/create/image/{id}", name="app_admin_create_image", methods={"POST"})
+     */
+    public function imageCreate(Trick $trick, Request $request): Response
+    {
+        // dd($request->getContent());
+        $data = json_decode($request->getContent(), true);
+        dd($_POST);
+        $file = $data['file'];
+        dd($file->guessExtension());
+        // $image = new Image();
+        // $image->path();
+        // $trick->addImage($image);
+        // $entityManager = $this->getDoctrine()->getManager();
+        // $entityManager->persist($trick);
+        // $entityManager->flush();
+
+        return new JsonResponse(['success' => 200]);
+        return new JsonResponse(['error' => 'Invalid token'], 400);
+    }
 
     /**
      * @Route("/categories.json", name="app_categories_json")
