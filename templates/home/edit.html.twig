@@ -14,6 +14,42 @@
             <h1 class="modal__wrapper__title">{{trick.name}}</h1>
             <div class="modal__wrapper__body__medias">
                 <div class="modal__wrapper__body__medias__images">
+                    <div class="modal__wrapper__body__medias__choose">
+                        <div class="modal__wrapper__body__medias__choose__content">
+                            <img class="modal__wrapper__body__medias__choose__content__img" src="" alt="">
+                            <div class="modal__wrapper__body__medias__choose__content__text">No file chosen, yet!</div>
+                            <div class="modal__wrapper__body__medias__choose__content__cancel">X</div>
+                            <div class="modal__wrapper__body__medias__choose__content__file">File name here</div>
+                        </div>
+                        <input id="medias-btn" type="file" hidden>
+                        <button onclick="btnClick()" class="modal__wrapper__body__medias__choose__btn">Choose a file</button>
+                        <script>
+                        var mediaBtn = document.querySelector('#medias-btn')
+                        var customBtn = document.querySelector('.modal__wrapper__body__medias__choose__btn')
+                        const img = document.querySelector('.modal__wrapper__body__medias__choose__content__img')
+
+                        const fileName = document.querySelector('.modal__wrapper__body__medias__choose__content__file')
+                        let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
+                        function btnClick(){
+                            mediaBtn.click()
+                        }
+                        mediaBtn.addEventListener('change',function(e){
+                            const file = this.files[0]
+                            if (file){
+                                const reader = new FileReader()
+                                reader.onload = function(){
+                                    const result = reader.result
+                                    img.src = result
+                                }
+                                reader.readAsDataURL(file)
+                            }
+                            if (this.value){
+                                let valueStore = this.value.match(regExp)
+                                fileName.textContent = valueStore
+                            }
+                        })
+                        </script>
+                    </div>
                     {% for image in trick.images %}
                         <div>
                             <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">

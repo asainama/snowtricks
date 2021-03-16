@@ -17,10 +17,12 @@
                     {% for image in trick.images %}
                         <div>
                             <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
-                            <div class="modal__wrapper__body__medias__actions">
-                                <a href="#">M</a>
-                                <a href="#">D</a>
-                            </div>
+                            {% if app.user %}
+                                <div class="modal__wrapper__body__medias__actions">
+                                    <a href="#">M</a>
+                                    <a href="#">D</a>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -28,10 +30,12 @@
                     {% for video in trick.videos %}
                         <div>
                             <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
-                            <div class="modal__wrapper__body__medias__actions">
-                                <a href="#">M</a>
-                                <a href="#">D</a>
-                            </div>
+                            {% if app.user %}
+                                <div class="modal__wrapper__body__medias__actions">
+                                    <a href="#">M</a>
+                                    <a href="#">D</a>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>

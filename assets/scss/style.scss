@@ -490,6 +490,69 @@ section{
     animation: slideFromTop .3s both;
     -webkit-animation: slideFromTop .3s both;
 
+    &__body__medias__choose{
+      margin-right: 1em;
+      position: relative;
+
+      &__btn{
+        margin-top: 1em;
+        width: 100%;
+        padding: .2em;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+        cursor: pointer;
+        text-transform: uppercase;
+        outline: none;
+      }
+
+      &__content{
+        height: 150px;
+        width: 200px;
+        border: 2px dashed #c2CDDA;
+        border-radius: 10px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+
+        &__text{
+          font-size: 1.6rem;
+          color: $blue;
+          font-weight: 500;
+        }
+        
+        &__cancel{
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          font-size: 1.5rem;
+          cursor: pointer;
+          color: $blue;
+          display: none;
+        }
+
+        &__file{
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          text-align: center;
+          color: #fff;
+          padding: 8px 0;
+          font-size: 1.5rem;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          background: linear-gradient(135deg,#3a8ffe 0%, #9658fe 100%);
+        }
+
+      }
+
+    }
+  
     &__title{
       font-size: 2rem;
       text-transform: uppercase;
@@ -1042,7 +1105,7 @@ section{
       }
     }
   }
-
+  
   &__body__title {
     font-size: 1.2rem;
     font-weight: 600;

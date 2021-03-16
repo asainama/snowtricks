@@ -18,7 +18,7 @@ export default class Trick extends HTMLElement
                 <div class="card__body__infos">
                     <a class="card__body__title js-modal" href="/ajax/${this.getAttribute('id')}">${this.name}</a>
                     <div class="card__body__infos__actions ${this.connect}">
-                        <a href="/admin/edit/${this.getAttribute('id')}">M</a>
+                        <a class="js-modal" href="/admin/edit/${this.getAttribute('id')}">M</a>
                         <form action="" method="POST" onsubmit="return confirm('Voulez vous vraiment effectuer cette action ?')">
                             <button class="btn" type="submit">D</button>
                         </form>
