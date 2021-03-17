@@ -3,7 +3,7 @@
         <div class="modal__wrapper__img">
             <button class="modal__wrapper__img__close js-modal-close">X</button>
             {% if app.user %}
-                <a href="{{path('app_admin_edit',{'id':trick.id})}}" class="modal__wrapper__img__edit">M</a>
+                <a href="{{path('app_admin_edit',{'id':trick.id})}}" class="modal__wrapper__img__edit js-edit"></a>
             {% endif %}
             <img src="{{asset('snowtricks/tricks/' ~ trick.mainImage)}}" alt="modal__header">
             <div class="modal__wrapper__img__title">
@@ -17,12 +17,6 @@
                     {% for image in trick.images %}
                         <div>
                             <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
-                            {% if app.user %}
-                                <div class="modal__wrapper__body__medias__actions">
-                                    <a href="#">M</a>
-                                    <a href="#">D</a>
-                                </div>
-                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -30,12 +24,6 @@
                     {% for video in trick.videos %}
                         <div>
                             <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
-                            {% if app.user %}
-                                <div class="modal__wrapper__body__medias__actions">
-                                    <a href="#">M</a>
-                                    <a href="#">D</a>
-                                </div>
-                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -47,6 +35,9 @@
                         <span>{{categorie.name}}</span>
                     {% endfor %}
                 </p>
+            </div>
+            <div class="modal__wrapper__body__author">
+                <p>{{trick.user.name}}</p>
             </div>
             <div class="modal__wrapper__body__date">
                 <p>{{ trick.createdAt|date("d/m/Y") }}</p>

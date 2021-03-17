@@ -3,26 +3,29 @@ var cancelBtn = document.querySelector('.modal__wrapper__body__medias__choose__c
 var mediaBtn = document.querySelector('#medias-btn')
 var customBtn = document.querySelector('.modal__wrapper__body__medias__choose__btn')
 const img = document.querySelector('.modal__wrapper__body__medias__choose__content__img')
-
+const formImg = document.querySelector('#form__img')
+const formSubmit = document.querySelector('.form__img__submit')
 const fileName = document.querySelector('.modal__wrapper__body__medias__choose__content__file')
 let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
 
-customBtn.addEventListener('click',function(e){
-    btnClick(e)
-})
+console.log('ok')
 
-const formImg = document.querySelector('#form__img')
-function btnClick(e){
+const btnClick = (e) =>{
+    console.log('click')
     if (!e.target.classList.contains('valid')){
         mediaBtn.click()
     } else {
         if(confirm("Voulez-vous ajouter cette image ?")) {
-            document.querySelector('.form__img__submit').click()
+            formSubmit.click()
         }
-        // Fetch pour ajouter 
-        // Ajout d'une image dans le slider
     }
+
 }
+
+customBtn.addEventListener('click',btnClick)
+
+
+
 formImg.addEventListener('submit',function(e){
     e.preventDefault()
     
@@ -41,6 +44,7 @@ formImg.addEventListener('submit',function(e){
         if (data.success) {
             console.log(data.file)
             var parent = document.querySelector('.modal__wrapper__body__medias__images')
+            console.log(parent)
             var div = document.createElement('div')
             var divChild = document.createElement('div')
             divChild.className = "modal__wrapper__body__medias__actions"

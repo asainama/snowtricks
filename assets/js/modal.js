@@ -6,11 +6,27 @@ let previouslyFocusedElement = null
 
 const openModal = async function(e) {
     e.preventDefault()
+    console.log(e)
     const target = e.target.getAttribute('href')
+    console.log(target)
     if (target.startsWith('#')) {
         modal = document.querySelector(target)
     } else {
+        if (modal !== null)
+        {
+            modal.remove()
+        }
         modal = await loadModal(target)
+        if (modal.classList.contains('edit')){
+            runAll()
+        } else {
+            const aEdit = document.querySelector('.modal__wrapper__img__edit.js-edit')
+            if (aEdit !== null)
+                aEdit.addEventListener('click',function(e){
+                    if (confirm("Vous êtes sur de modifier le trick ?"))
+                        openModal(e)
+                })
+        }
     }
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
     previouslyFocusedElement = document.querySelector(':focus')
@@ -91,6 +107,204 @@ window.addEventListener('keydown',function(e){
         focusInModal(e)
     }
 })
+
+const runAll = () => {
+
+var wrapper = document.querySelector('.modal__wrapper__body__medias__choose__content')
+var cancelBtn = document.querySelector('.modal__wrapper__body__medias__choose__content__cancel')
+var mediaBtn = document.querySelector('#medias-btn')
+var customBtn = document.querySelector('.modal__wrapper__body__medias__choose__btn')
+const img = document.querySelector('.modal__wrapper__body__medias__choose__content__img')
+const formImg = document.querySelector('#form__img')
+const formSubmit = document.querySelector('#form__img > .form__img__submit')
+const fileName = document.querySelector('.modal__wrapper__body__medias__choose__content__file')
+let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
+
+const btnClick = (e) =>{
+    if (!e.target.classList.contains('valid')){
+        mediaBtn.click()
+    } else {
+        if(confirm("Voulez-vous ajouter cette image ?")) {
+            console.log(formSubmit)
+            formSubmit.click()
+        }
+    }
+
+}
+
+customBtn.addEventListener('click',btnClick)
+
+formImg.addEventListener('submit',function(e){
+    e.preventDefault()
+    e.stopPropagation()
+    var formData = new FormData(this);
+    fetch("/admin/create/image/" + mediaBtn.getAttribute('data-id'), {
+        method : "POST",
+        // headers: {
+        //     'X-Request-With' : 'XMLHttpRequest',
+        //     'Content-Type' : 'application/json'
+        // },
+        body: formData
+    }).then(
+        response => response.json()
+    ).then(data => {
+        console.log(data)
+        if (data.success) {
+            console.log(data.file)
+            var parent = document.querySelector('.modal__wrapper__body__medias__images')
+            console.log(parent)
+            var div = document.createElement('div')
+            var divChild = document.createElement('div')
+            divChild.className = "modal__wrapper__body__medias__actions"
+            var asset = mediaBtn.getAttribute('data-asset')
+            console.log(asset)
+            var pic = document.createElement('img')
+            console.log(asset + data.file)
+            pic.src = asset + data.file
+            var edit = document.createElement('a')
+            edit.href= "#"
+            edit.innerHTML = "M"
+            var del = document.createElement('a')
+            del.href= "#"
+            del.innerHTML = "D"
+            divChild.appendChild(edit);
+            divChild.appendChild(del);
+            div.appendChild(pic);
+            div.appendChild(divChild);
+            parent.appendChild(div)
+            console.log(parent)
+            img.src = ""; 
+            wrapper.classList.remove('active')
+            customBtn.classList.remove('valid')
+            customBtn.innerHTML = "Choisir une image"
+        } else {
+            console.log(data.error)
+        }
+    }).catch(e=> console.log(e))
+    return false;
+})
+
+mediaBtn.addEventListener('change',function(e){
+    const file = this.files[0]
+    if (file){
+        const reader = new FileReader()
+        reader.onload = function(){
+            const result = reader.result
+            img.src = result
+            wrapper.classList.add('active')
+            customBtn.innerHTML = "Valider"
+            customBtn.classList.add('valid')
+        }
+        cancelBtn.addEventListener("click",function(){
+            img.src = ""; 
+            wrapper.classList.remove('active')
+            customBtn.classList.remove('valid')
+            customBtn.innerHTML = "Choisir une image"
+        })
+        reader.readAsDataURL(file)
+    }
+    if (this.value){
+        let valueStore = this.value.match(regExp)
+        fileName.textContent = valueStore
+    }
+})
+
+const btnMainImage = document.querySelector('.modal__wrapper__img__edit__mainImage')
+
+btnMainImage.addEventListener('click',function(e){
+    e.preventDefault()
+    e.stopPropagation()
+    const href = e.target.getAttribute('href')
+    if (href !== null) {
+        const id = e.target.getAttribute('data-id')
+        const input = document.querySelector('#trick-image-btn-mainImage-' + id)
+        const form = document.querySelector('#formtricks-img-mainImage-' + id)
+        if(confirm("Vous êtes sur de vouloir modifier cette image ?")){
+            input.click()
+            input.addEventListener('change',function(ev){
+                var formData = new FormData(form)
+                formData.append('file',input.files[0])
+                fetch(href, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                .then((data)=>{
+                    if (data.success) {
+                        var img = document.querySelector('.modal__wrapper__img > img')
+                        console.log(img)
+                        img.src = input.getAttribute('data-asset') + data.file
+                    }
+                }).catch(e=> console.log(e))
+            })
+        }
+    }
+})
+
+var deletes = document.querySelectorAll('.delete__img')
+
+if (deletes !== null){
+    deletes.forEach(function(item){
+        item.addEventListener('click',function(event){
+            event.preventDefault();
+            event.stopPropagation()
+            if(confirm("Voulez-vous supprimer cette image ?")) {
+                var formData = new FormData();
+                formData.append("_token" , this.getAttribute("data-token"))
+                fetch(this.getAttribute('href'), {
+                    method : "DELETE",
+                    headers: {
+                        'X-Request-With' : 'XMLHttpRequest',
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({"_token": this.getAttribute('data-token')})
+                }).then(
+                    response => response.json()
+                ).then(data => {
+                    if (data.success) {
+                        this.parentElement.parentElement.remove()
+                    } else {
+                        console.log(data.error)
+                    }
+                }).catch(e=> console.log(e))
+            }
+        })
+    })
+}
+
+const AllEdit = document.querySelectorAll('.edit__img')
+AllEdit.forEach(edit =>{
+    edit.addEventListener('click',function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        const href = e.target.getAttribute('href')
+        if (href !== null) {
+            const id = e.target.getAttribute('data-id')
+            const input = document.querySelector('#trick-image-btn-' + id)
+            const form = document.querySelector('#formtricks-img-' + id)
+            if(confirm("Vous êtes sur de vouloir modifier cette image ?")){
+                input.click()
+                input.addEventListener('change',function(ev){
+                    var formData = new FormData(form)
+                    formData.append('file',input.files[0])
+                    fetch(href, {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json())
+                    .then((data)=>{
+                        if (data.success) {
+                            var img = document.querySelector('.form__img__trick__submit__' + id + ' img')
+                            console.log(img)
+                            img.src = input.getAttribute('data-asset') + data.file
+                        }
+                    }).catch(e=> console.log(e))
+                })
+            }
+        }
+    })
+})
+
+}
+
 
 module.exports = {
     openModal,

@@ -115,6 +115,54 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/edit/image/{id}", name="app_admin_edit_image", methods={"POST"})
+     */
+    public function imageEdit(Image $image, Request $request): Response
+    {
+        try {
+            unlink($this->getParameter('images_directory') . '/' . $image->getPath());
+            $img = $request->files->get('file');
+            $file = md5(uniqid()) . "." . $img->guessExtension();
+            $img->move(
+                $this->getParameter('images_directory'),
+                $file
+            );
+            $image->setPath($file);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($image);
+            $entityManager->flush();
+
+            return new JsonResponse(['success' => 200, 'file' => $file]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        }
+    }
+
+    /**
+     * @Route("/admin/edit/trick/mainImage/{id}", name="app_admin_edit_image_trick", methods={"POST"})
+     */
+    public function mainImageEdit(Trick $trick, Request $request): Response
+    {
+        try {
+            $img = $request->files->get('file');
+            unlink($this->getParameter('images_directory') . '/' . $trick->getMainImage());
+            $file = md5(uniqid()) . "." . $img->guessExtension();
+            $img->move(
+                $this->getParameter('images_directory'),
+                $file
+            );
+            $trick->setMainImage($file);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            return new JsonResponse(['success' => 200, 'file' => $file]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        }
+    }
+
+    /**
      * @Route("/categories.json", name="app_categories_json")
      *
      * @param Request $request
@@ -133,7 +181,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/delete/image/{id}", name="app_delete_images", methods={"DELETE"})
+     * @Route("/admin/delete/image/{id}", name="app_admin_delete_image", methods={"DELETE"})
      *
      * @return JsonResponse
      */
@@ -146,6 +194,26 @@ class AdminController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($image);
+            $entityManager->flush();
+
+            return new JsonResponse(['success' => 200]);
+        }
+        return new JsonResponse(['error' => 'Invalid token'], 400);
+    }
+
+    /**
+     * @Route("/admin/delete/trick/{id}", name="app_admin_delete_trick", methods={"DELETE"})
+     *
+     * @return JsonResponse
+     */
+    public function deleteTrick(Trick $trick, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $data['_token'])) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($trick);
             $entityManager->flush();
 
             return new JsonResponse(['success' => 200]);

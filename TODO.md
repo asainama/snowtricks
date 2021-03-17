@@ -1,12 +1,17 @@
 
 TODO:
-    datafixtures
-    si erreur retour de l'image et prérempli
-    liste des commentaires
-    affichage des tricks pages d'accueil ( avec load)
-    suppression d'un trick
-    modification d'un trick
-    Ajout de commentaire
-    Liste de commentaires
-    Pagination
-    maildev
+    Modal normale
+    Changer btn modif
+    loadmore commentaire
+    Author et photo
+
+    Modal edit 
+    Suppression trick
+    Videos textarea
+    titre select textarea author (save)
+    Supression du trick 
+    Verification poids images et type
+
+    Message s'il reste au moins une video ou une image
+
+    Commentaires load more

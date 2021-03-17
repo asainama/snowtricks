@@ -11,7 +11,6 @@
 // start the Stimulus application
 // import '../bootstrap';
 
-// import './modal.js'
 import './form.js'
 import './category.js'
 import './components/Trick.js'
