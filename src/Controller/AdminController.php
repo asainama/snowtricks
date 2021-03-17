@@ -94,20 +94,24 @@ class AdminController extends AbstractController
      */
     public function imageCreate(Trick $trick, Request $request): Response
     {
-        // dd($request->getContent());
-        $data = json_decode($request->getContent(), true);
-        dd($_POST);
-        $file = $data['file'];
-        dd($file->guessExtension());
-        // $image = new Image();
-        // $image->path();
-        // $trick->addImage($image);
-        // $entityManager = $this->getDoctrine()->getManager();
-        // $entityManager->persist($trick);
-        // $entityManager->flush();
+        try {
+            $img = $request->files->get('file');
+            $file = md5(uniqid()) . "." . $img->guessExtension();
+            $img->move(
+                $this->getParameter('images_directory'),
+                $file
+            );
+            $image = new Image();
+            $image->setPath($file);
+            $trick->addImage($image);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
 
-        return new JsonResponse(['success' => 200]);
-        return new JsonResponse(['error' => 'Invalid token'], 400);
+            return new JsonResponse(['success' => 200, 'file' => $file]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        }
     }
 
     /**

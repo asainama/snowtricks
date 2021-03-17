@@ -39,19 +39,24 @@ formImg.addEventListener('submit',function(e){
     ).then(data => {
         console.log(data)
         if (data.success) {
+            console.log(data.file)
             var parent = document.querySelector('.modal__wrapper__body__medias__images')
             var div = document.createElement('div')
             var divChild = document.createElement('div')
             divChild.className = "modal__wrapper__body__medias__actions"
             var asset = mediaBtn.getAttribute('data-asset')
+            console.log(asset)
             var pic = document.createElement('img')
+            console.log(asset + data.file)
             pic.src = asset + data.file
             var edit = document.createElement('a')
             edit.href= "#"
             var del = document.createElement('a')
             del.href= "#"
-            divChild.appendChild(pic,edit,del);
-            div.appendChild(divChild);
+            divChild.appendChild(edit,del);
+            div.appendChild(pic,divChild);
+            parent.appendChild(div)
+            console.log(parent)
             img.src = ""; 
             wrapper.classList.remove('active')
             customBtn.classList.remove('valid')
