@@ -30,7 +30,7 @@ class Trick
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=1000)
      * @Assert\NotNull(message="La description ne peut pas être vide")
      * @Assert\Length(min=10, minMessage="Le description doit contenir plus de 10 caractères")
      */
@@ -48,7 +48,7 @@ class Trick
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick",cascade={"remove"})
      */
     private $comments;
 

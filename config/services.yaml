@@ -6,6 +6,7 @@
 parameters:
     images_directory_users: '%kernel.project_dir%/public/snowtricks/users'
     images_directory: '%kernel.project_dir%/public/snowtricks/tricks'
+    images_fixtures: '%kernel.project_dir%/public/images/fixtures'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -33,5 +34,17 @@ services:
             - name: 'kernel.event_listener'
               event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
               dispatcher: security.event_dispatcher.main
+    
+    App\DataFixtures\UserFixtures:
+        arguments:
+            $imageFixtures: '%kernel.project_dir%/public/images/fixtures'
+            $imageDirectory: '%kernel.project_dir%/public/snowtricks/tricks'
+            $imageDirectoryUsers: '%kernel.project_dir%/public/snowtricks/users'
+
+    App\DataFixtures\TrickFixtures:
+        arguments:
+            $imageFixtures: '%kernel.project_dir%/public/images/fixtures'
+            $imageDirectory: '%kernel.project_dir%/public/snowtricks/tricks'
+            $imageDirectoryUsers: '%kernel.project_dir%/public/snowtricks/users'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

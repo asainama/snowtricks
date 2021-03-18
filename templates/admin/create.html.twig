@@ -7,7 +7,7 @@
     <h1 class="form__title">Créer un trick</h1>
     {{form_start(form,{'attr':{'class':'form','method':'POST'}})}}
         <div class="form__group form__group__attachment__header">
-            <img id="preview" width="800px" height="300px">
+            <img id="preview" width="800px" height="300px" {{(form.vars.data.mainImage != null) ? 'data-src=' ~ absolute_url(asset('snowtricks/tricks/' ~ form.vars.data.mainImage)) ~ '' : ''}}>
             {{form_widget(form.mainImage,{'value':form.mainImage})}}
             {{form_label(form.mainImage)}}
             <div class="form__group__error__format">{{form_errors(form.mainImage)}}</div>

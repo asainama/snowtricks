@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\UserPassportInterface;
 
 class SecurityController extends AbstractController
 {
@@ -33,6 +32,10 @@ class SecurityController extends AbstractController
         $form  = $this->createForm(UserType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // if (!$this->isCsrfTokenValid('user-token', $request->query->get('_token'))) {
+            //     $this->addFlash('error', 'Token CSRF invalide');
+            //     return $this->redirectToRoute('app_register');
+            // }
             $user = $form->getData();
             $image = $form->get('attachment')->getData();
             $fichier = md5(uniqid()) . "." . $image->guessExtension();

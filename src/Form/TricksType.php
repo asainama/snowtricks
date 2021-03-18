@@ -37,7 +37,7 @@ class TricksType extends AbstractType
                             ],
                         ]),
                     ],
-                    'required' => true,
+                    'required' => false,
                     'mapped' => false,
                     'label' => 'Choisir une image',
                     'multiple' => false,
@@ -61,13 +61,14 @@ class TricksType extends AbstractType
                 ],
             ])
             ->add('images', CollectionType::class, [
-                'constraints' => [
-                    new Assert\Count([
-                    'min' => 1,
-                    'minMessage' => 'Must have at least one value',
-                      // also has max and maxMessage just like the Length constraint
-                    ]),
-                ],
+                // 'constraints' => [
+                //     new Assert\Count([
+                //     'min' => 1,
+                //     'minMessage' => 'Must have at least one value',
+                //       // also has max and maxMessage just like the Length constraint
+                //     ]),
+                // ],
+                'required' => false,
                 'label' => false,
                 'mapped' => false,
                 'entry_type' => ImageType::class,

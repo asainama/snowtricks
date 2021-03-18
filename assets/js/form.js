@@ -2,9 +2,13 @@ const checkIframes = require('./iframe')
 
 var file = document.querySelector('.attachment')
 if(file !== null){
+    const preview = document.querySelector('#preview')
+    if (preview.getAttribute('data-src') !== null && preview.getAttribute('data-src') !== undefined )
+    {
+        preview.src = preview.getAttribute('data-src')
+    }
     file.addEventListener('change',function(e){
         e.preventDefault()
-        const preview = document.querySelector('#preview')
         preview.src = URL.createObjectURL(e.target.files[0])
     })
 }

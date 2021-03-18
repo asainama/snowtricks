@@ -1,0 +1,73 @@
+<aside id="modal2" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal__wrapper__title" style="display:none">
+    <div class="modal__wrapper js-modal-stop">
+        <div class="modal__wrapper__img">
+            <button class="modal__wrapper__img__close js-modal-close">X</button>
+            {% if app.user %}
+                <a href="{{path('app_admin_edit',{'id':trick.id})}}" class="modal__wrapper__img__edit js-edit"></a>
+            {% endif %}
+            <img src="{{asset('snowtricks/tricks/' ~ trick.mainImage)}}" alt="modal__header">
+            <div class="modal__wrapper__img__title">
+                <p>{{trick.name}}</p>
+            </div>
+        </div>
+        <div class="modal__wrapper__body">
+            <h1 class="modal__wrapper__title">{{trick.name}}</h1>
+            <div class="modal__wrapper__body__medias">
+                <div class="modal__wrapper__body__medias__images">
+                    {% for image in trick.images %}
+                        <div>
+                            <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal__wrapper__body__medias__videos">
+                    {% for video in trick.videos %}
+                        <div>
+                            <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal__wrapper__body__tags">
+                <p>
+                    Catégorie(s):
+                    {% for categorie in trick.categories %}
+                        <span>{{categorie.name}}</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="modal__wrapper__body__author">
+                <p>{{trick.user.name}}</p>
+            </div>
+            <div class="modal__wrapper__body__date">
+                <p>{{ trick.createdAt|date("d/m/Y") }}</p>
+            </div>
+            <div class="modal__wrapper__body__description">
+                <p>{{trick.description|capitalize }}</p>
+            </div>
+            <div class="modal__wrapper__body__comments">
+                <h2>Commentaires</h2>
+                {% if app.user %}
+                    <p>Ajouter un commentaire</p>
+                {% else %}
+                    <p>Pour ajouter un commentaire. Veuillez-vous connecter.</p>
+                {% endif %}
+                {% if trick.comments is empty %}
+                    <p>Aucun commentaire pour le moment</p>
+                {% else %}
+                    {% for comment in trick.comments %}
+                        <div class="modal__wrapper__body__comments__item">
+                            <div class="modal__wrapper__body__comments__item__img">
+                                <img src="{{asset('snowtricks/users/' ~ comment.user.attachment)}}" alt="{{comment.user.name}}">
+                            </div>
+                            <div class="modal__wrapper__body__comments__item__body">
+                                <span>{{comment.createdAt|date("d/m/Y")}}</span>
+                                <p>{{comment.content}}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</aside>
