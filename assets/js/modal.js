@@ -6,9 +6,7 @@ let previouslyFocusedElement = null
 
 const openModal = async function(e) {
     e.preventDefault()
-    console.log(e)
     const target = e.target.getAttribute('href')
-    console.log(target)
     if (target.startsWith('#')) {
         modal = document.querySelector(target)
     } else {
@@ -55,7 +53,6 @@ const closeModal = function(e) {
     }
     modal.addEventListener('animationend', hideModal)
     if (document.querySelector('#modal2')){
-        console.log('modal supprimée')
         document.body.removeChild(document.querySelector('#modal2'))
     }
 }
@@ -172,10 +169,6 @@ formImg.addEventListener('submit',function(e){
     var formData = new FormData(this);
     fetch("/admin/create/image/" + mediaBtn.getAttribute('data-id'), {
         method : "POST",
-        // headers: {
-        //     'X-Request-With' : 'XMLHttpRequest',
-        //     'Content-Type' : 'application/json'
-        // },
         body: formData
     }).then(
         response => response.json()
@@ -187,13 +180,12 @@ formImg.addEventListener('submit',function(e){
             divChild.className = "modal__wrapper__body__medias__actions"
             var asset = mediaBtn.getAttribute('data-asset')
             var pic = document.createElement('img')
-            console.log(asset + data.file)
             pic.src = asset + data.file
             var edit = document.createElement('a')
-            edit.href= "#"
+            edit.href= "/admin/edit/image/"+ data.id
             edit.className="btn__modal__edit"
             var del = document.createElement('a')
-            del.href= "#"
+            del.href= "/admin/delete/image/" + + data.id
             del.className="btn__modal__delete delete__img"
             divChild.appendChild(edit);
             divChild.appendChild(del);
@@ -259,7 +251,6 @@ btnMainImage.addEventListener('click',function(e){
                 .then((data)=>{
                     if (data.success) {
                         var img = document.querySelector('.modal__wrapper__img > img')
-                        console.log(img)
                         img.src = input.getAttribute('data-asset') + data.file
                     }
                 }).catch(e=> console.log(e))
@@ -290,7 +281,6 @@ AllEdit.forEach(edit =>{
                     .then((data)=>{
                         if (data.success) {
                             var img = document.querySelector('.form__img__trick__submit__' + id + ' img')
-                            console.log(img)
                             img.src = input.getAttribute('data-asset') + data.file
                         }
                     }).catch(e=> console.log(e))
@@ -299,33 +289,241 @@ AllEdit.forEach(edit =>{
         }
     })
 })
- delModal()
+    delModal()
+    editVideo()
+    editVideoDeleteOrClose()
+    createVideo()
+    delTrick()
+}
+const createVideo = () => {
+    const btnAdd = document.querySelector('.modal__wrapper__body__medias__choose__btn__video')
+    const input = document.querySelector('#tricks_videos_url')
+    const token = document.querySelector('.modal__wrapper__body__medias__videos').getAttribute('data-token')
+    btnAdd.addEventListener('click',function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        if(input.value.length > 0 && verifIframe(input.value)){
+            var regex = 'src\s*=\s*"(.+?)"'
+            var url = input.value.match(regex)[1]
+            const id = e.target.getAttribute('data-id')
+            fetch('/admin/create/video/' + id,{
+                method: 'POST',
+                headers: {
+                    'X-Request-With' : 'XMLHttpRequest',
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({'_token': token, 'url': url })
+            }).then(response => response.json())
+            .then(data =>{
+                if(data.success){
+                    var div = document.createElement('div')
+                    div.className = "video__parent__" + data.id
+                    var ifrm = document.createElement('iframe')
+                    ifrm.src = data.url
+                    ifrm.allow = "autoplay; encrypted-media"
+                    ifrm.frameBorder ="0"
+                    ifrm.allowFullscreen = true
+                    var txt = document.createElement('textarea')
+                    txt.className="trick__video__textarea hide"
+                    txt.id="trick__video__url__" + data.id
+                    txt.name = "trick__video__url"
+                    var divChild = document.createElement('div')
+                    divChild.className="modal__wrapper__body__medias__actions"
+                    var editBtn = document.createElement('a')
+                    editBtn.className="btn__modal__edit"
+                    editBtn.href ="/admin/edit/video/" + data.id
+                    editBtn.dataset.id = data.id
+                    var delBtn = document.createElement('a')
+                    delBtn.className="btn__modal__delete"
+                    delBtn.href ="/admin/delete/video/" + data.id
+                    delBtn.dataset.id = data.id
+                    divChild.appendChild(editBtn)
+                    divChild.appendChild(delBtn)
+                    div.appendChild(ifrm)
+                    div.appendChild(txt)
+                    div.appendChild(divChild)
+                    document.querySelector('.modal__wrapper__body__medias__videos').appendChild(div)
+                    input.value=''
+                    editVideo()
+                    editVideoDeleteOrClose()
+                }
+            }).catch(e => console.error(e))
+        } else{
+            console.log("Le texte n'est pas une iframe valide")
+        }
+    })
+}
+
+const editVideoDeleteOrClose = () => {
+    const videos = document.querySelectorAll('.btn__modal__delete')
+    console.log(videos)
+    videos.forEach(function(video){
+        video.addEventListener('click',function(ev){
+            ev.preventDefault()
+            ev.stopPropagation()
+            const ifrm = ev.target.parentElement.parentElement.querySelector('iframe')
+            const textat = ev.target.parentElement.parentElement.querySelector('textarea')
+            const id = ev.target.getAttribute('data-id')
+            const parentDiv = document.querySelector('.video__parent__' + id)
+            const editBtn = parentDiv.querySelector('.btn__modal__edit')
+            const token = document.querySelector('.modal__wrapper__body__medias__videos').getAttribute('data-token')
+            const href = ev.target.href
+            if (ev.target.classList.contains('valid')){
+                if(!textat.classList.contains('hide')){
+                    textat.classList.add('hide')
+                }
+                if(ifrm.classList.contains('hide')){
+                    ifrm.classList.remove('hide')
+                }
+                ev.target.classList.remove('valid')
+                editBtn.classList.remove('valid')
+                textat.value = ''
+            } else {
+                if(confirm("Vous êtes sur de vouloir supprimer cette video ?")) {
+                    fetch(href,{
+                        method: 'DELETE',
+                        headers: {
+                            'X-Request-With' : 'XMLHttpRequest',
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify({'_token': token})
+                    }).then(response => response.json())
+                    .then(data =>{
+                        if(data.success){
+                            document.querySelector('.video__parent__'+ id).remove()
+                        }
+                    }).catch(e => console.error(e))
+                }
+            }
+        })
+    })
+}
+
+const editVideo = () =>{
+    const videos = document.querySelectorAll('.btn__modal__edit')
+    videos.forEach(function(video){
+        video.addEventListener('click',function(ev){
+            ev.preventDefault()
+            ev.stopPropagation()
+            const ifrm = ev.target.parentElement.parentElement.querySelector('iframe')
+            const textat = ev.target.parentElement.parentElement.querySelector('textarea')
+            const id = ev.target.getAttribute('data-id')
+            const parentDiv = document.querySelector('.video__parent__' + id)
+            const delBtn = parentDiv.querySelector('.btn__modal__delete')
+            const token = document.querySelector('.modal__wrapper__body__medias__videos').getAttribute('data-token')
+            if (!ev.target.classList.contains('valid')){
+                if (!ifrm.classList.contains('hide')){
+                    ifrm.classList.add('hide')
+                }
+                if (textat.classList.contains('hide')){
+                    textat.classList.remove('hide')
+                }
+                ev.target.classList.add('valid')
+                if (!delBtn.classList.contains('valid')){
+                    delBtn.classList.add('valid')
+                }
+            } else {
+                if (textat.value.length > 10 && verifIframe(textat.value)){
+                    var regex = 'src\s*=\s*"(.+?)"'
+                    var url = textat.value.match(regex)[1]
+                    fetch(ev.target.href,{
+                        method: 'POST',
+                        headers: {
+                            'X-Request-With' : 'XMLHttpRequest',
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify({'_token': token, 'url': url})
+                    }).then(response => response.json())
+                    .then(data => {
+                        if(data.success){
+                            ifrm.src = data.url
+                            if (ifrm.classList.contains('hide')){
+                                ifrm.classList.remove('hide')
+                            }
+                            if (!textat.classList.contains('hide')){
+                                textat.classList.add('hide')
+                            }
+                            if (ev.target.classList.contains('valid')){
+                                ev.target.classList.remove('valid')
+                            }
+                            if (delBtn.classList.contains('valid')){
+                                delBtn.classList.remove('valid')
+                            }
+                            textat.value=''
+                        }
+                    }).catch(e => console.error(e))
+                } else {
+                    alert("Le texte est trop court ou iframe est invalide")
+                }
+            }
+        })
+    })
+}
+
+const verifIframe = (value) => {
+    if(value.indexOf('iframe') === -1) {
+        return false
+    } else {
+        return true
+    }
 }
 
 
 const delModal = () =>{
     var deletes = document.querySelectorAll('.modal__wrapper__body__medias__actions > .delete__img')
-console.log(deletes)
     if (deletes !== null){
         deletes.forEach(function(item){
             item.addEventListener('click',function(event){
                 event.preventDefault();
                 event.stopPropagation()
                 if(confirm("Voulez-vous supprimer cette image ?")) {
-                    var formData = new FormData();
-                    formData.append("_token" , item.getAttribute('data-token'))
                     fetch(this.getAttribute('href'), {
                         method : 'DELETE',
                         headers: {
                             'X-Request-With' : 'XMLHttpRequest',
                             'Content-Type' : 'application/json'
                         },
-                        body: JSON.stringify({"_token": item.getAttribute('data-token')})
+                        body: JSON.stringify({"_token": document.querySelector('.modal__wrapper__body__medias__images').getAttribute('data-token')})
                     }).then(
                         response => response.json()
                     ).then(data => {
                         if (data.success) {
                             item.parentElement.parentElement.remove()
+                        } else {
+                            console.log(data.error)
+                        }
+                    }).catch(e=> console.log(e))
+                }
+            })
+        })
+    }
+}
+
+
+const delTrick = function(){
+    var deletes = document.querySelectorAll('.modal__wrapper__body__actions > .delete__trick')
+    console.log(deletes)
+    if (deletes !== null){
+        deletes.forEach(function(item){
+            item.addEventListener('click',function(event){
+                event.preventDefault();
+                event.stopPropagation()
+                if(confirm("Voulez-vous supprimer ce trick ?")) {
+                    var formData = new FormData();
+                    formData.append("_token" , document.querySelector('#home').getAttribute('data-token'))
+                    fetch(this.getAttribute('href'), {
+                        method : 'DELETE',
+                        headers: {
+                            'X-Request-With' : 'XMLHttpRequest',
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify({"_token": document.querySelector('#home').getAttribute('data-token')})
+                    }).then(
+                        response => response.json()
+                    ).then(data => {
+                        if (data.success) {
+                            modal.querySelector('.js-modal-close').click()
                         } else {
                             console.log(data.error)
                         }

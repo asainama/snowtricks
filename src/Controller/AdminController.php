@@ -109,7 +109,7 @@ class AdminController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
 
-            return new JsonResponse(['success' => 200, 'file' => $file]);
+            return new JsonResponse(['success' => 200, 'file' => $file,'id' => $image->getId()]);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Invalid token'], 400);
         }
@@ -189,14 +189,12 @@ class AdminController extends AbstractController
     public function deleteImage(Image $image, Request $request)
     {
         $data = json_decode($request->getContent(), true);
-
-        if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
+        if ($this->isCsrfTokenValid('image', $data['_token'])) {
             unlink($this->getParameter('images_directory') . '/' . $image->getPath());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($image);
             $entityManager->flush();
-
             return new JsonResponse(['success' => 200]);
         }
         return new JsonResponse(['error' => 'Invalid token'], 400);
@@ -214,6 +212,73 @@ class AdminController extends AbstractController
             if ($this->isCsrfTokenValid('delete', $data['_token'])) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($trick);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 200]);
+            }
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    /**
+         * @Route("/admin/create/video/{id}", name="app_admin_create_video", methods={"POST"})
+         *
+         * @return JsonResponse
+         */
+    public function createVideo(Trick $trick, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            if ($this->isCsrfTokenValid('video', $data['_token'])) {
+                $video = new Video();
+                $video->setUrl($data['url']);
+                $trick->addVideo($video);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($trick);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 200, 'url' => $video->getUrl(), 'id' => $video->getId(), 'trick_id' => $trick->getId()]);
+            }
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    /**
+     * @Route("/admin/edit/video/{id}", name="app_admin_edit_video", methods={"POST"})
+     *
+     * @return JsonResponse
+     */
+    public function editVideo(Video $video, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            if ($this->isCsrfTokenValid('video', $data['_token'])) {
+                $video->setUrl($data['url']);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($video);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 200, 'url' => $video->getUrl()]);
+            }
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    /**
+     * @Route("/admin/delete/video/{id}", name="app_admin_delete_video", methods={"DELETE"})
+     *
+     * @return JsonResponse
+     */
+    public function deleteVideo(Video $video, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        try {
+            if ($this->isCsrfTokenValid('video', $data['_token'])) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($video);
                 $entityManager->flush();
                 return new JsonResponse(['success' => 200]);
             }

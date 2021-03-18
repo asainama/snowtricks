@@ -128,34 +128,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 ],
                 'mainImage' => 'alley-oop.jpg'
             ],
-            // 9 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
-            // 10 => [
-            //     'name' => 'mute',
-            //     'description' => 'saisie de la carre frontside de la planche entre les deux pieds avec la main avant',
-            //     'categorie' => 1,
-            //     'videos' => [
-            //         'https://youtu.be/Opg5g4zsiGY'
-            //     ],
-            //     'images' => [
-            //         'mute.jpg'
-            //     ],
-            //     'mainImage' => [
-            //         'mute.jpg'
-            //     ]
-            // ],
         ];
         foreach ($tricks as $key => $value) {
             $trick = new Trick();

@@ -19,7 +19,7 @@
             </div>
             </h1>
             <div class="modal__wrapper__body__medias">
-                <div class="modal__wrapper__body__medias__images">
+                <div class="modal__wrapper__body__medias__images" data-token={{csrf_token('image')}}>
                     <div class="modal__wrapper__body__medias__choose">
                         <div class="modal__wrapper__body__medias__choose__content">
                             <img class="modal__wrapper__body__medias__choose__content__img" src="" alt="">
@@ -47,13 +47,25 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="modal__wrapper__body__medias__videos">
+                <div class="modal__wrapper__body__medias__videos" data-token={{csrf_token('video')}}>
+                    <div>
+                        <form class="formtricks__video">
+                            <div class="form__group__video__item">
+                                <label for="tricks_videos_url" class="form__group__video__item__label">Iframe de la video</label>
+                                <div class="form__group__action">
+                                    <textarea id="tricks_videos_url" name="tricks__videos__url" class="form__group__iframe"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <button class="modal__wrapper__body__medias__choose__btn__video" data-id="{{trick.id}}" >Choisir une video</button>
+                    </div>
                     {% for video in trick.videos %}
-                        <div>
+                        <div class="{{'video__parent__' ~ video.id}}">
                             <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
+                            <textarea name="trick__video__url" class="trick__video__textarea hide" id="{{'trick__video__url__' ~ video.id}}" ></textarea>
                             <div class="modal__wrapper__body__medias__actions">
-                                <a href="#" class="btn__modal__edit"></a>
-                                <a href="#" class="btn__modal__delete"></a>
+                                <a href="{{path('app_admin_edit_video',{'id': video.id })}}" class="btn__modal__edit" data-id="{{video.id}}"></a>
+                                <a href="{{path('app_admin_delete_video',{'id': video.id })}}" class="btn__modal__delete"  data-id="{{video.id}}"></a>
                             </div>
                         </div>
                     {% endfor %}
@@ -75,9 +87,10 @@
                     {{trick.description|trim|capitalize}}
                 </textarea>
             </div>
+            <div class="modal__wrapper__body__actions">
+                <a href="{{path("app_admin_delete_trick",{'id':trick.id})}}" class="delete__trick btn btn__error" id="{{'trick-modal-delete-' ~ trick.id}}">Supprimer</a>
+                <a href="#" class="btn btn__primary">Enregistrer</a>
+            </div>
         </div>
     </div>
-    {# {% block javascripts %}
-        {{ encore_entry_script_tags('formModal') }}
-    {% endblock %} #}
 </aside>

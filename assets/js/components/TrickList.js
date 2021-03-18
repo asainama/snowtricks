@@ -88,7 +88,7 @@ class TrickList extends HTMLElement
     disconnectedCallback()
     {
         this.loading = false
-        this.parentElement.appendChild(this.loader())
+        // this.parentElement.appendChild(this.loader())
         this.tricks =  [];
         this.asset = null
         this.total = 0;
@@ -120,7 +120,7 @@ class TrickList extends HTMLElement
         //     div.className = "card__end"
         //     _this.appendChild(div)
         // } 
-        if (!(document.querySelector('.card__end') === null && content.tricks.length === 0)){
+        if (!(document.querySelector('.card__end') === null && content.tricks.length === 0) && this.total === this.offset){
             this.parentElement.parentElement.appendChild(this.loadMore)
         }
     }

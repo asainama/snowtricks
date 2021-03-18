@@ -62,6 +62,10 @@ textarea {
   resize: none;
 }
 
+.hide{
+  display: none;
+}
+
 img{
   display: block;
   width: 100%;
@@ -494,12 +498,19 @@ section{
     animation: slideFromTop .3s both;
     -webkit-animation: slideFromTop .3s both;
 
+    &__body__actions{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
     &__body__medias__choose{
       margin-right: 1em;
       position: relative;
 
-      &__btn{
-        margin-top: 1em;
+      &__btn,
+      &__btn__video{
+        margin-top: .5em;
         width: 100%;
         padding: .2em;
         border: none;
@@ -683,9 +694,9 @@ section{
 
     &__body__medias > div {
       display: flex;
-      width: 50%;
+      width: auto;
       justify-content: flex-start;
-      height: 200px;
+      height: 205px;
       flex-wrap: nowrap;
       overflow-x: auto;
       overflow-y: hidden;
@@ -723,7 +734,7 @@ section{
     
     &__body__medias__actions{
       display: flex;
-      margin: 1em 0 0 0;
+      margin: .2em 0 0 0;
       justify-content: flex-end;
       align-items: flex-start;
     }
@@ -837,6 +848,25 @@ section{
 #form__img{
   display: none;
 }
+
+.trick__video__textarea{
+  min-height: 150px;
+}
+
+.formtricks__video{
+  .form__group__video__item{
+    height: 150px;
+    width: 200px;
+    border: 2px dashed #c2cdda;
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+  }
+}
 // Buttons
 
 .btn {
@@ -889,8 +919,14 @@ section{
 
   &__error {
     color: $white;
-    background: red;
-    border: 1px solid red;
+    background: $red;
+    border: 1px solid $red;
+  }
+
+  &__error:hover{
+    color: $red;
+    background: transparent;
+    border-color:$red;
   }
 }
 
@@ -903,6 +939,10 @@ section{
     border: 1px solid $blue;
     border-radius: 5px;
     margin-right: .5em;
+  }
+
+  &__edit.valid{
+    border: 1px solid $green;
   }
   
   &__edit::after{
@@ -919,13 +959,20 @@ section{
     background-repeat: no-repeat;
   }
 
+  &__edit.valid::after{
+    background: url('../../public/images/check.png');
+    background-size: 15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
   &__delete{
     padding: 1em;
     position: relative;
     border: 1px solid $red;
     border-radius: 5px;
   }
-  
+
   &__delete::after{
     content:'';
     display: block;
@@ -935,6 +982,13 @@ section{
     width: 100%;
     height: 100%;
     background: url('../../public/images/delete_modal.png');
+    background-size: 15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  &__delete.valid::after{
+    background: url('../../public/images/cross-sign.png');
     background-size: 15px;
     background-position: center center;
     background-repeat: no-repeat;
@@ -1142,6 +1196,15 @@ section{
 .load__more{
   display: block;
   margin: 0 auto;
+}
+
+// Form Edit
+
+.form__group__video__item__label{
+  font-size: 1.6rem;
+  color: #4169e1;
+  font-weight: 500;
+  margin-bottom: 1em;
 }
 
 // Card
