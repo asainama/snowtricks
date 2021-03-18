@@ -5,7 +5,7 @@
             <a href="{{path('app_admin_edit_image_trick',{'id' : trick.id})}}" class="modal__wrapper__img__edit modal__wrapper__img__edit__mainImage" data-id="{{trick.id}}"></a>
             <img src="{{asset('snowtricks/tricks/' ~ trick.mainImage)}}" alt="modal__header">
             <form id="{{'formtricks-img-mainImage-' ~ trick.id}}">
-                <input name="file" id="{{'trick-image-btn-mainImage-' ~ trick.id}}" type="file" hidden data-id="{{trick.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
+                <input name="file" id="{{'trick-image-btn-mainImage-' ~ trick.id}}" type="file" accept="image/png, image/jpeg" hidden data-id="{{trick.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
                 <button type="submit" class="form__img__submit" hidden></button>
             </form>
             <div class="modal__wrapper__img__title">
@@ -13,18 +13,22 @@
             </div>
         </div>
         <div class="modal__wrapper__body">
-            <h1 class="modal__wrapper__title"><input type="text" name="trick__title" id="trick__title" value="{{trick.name}}" ></h1>
+            <h1 class="modal__wrapper__title">
+            <div class="form__group">
+                <input type="text" name="trick__title" id="trick__title" value="{{trick.name}}" >
+            </div>
+            </h1>
             <div class="modal__wrapper__body__medias">
                 <div class="modal__wrapper__body__medias__images">
                     <div class="modal__wrapper__body__medias__choose">
                         <div class="modal__wrapper__body__medias__choose__content">
                             <img class="modal__wrapper__body__medias__choose__content__img" src="" alt="">
-                            <div class="modal__wrapper__body__medias__choose__content__text">No file chosen, yet!</div>
+                            <div class="modal__wrapper__body__medias__choose__content__text">Aucun fichier selectionner!</div>
                             <div class="modal__wrapper__body__medias__choose__content__cancel">X</div>
-                            <div class="modal__wrapper__body__medias__choose__content__file">File name here</div>
+                            <div class="modal__wrapper__body__medias__choose__content__file">Le nom du fichier</div>
                         </div>
                         <form id="form__img">
-                            <input name="file" id="medias-btn" type="file" hidden data-id="{{trick.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
+                            <input name="file" accept="image/png, image/jpeg" id="medias-btn" type="file" hidden data-id="{{trick.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
                             <button type="submit" class="form__img__submit" hidden></button>
                         </form>
                         <button class="modal__wrapper__body__medias__choose__btn" >Choisir une image</button>
@@ -37,8 +41,8 @@
                             </form>
                             <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
                             <div class="modal__wrapper__body__medias__actions">
-                                <a href="{{path('app_admin_edit_image',{'id' : image.id})}}" class="edit__img" data-id={{image.id}} >M</a>
-                                <a href="{{path('app_admin_delete_image',{'id' : image.id})}}" class="delete__img" data-token="{{csrf_token('delete' ~ image.id)}}">D</a>
+                                <a href="{{path('app_admin_edit_image',{'id' : image.id})}}" class="edit__img btn__modal__edit" data-id={{image.id}} ></a>
+                                <a href="{{path('app_admin_delete_image',{'id' : image.id})}}" class="delete__img btn__modal__delete" data-token="{{csrf_token('delete' ~ image.id)}}"></a>
                             </div>
                         </div>
                     {% endfor %}
@@ -48,8 +52,8 @@
                         <div>
                             <iframe allowfullscreen frameborder="0" src="{{video.url}}" allow="autoplay; encrypted-media"></iframe>
                             <div class="modal__wrapper__body__medias__actions">
-                                <a href="#">M</a>
-                                <a href="#">D</a>
+                                <a href="#" class="btn__modal__edit"></a>
+                                <a href="#" class="btn__modal__delete"></a>
                             </div>
                         </div>
                     {% endfor %}
@@ -66,9 +70,9 @@
             <div class="modal__wrapper__body__date">
                 <p>{{ trick.createdAt|date("d/m/Y") }}</p>
             </div>
-            <div class="modal__wrapper__body__description">
+            <div class="modal__wrapper__body__description form__group">
                 <textarea name="trick__description" id="trick__description" cols="30" rows="10">
-                    {{trick.description|capitalize }}
+                    {{trick.description|trim|capitalize}}
                 </textarea>
             </div>
         </div>

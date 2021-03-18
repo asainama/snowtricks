@@ -88,7 +88,7 @@ class TrickList extends HTMLElement
     disconnectedCallback()
     {
         this.loading = false
-        this.appendChild(this.loader())
+        this.parentElement.appendChild(this.loader())
         this.tricks =  [];
         this.asset = null
         this.total = 0;
@@ -121,7 +121,7 @@ class TrickList extends HTMLElement
         //     _this.appendChild(div)
         // } 
         if (!(document.querySelector('.card__end') === null && content.tricks.length === 0)){
-            this.appendChild(this.loadMore)
+            this.parentElement.parentElement.appendChild(this.loadMore)
         }
     }
 
@@ -153,7 +153,7 @@ class TrickList extends HTMLElement
                 openModal.all()
                 if (_this.total > _this.offset) {
                   const div = document.createElement('div')
-                  this.appendChild(_this.loadMore)
+                  this.parentElement.parentElement.appendChild(_this.loadMore)
                 } else {
                   if (document.querySelector('.card__end') === null) {
                       const div = document.createElement('div')

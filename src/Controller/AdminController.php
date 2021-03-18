@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Form\TricksType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
+use Exception;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -209,15 +210,16 @@ class AdminController extends AbstractController
     public function deleteTrick(Trick $trick, Request $request)
     {
         $data = json_decode($request->getContent(), true);
-
-        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $data['_token'])) {
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($trick);
-            $entityManager->flush();
-
-            return new JsonResponse(['success' => 200]);
+        try {
+            if ($this->isCsrfTokenValid('delete', $data['_token'])) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($trick);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 200]);
+            }
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        } catch (\Exception $e) {
+            dd($e);
         }
-        return new JsonResponse(['error' => 'Invalid token'], 400);
     }
 }

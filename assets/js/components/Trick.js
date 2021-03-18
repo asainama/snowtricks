@@ -18,8 +18,8 @@ export default class Trick extends HTMLElement
                 <div class="card__body__infos">
                     <a class="card__body__title js-modal" href="/ajax/${this.getAttribute('id')}">${this.name}</a>
                     <div class="card__body__infos__actions ${this.connect}">
-                        <a class="js-modal" href="/admin/edit/${this.getAttribute('id')}">M</a>
-                        <a href="/admin/delete/trick/${this.getAttribute('id')}" id="trick-delete-${this.getAttribute('id')}" data-token="{{csrf_token('delete' ~ ${this.getAttribute('id')})}}">D</a>
+                        <a class="js-modal btn__modal__edit" href="/admin/edit/${this.getAttribute('id')}"></a>
+                        <a href="/admin/delete/trick/${this.getAttribute('id')}" id="trick-delete-${this.getAttribute('id')}" data-id="${this.getAttribute('id')}" class="delete__img btn__modal__delete"></a>
                     </div>
                 </div>
             </div>

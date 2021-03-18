@@ -97,6 +97,39 @@ const all = function (){
     document.querySelectorAll('.js-modal').forEach(a => {
         a.addEventListener('click',openModal)
     })
+    del()
+}
+
+const del = function(){
+    var deletes = document.querySelectorAll('.delete__img')
+    if (deletes !== null){
+        deletes.forEach(function(item){
+            item.addEventListener('click',function(event){
+                event.preventDefault();
+                event.stopPropagation()
+                if(confirm("Voulez-vous supprimer ce trick ?")) {
+                    var formData = new FormData();
+                    formData.append("_token" , document.querySelector('#home').getAttribute('data-token'))
+                    fetch(this.getAttribute('href'), {
+                        method : 'DELETE',
+                        headers: {
+                            'X-Request-With' : 'XMLHttpRequest',
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify({"_token": document.querySelector('#home').getAttribute('data-token')})
+                    }).then(
+                        response => response.json()
+                    ).then(data => {
+                        if (data.success) {
+                            document.querySelector('trick-card[id="'+ item.getAttribute('data-id') +'"]').remove()
+                        } else {
+                            console.log(data.error)
+                        }
+                    }).catch(e=> console.log(e))
+                }
+            })
+        })
+    }
 }
 
 window.addEventListener('keydown',function(e){
@@ -125,7 +158,6 @@ const btnClick = (e) =>{
         mediaBtn.click()
     } else {
         if(confirm("Voulez-vous ajouter cette image ?")) {
-            console.log(formSubmit)
             formSubmit.click()
         }
     }
@@ -148,35 +180,31 @@ formImg.addEventListener('submit',function(e){
     }).then(
         response => response.json()
     ).then(data => {
-        console.log(data)
         if (data.success) {
-            console.log(data.file)
             var parent = document.querySelector('.modal__wrapper__body__medias__images')
-            console.log(parent)
             var div = document.createElement('div')
             var divChild = document.createElement('div')
             divChild.className = "modal__wrapper__body__medias__actions"
             var asset = mediaBtn.getAttribute('data-asset')
-            console.log(asset)
             var pic = document.createElement('img')
             console.log(asset + data.file)
             pic.src = asset + data.file
             var edit = document.createElement('a')
             edit.href= "#"
-            edit.innerHTML = "M"
+            edit.className="btn__modal__edit"
             var del = document.createElement('a')
             del.href= "#"
-            del.innerHTML = "D"
+            del.className="btn__modal__delete delete__img"
             divChild.appendChild(edit);
             divChild.appendChild(del);
             div.appendChild(pic);
             div.appendChild(divChild);
             parent.appendChild(div)
-            console.log(parent)
             img.src = ""; 
             wrapper.classList.remove('active')
             customBtn.classList.remove('valid')
             customBtn.innerHTML = "Choisir une image"
+            delModal()
         } else {
             console.log(data.error)
         }
@@ -240,37 +268,6 @@ btnMainImage.addEventListener('click',function(e){
     }
 })
 
-var deletes = document.querySelectorAll('.delete__img')
-
-if (deletes !== null){
-    deletes.forEach(function(item){
-        item.addEventListener('click',function(event){
-            event.preventDefault();
-            event.stopPropagation()
-            if(confirm("Voulez-vous supprimer cette image ?")) {
-                var formData = new FormData();
-                formData.append("_token" , this.getAttribute("data-token"))
-                fetch(this.getAttribute('href'), {
-                    method : "DELETE",
-                    headers: {
-                        'X-Request-With' : 'XMLHttpRequest',
-                        'Content-Type' : 'application/json'
-                    },
-                    body: JSON.stringify({"_token": this.getAttribute('data-token')})
-                }).then(
-                    response => response.json()
-                ).then(data => {
-                    if (data.success) {
-                        this.parentElement.parentElement.remove()
-                    } else {
-                        console.log(data.error)
-                    }
-                }).catch(e=> console.log(e))
-            }
-        })
-    })
-}
-
 const AllEdit = document.querySelectorAll('.edit__img')
 AllEdit.forEach(edit =>{
     edit.addEventListener('click',function(e){
@@ -302,9 +299,42 @@ AllEdit.forEach(edit =>{
         }
     })
 })
-
+ delModal()
 }
 
+
+const delModal = () =>{
+    var deletes = document.querySelectorAll('.modal__wrapper__body__medias__actions > .delete__img')
+console.log(deletes)
+    if (deletes !== null){
+        deletes.forEach(function(item){
+            item.addEventListener('click',function(event){
+                event.preventDefault();
+                event.stopPropagation()
+                if(confirm("Voulez-vous supprimer cette image ?")) {
+                    var formData = new FormData();
+                    formData.append("_token" , item.getAttribute('data-token'))
+                    fetch(this.getAttribute('href'), {
+                        method : 'DELETE',
+                        headers: {
+                            'X-Request-With' : 'XMLHttpRequest',
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify({"_token": item.getAttribute('data-token')})
+                    }).then(
+                        response => response.json()
+                    ).then(data => {
+                        if (data.success) {
+                            item.parentElement.parentElement.remove()
+                        } else {
+                            console.log(data.error)
+                        }
+                    }).catch(e=> console.log(e))
+                }
+            })
+        })
+    }
+}
 
 module.exports = {
     openModal,

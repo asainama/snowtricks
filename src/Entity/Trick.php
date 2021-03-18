@@ -8,11 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity("name")
  */
 class Trick
 {
@@ -24,14 +22,15 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotNull(message="Le nom ne peut pas être vide")
      * @Assert\Length(min=3, minMessage="Le nom doit contenir plus de 3 caractères")
+     * @Assert\Unique(message="Ce nom est déjà utilisé")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=1000)
      * @Assert\NotNull(message="La description ne peut pas être vide")
      * @Assert\Length(min=10, minMessage="Le description doit contenir plus de 10 caractères")
      */
@@ -49,7 +48,7 @@ class Trick
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick",cascade={"remove"})
      */
     private $comments;
 

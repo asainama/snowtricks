@@ -4,7 +4,7 @@
 {% endblock %}
 {% block title %}Snowtricks - Accueil{% endblock %}
 {% block body %}
-    <section id="home">
+    <section id="home" data-token="{{csrf_token('delete')}}">
         <div class="row">
             <trick-list asset={{absolute_url(asset('snowtricks'))}} connect="{{(app.user)? 1 : 0}}"></trick-list>
         </div>
