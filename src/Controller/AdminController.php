@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Entity\Category;
 use App\Form\TricksType;
+use App\Form\EditTrickType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\TrickRepository;
-use Exception;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,10 +82,10 @@ class AdminController extends AbstractController
     public function edit(Trick $trick, Request $request): Response
     {
         // $categories = $this->getDoctrine()->getRepository(Category::class)->findBy($id);
-        // $form = $this->createForm(TricksType::class, $trick);
-        // $form->handleRequest($request);
+        $form = $this->createForm(EditTrickType::class, $trick);
+        $form->handleRequest($request);
         return $this->render('home/edit.html.twig', [
-            // 'form' => $form->createView(),
+            'form' => $form->createView(),
             'trick' => $trick,
             // 'categories' => $categories
         ]);
@@ -212,6 +213,62 @@ class AdminController extends AbstractController
             if ($this->isCsrfTokenValid('delete', $data['_token'])) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($trick);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 200]);
+            }
+            return new JsonResponse(['error' => 'Invalid token'], 400);
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    /**
+     * @Route("/admin/edit/trick/{id}", name="app_admin_edit_trick", methods={"POST"})
+     *
+     * @return JsonResponse
+     */
+    public function editTrick(Trick $trick, Request $request)
+    {
+        $categories = array_column(json_decode($request->request->get('categorie'), true), 'value');
+        $name = $request->request->get('name');
+        $description = $request->request->get('description');
+        $token = $request->request->get('_token');
+        $categoryTrick = [];
+        $isDelete = [];
+        $diff = array_merge(array_diff($categoryTrick, $categories), array_diff($categories,$categoryTrick));
+        foreach ($trick->getCategories()->getValues() as $category) {
+            if(!in_array($category->getName(), $categories)){
+                $isDelete[] = $category->getName();
+            }
+            $categoryTrick[] = $category->getName();
+        }
+        
+        // $isDelete = array_diff_assoc(array_reverse($categoryTrick, false), $categories);
+        // dump($categories);
+        // dump($categoryTrick);
+        // dump("Delete");
+        // dump($isDelete);
+        // dump("Delete");
+        // dd($categoryTrick, $categories);
+
+        try {
+            if ($this->isCsrfTokenValid('trick-edit', $token)) {
+                $trick->setName($name);
+                $trick->setDescription($description);
+                foreach ($categories as $categorie) {
+                    if (!in_array($categorie, $categoryTrick)) {
+                        $val = $this->getDoctrine()->getRepository(Category::class)->findBy(['name' => $categorie])[0];
+                        $cat = ($val !== null) ? $val: new Category();
+                        $cat->setName($categorie);
+                        $trick->addCategory($cat);
+                    }
+                }
+                foreach ($isDelete as $delete) {
+                    $cat = $this->getDoctrine()->getRepository(Category::class)->findBy(['name' => $delete])[0];
+                    $trick->removeCategory($cat);
+                }
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($trick);
                 $entityManager->flush();
                 return new JsonResponse(['success' => 200]);
             }
