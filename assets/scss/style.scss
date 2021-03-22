@@ -527,6 +527,12 @@ section{
       display: flex;
       justify-content: flex-end;
       align-items: center;
+
+      @media(max-width: 410px){
+        &{
+          flex-direction: column-reverse;
+        }
+      }
     }
 
     &__body__medias__choose{
@@ -641,6 +647,12 @@ section{
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @media (max-width:600px){
+        &{
+          flex-direction: column;
+        }
+      }
     }
 
     &__body__description{
@@ -730,6 +742,13 @@ section{
       flex-wrap: nowrap;
       overflow-x: auto;
       overflow-y: hidden;
+
+      @media (max-width:600px){
+        &{
+          width: 100%;
+          margin: 1em auto;
+        }
+      }
     }
 
     &__body__medias__videos >div{
