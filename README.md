@@ -1,5 +1,7 @@
 # P6 - SNOWTRICKS
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/af0b90bd1a1d48c7ba208ff420a4a891)](https://www.codacy.com/gh/asainama/snowtricks/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=asainama/snowtricks&amp;utm_campaign=Badge_Grade)
+
 Création d'un site communautaire de partage de figures de snowboard via le framework Symfony.
 
 ## Environnement
