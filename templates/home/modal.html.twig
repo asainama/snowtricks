@@ -37,7 +37,10 @@
                 </p>
             </div>
             <div class="modal__wrapper__body__author">
-                <p>{{trick.user.name}}</p>
+                <div>
+                    <img src="{{asset('snowtricks/users/' ~ trick.user.attachment)}}" alt="{{trick.user.name}}">
+                    <p>{{trick.user.name}}</p>
+                </div>
             </div>
             <div class="modal__wrapper__body__date">
                 <p>{{ trick.createdAt|date("d/m/Y") }}</p>
@@ -49,13 +52,19 @@
                 <h2>Commentaires</h2>
                 {% if app.user %}
                     <p>Ajouter un commentaire</p>
+                    <form data-id={{trick.id}} data-token={{csrf_token('trick' ~ trick.id)}} method="post" class="form__comment">
+                        <div class="form__group">
+                            <input type="text" name="commentaire">
+                            <button type="submit" class="form__comment__btn btn btn__primary">Valider</button>
+                        </div>
+                    </form>
                 {% else %}
                     <p>Pour ajouter un commentaire. Veuillez-vous connecter.</p>
                 {% endif %}
                 {% if trick.comments is empty %}
                     <p>Aucun commentaire pour le moment</p>
                 {% else %}
-                    {% for comment in trick.comments %}
+                    {# {% for comment in trick.comments %}
                         <div class="modal__wrapper__body__comments__item">
                             <div class="modal__wrapper__body__comments__item__img">
                                 <img src="{{asset('snowtricks/users/' ~ comment.user.attachment)}}" alt="{{comment.user.name}}">
@@ -65,7 +74,8 @@
                                 <p>{{comment.content}}</p>
                             </div>
                         </div>
-                    {% endfor %}
+                    {% endfor %} #}
+                    <comment-list asset={{absolute_url(asset('snowtricks'))}} id="{{trick.id}}"></comment-list>
                 {% endif %}
             </div>
         </div>

@@ -15,6 +15,8 @@ import './form.js'
 import './category.js'
 import './components/Trick.js'
 import './components/TrickList.js'
+import './components/Comment.js'
+import './components/CommentList.js'
 
 var alerts =  document.querySelectorAll('.alert.show')
 

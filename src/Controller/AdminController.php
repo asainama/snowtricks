@@ -235,21 +235,13 @@ class AdminController extends AbstractController
         $token = $request->request->get('_token');
         $categoryTrick = [];
         $isDelete = [];
-        $diff = array_merge(array_diff($categoryTrick, $categories), array_diff($categories,$categoryTrick));
+        // $diff = array_merge(array_diff($categoryTrick, $categories), array_diff($categories, $categoryTrick));
         foreach ($trick->getCategories()->getValues() as $category) {
-            if(!in_array($category->getName(), $categories)){
+            if (!in_array($category->getName(), $categories)) {
                 $isDelete[] = $category->getName();
             }
             $categoryTrick[] = $category->getName();
         }
-        
-        // $isDelete = array_diff_assoc(array_reverse($categoryTrick, false), $categories);
-        // dump($categories);
-        // dump($categoryTrick);
-        // dump("Delete");
-        // dump($isDelete);
-        // dump("Delete");
-        // dd($categoryTrick, $categories);
 
         try {
             if ($this->isCsrfTokenValid('trick-edit', $token)) {
@@ -258,7 +250,7 @@ class AdminController extends AbstractController
                 foreach ($categories as $categorie) {
                     if (!in_array($categorie, $categoryTrick)) {
                         $val = $this->getDoctrine()->getRepository(Category::class)->findBy(['name' => $categorie])[0];
-                        $cat = ($val !== null) ? $val: new Category();
+                        $cat = ($val !== null) ? $val : new Category();
                         $cat->setName($categorie);
                         $trick->addCategory($cat);
                     }
@@ -270,7 +262,7 @@ class AdminController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($trick);
                 $entityManager->flush();
-                return new JsonResponse(['success' => 200]);
+                return new JsonResponse(['success' => 200,'url' => $this->generateUrl('app_home')]);
             }
             return new JsonResponse(['error' => 'Invalid token'], 400);
         } catch (\Exception $e) {
@@ -279,10 +271,10 @@ class AdminController extends AbstractController
     }
 
     /**
-         * @Route("/admin/create/video/{id}", name="app_admin_create_video", methods={"POST"})
-         *
-         * @return JsonResponse
-         */
+     * @Route("/admin/create/video/{id}", name="app_admin_create_video", methods={"POST"})
+     *
+     * @return JsonResponse
+     */
     public function createVideo(Trick $trick, Request $request)
     {
         $data = json_decode($request->getContent(), true);

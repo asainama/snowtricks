@@ -24,6 +24,7 @@ const openModal = async function(e) {
                     if (confirm("Vous êtes sur de modifier le trick ?"))
                         openModal(e)
                 })
+            sendComment()
         }
     }
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
@@ -314,7 +315,6 @@ const editTrick = () => {
             const categories = document.querySelector('#edit_trick_categories')
             const description = document.querySelector('#edit_trick_description')
             var errors = 0;
-            console.log(name.value.length < 3)
             if (name.value.length < 3){
                 errors++
                 if(!name.classList.contains('invalid')){
@@ -349,10 +349,9 @@ const editTrick = () => {
                 .then(data=>{
                     if (data.success){
                         setTimeout(function(){
-                            window.location.href = 'http://www.google.fr/';
+                            window.location.href = data.url;
                         }, 2000);
-                        // TODO: Redirection page d'accueil & type accueil
-                        // createAlert('success', "Le trick a bien été modifié")
+                        createAlert('success', "Le trick a bien été modifié")
                     } else {
                         createAlert('error', data.error)
                     }
@@ -460,7 +459,6 @@ const createVideo = () => {
 
 const editVideoDeleteOrClose = () => {
     const videos = document.querySelectorAll('.btn__modal__delete')
-    console.log(videos)
     videos.forEach(function(video){
         video.addEventListener('click',function(ev){
             ev.preventDefault()
@@ -609,7 +607,6 @@ const delModal = () =>{
 
 const delTrick = function(){
     var deletes = document.querySelectorAll('.modal__wrapper__body__actions > .delete__trick')
-    console.log(deletes)
     if (deletes !== null){
         deletes.forEach(function(item){
             item.addEventListener('click',function(event){
@@ -643,7 +640,6 @@ const delTrick = function(){
 }
 
 const createAlert = (label,message) =>{
-    console.log(label,message)
     var div = document.createElement('div')
     div.className = "alert alert__"+label + " show"
     div.role="alert"
@@ -659,7 +655,6 @@ const createAlert = (label,message) =>{
     div.appendChild(spanClose)
     modal.querySelector('.modal__wrapper > .modal__wrapper__body').appendChild(div)
     var alerts =  document.querySelectorAll('.alert.show')
-    console.log(alerts)
     if (alerts !== null){
         alerts.forEach(function(item){
             setTimeout(function(){
@@ -667,6 +662,40 @@ const createAlert = (label,message) =>{
                 item.classList.add('hide')
                 item.remove()
             },3500)
+        })
+    }
+}
+
+const sendComment = () => {
+    const formComment = document.querySelector('.form__comment')
+    if (formComment !== null) {
+        formComment.addEventListener('submit',function(e){
+            e.preventDefault()
+            e.stopPropagation()
+            var input = formComment.querySelector('input[name="commentaire"]')
+            if (input.value.length < 0 || input.value.length < 5) {
+                createAlert('error', 'Le commentaire est trop court');
+            } else {
+                token = e.target.getAttribute('data-token')
+                id = e.target.getAttribute('data-id')
+                fetch("/admin/create/comment/" + id,{
+                    method: 'POST',
+                    body: JSON.stringify({'commentaire' : input.value, '_token' : token})
+                }).then(response => response.json())
+                .then((data)=>{
+                    if (data.success){
+                        createAlert('success', 'Commentaire ajouté avec success')
+                        var commentList = modal.querySelector('comment-list')
+                        var asset = commentList.getAttribute('asset')
+                        commentList.remove()
+                        modal.querySelector('.modal__wrapper__body__comments').innerHTML += "<comment-list asset='"+asset+"' id='"+id+"'></comment-list>"
+                    } else {
+                        createAlert('error', "L'ajout du commentairea échoué")
+                    }
+                })
+
+            }
+            return false;
         })
     }
 }

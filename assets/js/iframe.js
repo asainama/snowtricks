@@ -32,7 +32,6 @@ function checkIsIframe(item)
         if (error.classList.contains('invalid')){
             error.classList.remove('invalid')
         }
-        console.log('L\'url' + url)
     }
     checkErrorIsExists()
 }

@@ -49,7 +49,6 @@ class HomeController extends AbstractController
     public function getTricks(TrickRepository $trickRepository, ?int $offset = 0)
     {
         $tricks = $this->getDoctrine()->getRepository(\App\Entity\Trick::class)->findBy([], null, 4, $offset);
-        // dd($tricks);
         return $this->json(
             [
             'tricks' => $tricks,
