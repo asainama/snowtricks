@@ -1,16 +1,13 @@
-import Trick from './Trick';
-const openModal = require('../modal.js')
-
-class TrickList extends HTMLElement
+import Comment from './Comment';
+class CommentList extends HTMLElement
 {
     
     constructor(){
         super();
         this.loading = false
-        this.className = "cards"
-        this.tricks =  [];
+        this.comments =  [];
         this.asset = this.getAttribute('asset')
-        this.connect = this.getAttribute('connect')
+        this.id = this.getAttribute('id')
         this.total = 0;
         this.offset = 0;
         this.loading = true;
@@ -18,7 +15,7 @@ class TrickList extends HTMLElement
         this.loader = this.loader()
         this.loadMore = this.loadMore()
         // this.parentNode.appendChild = this.loader()
-        this.innerHTML = "Chargement des tricks"
+        this.innerHTML = "Chargement des commentaires"
     }
     
     loader()
@@ -42,14 +39,14 @@ class TrickList extends HTMLElement
     }
     connectedCallback()
     {
-        this.getTricks()
+        this.getComments()
     }
 
     disconnectedCallback()
     {
         this.loading = false
         // this.parentElement.appendChild(this.loader())
-        this.tricks =  [];
+        this.comments =  [];
         this.asset = null
         this.total = 0;
         this.offset = 0;
@@ -57,9 +54,10 @@ class TrickList extends HTMLElement
         this.connect = null;
     }
 
-    async getTricks()
+    async getComments()
     {
-        const raw = await fetch("/api/gettricks",{
+        const raw = await fetch("/api/getcomments/" +  this.id,
+        {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -67,25 +65,18 @@ class TrickList extends HTMLElement
             },
         })
         const content = await raw.json()
-        this.tricks = content.tricks
+        this.comments = content.comments
         this.total = content.total
-        this.offset = content.tricks.length
+        this.offset = content.comments.length
         this.loading = false
-        this.innerHTML = this.showTrick()
+        this.innerHTML = this.showComment()
         this.currentOffset = this.offset
-        openModal.all()
-        // if (document.querySelector('.card__end') === null && content.tricks.length === 0) {
-        //     const div = document.createElement('div')
-        //     div.innerHTML = "Aucun tricks"
-        //     div.className = "card__end"
-        //     _this.appendChild(div)
-        // } 
-        if (!(document.querySelector('.card__end') === null && content.tricks.length === 0) && this.total !== this.offset){
-            this.parentElement.parentElement.appendChild(this.loadMore)
+        if (!(document.querySelector('.card__end') === null && content.comments.length === 0) && this.total !== this.offset){
+            this.parentElement.appendChild(this.loadMore)
         }else {
             if (document.querySelector('.card__end') === null) {
                 const div = document.createElement('div')
-                div.innerHTML = "Fin des tricks"
+                div.innerHTML = "Fin des commentaires"
                 div.className = "card__end"
                 this.appendChild(div)
             }
@@ -99,7 +90,7 @@ class TrickList extends HTMLElement
             _this.loading = true
             _this.appendChild(_this.loader)
             ev.target.style.display= "none"
-            const raw = await fetch("/api/gettricks/"+ _this.offset,
+            const raw = await fetch("/api/getcomments/" + _this.id + _this.offset,
                 {
                     method: 'GET',
                     headers: {
@@ -108,38 +99,39 @@ class TrickList extends HTMLElement
                     }
                 })
                 const content = await raw.json()
-                _this.tricks = [..._this.tricks,...content.tricks]
-                _this.offset += content.tricks.length
+                _this.comments = [..._this.comments,...content.comments]
+                _this.offset += content.comments.length
                 _this.loading = false
-                _this.innerHTML = _this.showTrick()
+                _this.innerHTML = _this.showComment()
                 _this.currentOffset = _this.offset
                 if (_this.loader !== null && !_this.loader.classList.contains('hide')){
                     _this.loader.classList.add('hide')
                 }
-                openModal.all()
                 if (_this.total > _this.offset) {
                     const div = document.createElement('div')
-                    this.parentElement.parentElement.appendChild(_this.loadMore)
+                    _this.parentElement.appendChild(_this.loadMore)
                     ev.target.style.display= "block"
                 } else {
                     if (document.querySelector('.card__end') === null) {
-                            const div = document.createElement('div')
-                            div.innerHTML = "Fin des tricks"
-                            div.className = "card__end"
-                            _this.appendChild(div)
+                        const div = document.createElement('div')
+                        div.innerHTML = "Fin des commentaires"
+                        div.className = "card__end"
+                        _this.appendChild(div)
                     }
                 }
         } 
     }
 
-    showTrick()
+    showComment()
     {
-        var cards = Object.entries(this.tricks).map((trick)=>{
-            var date = new Date(trick[1].createdAt)
-            return `<trick-card connected="${this.connect}" id="${trick[1].id}" createdAt="${date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()}" userName="${trick[1].user.name}" name="${trick[1].name}" description="${trick[1].description}" mainImage="${this.asset + '/tricks/' + trick[1].mainImage}"></trick-card>`
+        var cards = Object.entries(this.comments).map((comment)=>{
+            var date = new Date(comment[1].createdAt)
+            var day = ("0" + date.getDate()).slice(-2)
+            var month = ("0" + (date.getMonth() + 1)).slice(-2)
+            return `<comment-card content="${comment[1].content}" id="${comment[1].id}" createdAt="${day+'/'+month+'/'+date.getFullYear()}" userName="${comment[1].user.name}" userImage="${this.asset + '/users/' + comment[1].user.attachment}"></comment-card>`
         })
         return cards.join('');
     }
 }
 
-customElements.define('trick-list',TrickList)
+customElements.define('comment-list',CommentList)

@@ -19,32 +19,24 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getCountComments(?int $id = 0)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('c');
+        $qb->select(
+            $qb->expr()->count('c.id')
+        );
+        return $qb->getQuery()->getSingleScalarResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Comment
+    public function getComments(?int $offset = 0, int $limit = 10, int $id = 0)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('c');
+        $qb
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            // ->andWhere('c.trick_id = :id')
+            // ->setParameter('id', $id)
+            ;
+        return $qb->getQuery()->getArrayResult();
     }
-    */
 }

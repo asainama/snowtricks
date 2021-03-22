@@ -1,4 +1,4 @@
-
+var Tagify = require('@yaireo/tagify');
 let modal = null
 const focusableSelector = 'button, a, input,textarea'
 let focusables = []
@@ -24,6 +24,7 @@ const openModal = async function(e) {
                     if (confirm("Vous êtes sur de modifier le trick ?"))
                         openModal(e)
                 })
+            sendComment()
         }
     }
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
@@ -119,6 +120,7 @@ const del = function(){
                     ).then(data => {
                         if (data.success) {
                             document.querySelector('trick-card[id="'+ item.getAttribute('data-id') +'"]').remove()
+                            // TODO: Message de suppression du trick
                         } else {
                             console.log(data.error)
                         }
@@ -197,8 +199,9 @@ formImg.addEventListener('submit',function(e){
             customBtn.classList.remove('valid')
             customBtn.innerHTML = "Choisir une image"
             delModal()
+            createAlert('success',"L'image a bien été crée")
         } else {
-            console.log(data.error)
+            createAlert('error',data.error)
         }
     }).catch(e=> console.log(e))
     return false;
@@ -252,6 +255,7 @@ btnMainImage.addEventListener('click',function(e){
                     if (data.success) {
                         var img = document.querySelector('.modal__wrapper__img > img')
                         img.src = input.getAttribute('data-asset') + data.file
+                        createAlert('success',"L'image a bien été modifié")
                     }
                 }).catch(e=> console.log(e))
             })
@@ -282,6 +286,7 @@ AllEdit.forEach(edit =>{
                         if (data.success) {
                             var img = document.querySelector('.form__img__trick__submit__' + id + ' img')
                             img.src = input.getAttribute('data-asset') + data.file
+                            createAlert('success',"L'image a bien été modifiée")
                         }
                     }).catch(e=> console.log(e))
                 })
@@ -294,6 +299,102 @@ AllEdit.forEach(edit =>{
     editVideoDeleteOrClose()
     createVideo()
     delTrick()
+    getCategories()
+    editTrick()
+}
+
+const editTrick = () => {
+    const trick = document.querySelector('.edit__trick')
+    trick.addEventListener('click',function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        const href = e.target.href
+
+        if(href !== null){
+            const name = document.querySelector('#edit_trick_name')
+            const categories = document.querySelector('#edit_trick_categories')
+            const description = document.querySelector('#edit_trick_description')
+            var errors = 0;
+            if (name.value.length < 3){
+                errors++
+                if(!name.classList.contains('invalid')){
+                    name.classList.add('invalid')
+                }
+                createAlert('error', "Le nom doit avoir plus de 3 caractères")
+            }
+            if(categories.value.length < 0){
+                errors++
+                if(!categories.classList.contains('invalid')){
+                    categories.classList.add('invalid')
+                }
+                createAlert('error', "La catégorie ne peut pas être vide")
+            }
+            if(description.value.length < 10){
+                errors++
+                if(!description.classList.contains('invalid')){
+                    description.classList.add('invalid')
+                }
+                createAlert('error', "La description doit contenir au moins 10 caractères")
+            }
+            if (errors === 0){
+                var formData = new FormData()
+                formData.append('name', name.value)
+                formData.append('description', description.value)
+                formData.append('categorie', categories.value)
+                formData.append('_token', e.target.getAttribute('data-token'))
+                fetch(href,{
+                    method: "POST",
+                    body: formData
+                }).then(response => response.json())
+                .then(data=>{
+                    if (data.success){
+                        setTimeout(function(){
+                            window.location.href = data.url;
+                        }, 2000);
+                        createAlert('success', "Le trick a bien été modifié")
+                    } else {
+                        createAlert('error', data.error)
+                    }
+                }).catch(e => console.error(e))
+            }
+        }
+
+    })
+}
+
+const getCategories = () => {
+    var inputElm = document.querySelector('.form__group__tag__input')
+    var tagify = new Tagify(inputElm,{
+        whitelist: [],
+    });
+    var controller;
+
+    if (inputElm !== null) {
+        tagify.on('input', onInput)
+    }
+
+    function onInput( e ){
+        var value = e.detail.value;
+        tagify.settings.whitelist.length = 0; // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort();
+    controller = new AbortController();
+
+    // show loading animation and hide the suggestions dropdown
+    tagify.loading(true).dropdown.hide.call(tagify)
+
+    fetch('/categories.json?value='+ value)
+        .then(RES => RES.json())
+        .then(function(whitelist){
+        // update inwhitelist Array in-place
+        var names = whitelist.map(function(item) {
+            return item['name'];
+        });
+        tagify.settings.whitelist.splice(0, whitelist.length, ...names)
+        tagify.loading(false).dropdown.show.call(tagify, value); // render the suggestions dropdown
+        })
+    }
 }
 const createVideo = () => {
     const btnAdd = document.querySelector('.modal__wrapper__body__medias__choose__btn__video')
@@ -347,17 +448,17 @@ const createVideo = () => {
                     input.value=''
                     editVideo()
                     editVideoDeleteOrClose()
+                    createAlert('success',"La video a bien été crée")
                 }
             }).catch(e => console.error(e))
         } else{
-            console.log("Le texte n'est pas une iframe valide")
+            createAlert("error","Le texte n'est pas une iframe valide")
         }
     })
 }
 
 const editVideoDeleteOrClose = () => {
     const videos = document.querySelectorAll('.btn__modal__delete')
-    console.log(videos)
     videos.forEach(function(video){
         video.addEventListener('click',function(ev){
             ev.preventDefault()
@@ -391,6 +492,7 @@ const editVideoDeleteOrClose = () => {
                     }).then(response => response.json())
                     .then(data =>{
                         if(data.success){
+                            createAlert('success',"La video a bien été supprimée")
                             document.querySelector('.video__parent__'+ id).remove()
                         }
                     }).catch(e => console.error(e))
@@ -451,10 +553,11 @@ const editVideo = () =>{
                                 delBtn.classList.remove('valid')
                             }
                             textat.value=''
+                            createAlert('success',"La video a bien été modifiée")
                         }
                     }).catch(e => console.error(e))
                 } else {
-                    alert("Le texte est trop court ou iframe est invalide")
+                    createAlert('error',"Le texte est trop court ou iframe est invalide")
                 }
             }
         })
@@ -489,9 +592,10 @@ const delModal = () =>{
                         response => response.json()
                     ).then(data => {
                         if (data.success) {
+                            createAlert('success',"L'image a bien été supprimé")
                             item.parentElement.parentElement.remove()
                         } else {
-                            console.log(data.error)
+                            createAlert('error',data.error)
                         }
                     }).catch(e=> console.log(e))
                 }
@@ -503,7 +607,6 @@ const delModal = () =>{
 
 const delTrick = function(){
     var deletes = document.querySelectorAll('.modal__wrapper__body__actions > .delete__trick')
-    console.log(deletes)
     if (deletes !== null){
         deletes.forEach(function(item){
             item.addEventListener('click',function(event){
@@ -523,13 +626,76 @@ const delTrick = function(){
                         response => response.json()
                     ).then(data => {
                         if (data.success) {
+                            // TODO:
+                            // Suppression sur l'accueil & affiche message
                             modal.querySelector('.js-modal-close').click()
                         } else {
-                            console.log(data.error)
+                            createAlert('error',data.error)
                         }
                     }).catch(e=> console.log(e))
                 }
             })
+        })
+    }
+}
+
+const createAlert = (label,message) =>{
+    var div = document.createElement('div')
+    div.className = "alert alert__"+label + " show"
+    div.role="alert"
+    var spanIcon = document.createElement('span')
+    spanIcon.className = "alert__icon"
+    var spanMessage = document.createElement('span')
+    spanMessage.className ="alert__message"
+    spanMessage.innerHTML= message
+    var spanClose = document.createElement('div')
+    spanClose.className = "alert__close"
+    div.appendChild(spanIcon)
+    div.appendChild(spanMessage)
+    div.appendChild(spanClose)
+    modal.querySelector('.modal__wrapper > .modal__wrapper__body').appendChild(div)
+    var alerts =  document.querySelectorAll('.alert.show')
+    if (alerts !== null){
+        alerts.forEach(function(item){
+            setTimeout(function(){
+                item.classList.remove('show')
+                item.classList.add('hide')
+                item.remove()
+            },3500)
+        })
+    }
+}
+
+const sendComment = () => {
+    const formComment = document.querySelector('.form__comment')
+    if (formComment !== null) {
+        formComment.addEventListener('submit',function(e){
+            e.preventDefault()
+            e.stopPropagation()
+            var input = formComment.querySelector('input[name="commentaire"]')
+            if (input.value.length < 0 || input.value.length < 5) {
+                createAlert('error', 'Le commentaire est trop court');
+            } else {
+                token = e.target.getAttribute('data-token')
+                id = e.target.getAttribute('data-id')
+                fetch("/admin/create/comment/" + id,{
+                    method: 'POST',
+                    body: JSON.stringify({'commentaire' : input.value, '_token' : token})
+                }).then(response => response.json())
+                .then((data)=>{
+                    if (data.success){
+                        createAlert('success', 'Commentaire ajouté avec success')
+                        var commentList = modal.querySelector('comment-list')
+                        var asset = commentList.getAttribute('asset')
+                        commentList.remove()
+                        modal.querySelector('.modal__wrapper__body__comments').innerHTML += "<comment-list asset='"+asset+"' id='"+id+"'></comment-list>"
+                    } else {
+                        createAlert('error', "L'ajout du commentairea échoué")
+                    }
+                })
+
+            }
+            return false;
         })
     }
 }

@@ -8,10 +8,7 @@ const formSubmit = document.querySelector('.form__img__submit')
 const fileName = document.querySelector('.modal__wrapper__body__medias__choose__content__file')
 let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
 
-console.log('ok')
-
 const btnClick = (e) =>{
-    console.log('click')
     if (!e.target.classList.contains('valid')){
         mediaBtn.click()
     } else {
@@ -40,18 +37,13 @@ formImg.addEventListener('submit',function(e){
     }).then(
         response => response.json()
     ).then(data => {
-        console.log(data)
         if (data.success) {
-            console.log(data.file)
             var parent = document.querySelector('.modal__wrapper__body__medias__images')
-            console.log(parent)
             var div = document.createElement('div')
             var divChild = document.createElement('div')
             divChild.className = "modal__wrapper__body__medias__actions"
             var asset = mediaBtn.getAttribute('data-asset')
-            console.log(asset)
             var pic = document.createElement('img')
-            console.log(asset + data.file)
             pic.src = asset + data.file
             var edit = document.createElement('a')
             edit.href= "#"
@@ -60,7 +52,6 @@ formImg.addEventListener('submit',function(e){
             divChild.appendChild(edit,del);
             div.appendChild(pic,divChild);
             parent.appendChild(div)
-            console.log(parent)
             img.src = ""; 
             wrapper.classList.remove('active')
             customBtn.classList.remove('valid')

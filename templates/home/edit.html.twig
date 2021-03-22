@@ -13,11 +13,6 @@
             </div>
         </div>
         <div class="modal__wrapper__body">
-            <h1 class="modal__wrapper__title">
-            <div class="form__group">
-                <input type="text" name="trick__title" id="trick__title" value="{{trick.name}}" >
-            </div>
-            </h1>
             <div class="modal__wrapper__body__medias">
                 <div class="modal__wrapper__body__medias__images" data-token={{csrf_token('image')}}>
                     <div class="modal__wrapper__body__medias__choose">
@@ -37,7 +32,6 @@
                         <div class="{{"form__img__trick__submit__" ~ image.id}}">
                             <form id="{{'formtricks-img-' ~ image.id}}">
                                 <input name="file" id="{{'trick-image-btn-' ~ image.id}}" type="file" hidden data-id="{{image.id}}" data-asset="{{asset('snowtricks/tricks/')}}">
-                                {# <button type="submit" hidden></button> #}
                             </form>
                             <img src="{{asset('snowtricks/tricks/' ~ image.path)}}">
                             <div class="modal__wrapper__body__medias__actions">
@@ -71,25 +65,38 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="modal__wrapper__body__tags">
-                <p>
-                    Catégorie(s):
-                    {% for categorie in trick.categories %}
-                        <span>{{categorie.name}}</span>
-                    {% endfor %}
-                </p>
-            </div>
-            <div class="modal__wrapper__body__date">
-                <p>{{ trick.createdAt|date("d/m/Y") }}</p>
-            </div>
-            <div class="modal__wrapper__body__description form__group">
-                <textarea name="trick__description" id="trick__description" cols="30" rows="10">
-                    {{trick.description|trim|capitalize}}
-                </textarea>
-            </div>
+            {{form_start(form)}}
+                <div class="modal__wrapper__title">
+                    <div class="form__group">
+                        {{form_label(form.name,'Nom')}}
+                        {{form_widget(form.name)}}
+                        <div class="form__group__error">
+                            {{ form_errors(form.name) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal__wrapper__body__tags">
+                    <div class="form__group">
+                        {{form_label(form.categories,'Catégorie')}}
+                        {{form_widget(form.categories)}}
+                        <div class="form__group__error">
+                            {{ form_errors(form.categories) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal__wrapper__body__description form__group">
+                <div class="form__group">
+                        {{form_label(form.description)}}
+                        {{form_widget(form.description)}}
+                        <div class="form__group__error">
+                            {{ form_errors(form.description) }}
+                        </div>
+                    </div>
+                </div>
+            {{form_end(form)}}
             <div class="modal__wrapper__body__actions">
-                <a href="{{path("app_admin_delete_trick",{'id':trick.id})}}" class="delete__trick btn btn__error" id="{{'trick-modal-delete-' ~ trick.id}}">Supprimer</a>
-                <a href="#" class="btn btn__primary">Enregistrer</a>
+                <a data-token="{{csrf_token('trick' ~ trick.id)}}" href="{{path("app_admin_delete_trick",{'id':trick.id})}}" class="delete__trick btn btn__error" id="{{'trick-modal-delete-' ~ trick.id}}">Supprimer</a>
+                <a href="{{path("app_admin_edit_trick",{'id':trick.id})}}" class="edit__trick btn btn__primary" data-token="{{csrf_token('trick-edit')}}">Enregistrer</a>
             </div>
         </div>
     </div>
