@@ -58,7 +58,9 @@ if (deleteVideo !== null) {
     deleteVideo.forEach(video => {
         video.addEventListener('click', function(e){
             e.preventDefault()
-            deleteForm(video,'video')
+            if (document.querySelectorAll('.form__group__video__item').length > 1){
+                deleteForm(video,'video')
+            }
         })
     });
 }
@@ -71,7 +73,6 @@ if (addImage !== null) {
         })
     });
 }
-
 if (addImage !== null) {
     deleteImage.forEach(image => {
         image.addEventListener('click', function(e){
@@ -84,8 +85,10 @@ if (addImage !== null) {
 
 function deleteForm(item,type){
     var div = document.querySelector('div[data-delete="'+item.getAttribute('data-id')+'"]')
-    document.querySelector('#'+type+'__list').removeChild(div)
-    checkLength(type)
+    if (document.querySelectorAll('.form__group__'+type+'__item').length > 1){
+        document.querySelector('#'+type+'__list').removeChild(div)
+        checkLength(type)
+    }
 }
 
 function addForm(parentDiv,type) {
