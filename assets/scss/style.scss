@@ -175,6 +175,7 @@ a {
   justify-self: center;
   align-items: center;
   border-bottom: 1px solid #ccc;
+  position: relative;
 }
 
 .navbar__header {
@@ -183,6 +184,31 @@ a {
   max-width: 1350px;
   align-items: center;
   margin: 0 auto;
+
+  &__subnav{
+    position: absolute;
+    background: white;
+    right: 0;
+    top: 60px;
+    display: none;
+    flex-direction: column;
+
+    & > li{
+      padding: 1em 0;
+    }
+  }
+
+  &__mobile{
+    display: none;
+
+    &::after{
+      content: "\2630";
+      display: block;
+      width: 30px;
+      height: 30px;
+      font-size: 3rem;
+    }
+  }
 
   li {
     margin: 0 .5em;
@@ -643,21 +669,24 @@ section{
       width: 80%;
     }
 
+    &__body__mobile.btn__primary.btn{
+      display: none;
+
+      @media(max-width:600px){
+        &{
+          display: block;
+          margin: 0 auto;
+        }
+      }
+    }
+
     &__body__medias{
       display: flex;
       align-items: center;
       justify-content: center;
 
-      &__mobile{
-        display: none;
-      }
 
       @media (max-width:600px){
-        &__mobile{
-          display: block;
-          margin: 0 auto;
-        }
-
         &{
           display: none;
           flex-direction: column;
@@ -1515,7 +1544,21 @@ footer {
 
 
 @media (max-width:600px){
-  .navbar__header > li:not(li:nth-child(1)){
+  .navbar__header > li:not(li:nth-child(1)):not(li:nth-child(2)){
     display: none;
   }
+
+  .navbar__header__mobile{
+    display: block;
+  }
+
+  .navbar__header__subnav.mobile{
+    display: flex;
+    transition: all 3ms;
+    -webkit-transition: all 3ms;
+    -moz-transition: all 3ms;
+    -ms-transition: all 3ms;
+    -o-transition: all 3ms;
+  }
+
 }

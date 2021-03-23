@@ -28,3 +28,18 @@ if (alerts !== null){
         },3500)
     })
 }
+
+var btnMobile = document.querySelector('.navbar__header__mobile')
+
+if (btnMobile !== null){
+    btnMobile.addEventListener('click',function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        var subNav = document.querySelector('.navbar__header__subnav')
+        if (subNav.classList.contains('mobile')){
+            subNav.classList.remove('mobile')
+        } else {
+            subNav.classList.add('mobile')
+        }
+    })
+}

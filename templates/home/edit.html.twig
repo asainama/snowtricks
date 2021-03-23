@@ -13,6 +13,7 @@
             </div>
         </div>
         <div class="modal__wrapper__body">
+            <a href="#" class="modal__wrapper__body__mobile btn btn__primary">Voir les medias</a>
             <div class="modal__wrapper__body__medias">
                 <div class="modal__wrapper__body__medias__images" data-token={{csrf_token('image')}}>
                     <div class="modal__wrapper__body__medias__choose">
@@ -42,7 +43,7 @@
                     {% endfor %}
                 </div>
                 <div class="modal__wrapper__body__medias__videos" data-token={{csrf_token('video')}}>
-                    <div>
+                    <div class="modal__wrapper__body__medias__choose__video">
                         <form class="formtricks__video">
                             <div class="form__group__video__item">
                                 <label for="tricks_videos_url" class="form__group__video__item__label">Iframe de la video</label>

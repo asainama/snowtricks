@@ -247,17 +247,19 @@ btnMainImage.addEventListener('click',function(e){
             input.addEventListener('change',function(ev){
                 var formData = new FormData(form)
                 formData.append('file',input.files[0])
-                fetch(href, {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json())
-                .then((data)=>{
-                    if (data.success) {
-                        var img = document.querySelector('.modal__wrapper__img > img')
-                        img.src = input.getAttribute('data-asset') + data.file
-                        createAlert('success',"L'image a bien été modifié")
-                    }
-                }).catch(e=> console.log(e))
+                if (validateSize(input.files[0])){
+                    fetch(href, {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json())
+                    .then((data)=>{
+                        if (data.success) {
+                            var img = document.querySelector('.modal__wrapper__img > img')
+                            img.src = input.getAttribute('data-asset') + data.file
+                            createAlert('success',"L'image a bien été modifié")
+                        }
+                    }).catch(e=> console.log(e))
+                }
             })
         }
     }
@@ -278,17 +280,19 @@ AllEdit.forEach(edit =>{
                 input.addEventListener('change',function(ev){
                     var formData = new FormData(form)
                     formData.append('file',input.files[0])
-                    fetch(href, {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => response.json())
-                    .then((data)=>{
-                        if (data.success) {
-                            var img = document.querySelector('.form__img__trick__submit__' + id + ' img')
-                            img.src = input.getAttribute('data-asset') + data.file
-                            createAlert('success',"L'image a bien été modifiée")
-                        }
-                    }).catch(e=> console.log(e))
+                    if(validateSize(input.files[0])){
+                        fetch(href, {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => response.json())
+                        .then((data)=>{
+                            if (data.success) {
+                                var img = document.querySelector('.form__img__trick__submit__' + id + ' img')
+                                img.src = input.getAttribute('data-asset') + data.file
+                                createAlert('success',"L'image a bien été modifiée")
+                            }
+                        }).catch(e=> console.log(e))
+                    }
                 })
             }
         }
@@ -301,6 +305,17 @@ AllEdit.forEach(edit =>{
     delTrick()
     getCategories()
     editTrick()
+    seeMobile()
+}
+
+const validateSize = (file) => {
+    var FileSize = file.files[0].size / 1024 / 1024; // in MiB
+    if (FileSize > 2) {
+        createAlert('error','Le fichier est trop volumineux')
+        return false;
+    } else {
+        return true;
+    }
 }
 
 const editTrick = () => {
@@ -396,6 +411,7 @@ const getCategories = () => {
         })
     }
 }
+
 const createVideo = () => {
     const btnAdd = document.querySelector('.modal__wrapper__body__medias__choose__btn__video')
     const input = document.querySelector('#tricks_videos_url')
@@ -481,21 +497,26 @@ const editVideoDeleteOrClose = () => {
                 editBtn.classList.remove('valid')
                 textat.value = ''
             } else {
-                if(confirm("Vous êtes sur de vouloir supprimer cette video ?")) {
-                    fetch(href,{
-                        method: 'DELETE',
-                        headers: {
-                            'X-Request-With' : 'XMLHttpRequest',
-                            'Content-Type' : 'application/json'
-                        },
-                        body: JSON.stringify({'_token': token})
-                    }).then(response => response.json())
-                    .then(data =>{
-                        if(data.success){
-                            createAlert('success',"La video a bien été supprimée")
-                            document.querySelector('.video__parent__'+ id).remove()
-                        }
-                    }).catch(e => console.error(e))
+                var child = document.querySelectorAll('.modal__wrapper__body__medias__images >div:not(.modal__wrapper__body__medias__choose__video)')
+                if (child >= 1){
+                    if(confirm("Vous êtes sur de vouloir supprimer cette video ?")) {
+                        fetch(href,{
+                            method: 'DELETE',
+                            headers: {
+                                'X-Request-With' : 'XMLHttpRequest',
+                                'Content-Type' : 'application/json'
+                            },
+                            body: JSON.stringify({'_token': token})
+                        }).then(response => response.json())
+                        .then(data =>{
+                            if(data.success){
+                                createAlert('success',"La video a bien été supprimée")
+                                document.querySelector('.video__parent__'+ id).remove()
+                            }
+                        }).catch(e => console.error(e))
+                    }
+                } else {
+                    createAlert('error', 'Il faut minimun une video')
                 }
             }
         })
@@ -579,30 +600,35 @@ const delModal = () =>{
             item.addEventListener('click',function(event){
                 event.preventDefault();
                 event.stopPropagation()
-                if(confirm("Voulez-vous supprimer cette image ?")) {
-                    fetch(this.getAttribute('href'), {
-                        method : 'DELETE',
-                        headers: {
-                            'X-Request-With' : 'XMLHttpRequest',
-                            'Content-Type' : 'application/json'
-                        },
-                        body: JSON.stringify({"_token": document.querySelector('.modal__wrapper__body__medias__images').getAttribute('data-token')})
-                    }).then(
-                        response => response.json()
-                    ).then(data => {
-                        if (data.success) {
-                            createAlert('success',"L'image a bien été supprimé")
-                            item.parentElement.parentElement.remove()
-                        } else {
-                            createAlert('error',data.error)
-                        }
-                    }).catch(e=> console.log(e))
+                var child = document.querySelectorAll('.modal__wrapper__body__medias__images >div:not(.modal__wrapper__body__medias__choose)')
+                alert(child.length)
+                if (child.length > 1) {
+                    if(confirm("Voulez-vous supprimer cette image ?")) {
+                        fetch(this.getAttribute('href'), {
+                            method : 'DELETE',
+                            headers: {
+                                'X-Request-With' : 'XMLHttpRequest',
+                                'Content-Type' : 'application/json'
+                            },
+                            body: JSON.stringify({"_token": document.querySelector('.modal__wrapper__body__medias__images').getAttribute('data-token')})
+                        }).then(
+                            response => response.json()
+                        ).then(data => {
+                            if (data.success) {
+                                createAlert('success',"L'image a bien été supprimé")
+                                item.parentElement.parentElement.remove()
+                            } else {
+                                createAlert('error',data.error)
+                            }
+                        }).catch(e=> console.log(e))
+                    }
+                } else{
+                    createAlert('error','Il faut minimum une image')
                 }
             })
         })
     }
 }
-
 
 const delTrick = function(){
     var deletes = document.querySelectorAll('.modal__wrapper__body__actions > .delete__trick')
@@ -700,7 +726,7 @@ const sendComment = () => {
 }
 
 const seeMobile = () => {
-    const btnMobile = document.querySelector('.modal__wrapper__body__medias__mobile')
+    const btnMobile = document.querySelector('.modal__wrapper__body__mobile')
 
     btnMobile.addEventListener('click',function(ev){
         ev.preventDefault()
