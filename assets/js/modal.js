@@ -25,6 +25,7 @@ const openModal = async function(e) {
                         openModal(e)
                 })
             sendComment()
+            seeMobile()
         }
     }
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
@@ -57,7 +58,6 @@ const closeModal = function(e) {
         document.body.removeChild(document.querySelector('#modal2'))
     }
 }
-
 
 const stopPropagation = function (e) {
     e.stopPropagation()
@@ -572,7 +572,6 @@ const verifIframe = (value) => {
     }
 }
 
-
 const delModal = () =>{
     var deletes = document.querySelectorAll('.modal__wrapper__body__medias__actions > .delete__img')
     if (deletes !== null){
@@ -698,6 +697,18 @@ const sendComment = () => {
             return false;
         })
     }
+}
+
+const seeMobile = () => {
+    const btnMobile = document.querySelector('.modal__wrapper__body__medias__mobile')
+
+    btnMobile.addEventListener('click',function(ev){
+        ev.preventDefault()
+        ev.stopPropagation()
+        const media = document.querySelector('.modal__wrapper__body__medias')
+        media.style.display = "flex"
+        btnMobile.style.display = "none"
+    })
 }
 
 module.exports = {

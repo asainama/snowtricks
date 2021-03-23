@@ -32,10 +32,6 @@ class SecurityController extends AbstractController
         $form  = $this->createForm(UserType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // if (!$this->isCsrfTokenValid('user-token', $request->query->get('_token'))) {
-            //     $this->addFlash('error', 'Token CSRF invalide');
-            //     return $this->redirectToRoute('app_register');
-            // }
             $user = $form->getData();
             $image = $form->get('attachment')->getData();
             $fichier = md5(uniqid()) . "." . $image->guessExtension();
