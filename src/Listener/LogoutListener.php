@@ -15,6 +15,6 @@ class LogoutListener
     }
     public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $event): void
     {
-        $this->flashBag->add('success', 'logout message');
+        $this->flashBag->add('success', 'Vous êtes maintenant déconnecté');
     }
 }

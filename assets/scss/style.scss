@@ -1560,5 +1560,9 @@ footer {
     -ms-transition: all 3ms;
     -o-transition: all 3ms;
   }
+  
+  .form__group__files{
+    flex-direction: column;
+  }
 
 }
