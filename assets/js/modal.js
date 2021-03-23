@@ -601,7 +601,6 @@ const delModal = () =>{
                 event.preventDefault();
                 event.stopPropagation()
                 var child = document.querySelectorAll('.modal__wrapper__body__medias__images >div:not(.modal__wrapper__body__medias__choose)')
-                alert(child.length)
                 if (child.length > 1) {
                     if(confirm("Voulez-vous supprimer cette image ?")) {
                         fetch(this.getAttribute('href'), {
