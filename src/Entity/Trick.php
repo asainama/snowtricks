@@ -8,9 +8,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity("name", message="Ce nom est déjà utilisé")
  */
 class Trick
 {
@@ -22,10 +24,9 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotNull(message="Le nom ne peut pas être vide")
      * @Assert\Length(min=3, minMessage="Le nom doit contenir plus de 3 caractères")
-     * @Assert\Unique(message="Ce nom est déjà utilisé")
      */
     private $name;
 
