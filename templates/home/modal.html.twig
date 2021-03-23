@@ -63,7 +63,7 @@
                     <p>Pour ajouter un commentaire. Veuillez-vous connecter.</p>
                 {% endif %}
                 {% if trick.comments is empty %}
-                    <p>Aucun commentaire pour le moment</p>
+                    <p class="modal__wrapper__body__comments__none" asset="{{absolute_url(asset('snowtricks'))}}">Aucun commentaire pour le moment</p>
                 {% else %}
                     {# {% for comment in trick.comments %}
                         <div class="modal__wrapper__body__comments__item">

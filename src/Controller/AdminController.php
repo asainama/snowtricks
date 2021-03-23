@@ -68,7 +68,7 @@ class AdminController extends AbstractController
             $em->persist($trick);
             $em->flush();
             $this->addFlash('success', 'Le trick a bien été crée');
-            $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home');
         }
         return $this->render('admin/create.html.twig', [
             'form' => $form->createView(),

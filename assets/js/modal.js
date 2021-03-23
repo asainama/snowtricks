@@ -711,14 +711,20 @@ const sendComment = () => {
                     if (data.success){
                         createAlert('success', 'Commentaire ajouté avec success')
                         var commentList = modal.querySelector('comment-list')
-                        var asset = commentList.getAttribute('asset')
-                        commentList.remove()
+                        var asset = null
+                        if (commentList === null){
+                            var p = modal.querySelector('.modal__wrapper__body__comments__none')
+                            asset = p.getAttribute('asset')
+                            p.remove()
+                        } else {
+                            asset = commentList.getAttribute('asset')
+                            commentList.remove()
+                        }
                         modal.querySelector('.modal__wrapper__body__comments').innerHTML += "<comment-list asset='"+asset+"' id='"+id+"'></comment-list>"
                     } else {
                         createAlert('error', "L'ajout du commentairea échoué")
                     }
                 })
-
             }
             return false;
         })
