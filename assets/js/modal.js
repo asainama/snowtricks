@@ -309,7 +309,7 @@ AllEdit.forEach(edit =>{
 }
 
 const validateSize = (file) => {
-    var FileSize = file.files[0].size / 1024 / 1024; // in MiB
+    var FileSize = file.size / 1024 / 1024; // in MiB
     if (FileSize > 2) {
         createAlert('error','Le fichier est trop volumineux')
         return false;
