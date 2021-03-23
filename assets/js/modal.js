@@ -498,7 +498,7 @@ const editVideoDeleteOrClose = () => {
                 textat.value = ''
             } else {
                 var child = document.querySelectorAll('.modal__wrapper__body__medias__images >div:not(.modal__wrapper__body__medias__choose__video)')
-                if (child >= 1){
+                if (child.length > 1){
                     if(confirm("Vous êtes sur de vouloir supprimer cette video ?")) {
                         fetch(href,{
                             method: 'DELETE',
